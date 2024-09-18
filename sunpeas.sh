@@ -163,7 +163,7 @@ fi
 
 # Add ping to default PATH
 
-export PATH="$PATH:/usr/sbin/"
+export PATH="$PATH:/usr/sbin/:/usr/ucb/"
 
 # implement seq command in bash itself
 
@@ -798,16 +798,16 @@ if [ "$AUTO_NETWORK_SCAN" ]; then
     fi
 
     select_nc
-    local_ips=$( (ip a 2>/dev/null || ifconfig) | grep -Eo 'inet[^6]\S+[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | awk '{print $2}' | egrep "^10\.|^172\.|^192\.168\.|^169\.254\.")
+    local_ips=$( (ip a 2>/dev/null || ifconfig) | egrep 'inet[^6]\S+[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | awk '{print $2}' | egrep "^10\.|^172\.|^192\.168\.|^169\.254\.")
     printf "%s\n" "$local_ips" | while read local_ip; do
       if ! [ -z "$local_ip" ]; then
         print_3title "Discovering hosts in $local_ip/24"
         
         if [ "$PING" ] || [ "$FPING" ]; then
-          discover_network "$local_ip/24" | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | grep -A 256 "Network Discovery" | grep -v "Network Discovery" | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' > $Wfolder/.ips.tmp
+          discover_network "$local_ip/24" | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | grep -A 256 "Network Discovery" | grep -v "Network Discovery" | egrep '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' > $Wfolder/.ips.tmp
         fi
         
-        discovery_port_scan "$local_ip/24" 22 | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | grep -A 256 "Ports going to be scanned" | grep -v "Ports going to be scanned" | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' >> $Wfolder/.ips.tmp
+        discovery_port_scan "$local_ip/24" 22 | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | grep -A 256 "Ports going to be scanned" | grep -v "Ports going to be scanned" | egrep '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' >> $Wfolder/.ips.tmp
         
         sort $Wfolder/.ips.tmp | uniq > $Wfolder/.ips
         rm $Wfolder/.ips.tmp 2>/dev/null
@@ -1115,7 +1115,7 @@ groupsB="\(root\)|\(shadow\)|\(admin\)|\(video\)|\(adm\)|\(wheel\)|\(auth\)|\(st
 
 groupsVB="\(sudo\)|\(docker\)|\(lxd\)|\(disk\)|\(lxc\)"
 
-MyUID=$(id -u $(whoami))
+MyUID=$(id -u $(whoami) 2> /dev/null)
 
 if [ "$MyUID" ]; then 
     myuid=$MyUID; 
@@ -1360,7 +1360,7 @@ enumerateDockerSockets() {
     SEARCHED_DOCKER_SOCKETS="1"
     for int_sock in $(find / ! -path "/sys/*" -type s -name "docker.sock" -o -name "docker.socket" -o -name "dockershim.sock" -o -name "containerd.sock" -o -name "crio.sock" -o -name "frakti.sock" -o -name "rktlet.sock" 2>/dev/null); do
       if ! [ "$IAMROOT" ] && [ -w "$int_sock" ]; then
-        if echo "$int_sock" | grep -Eq "docker"; then
+        if echo "$int_sock" | egrep "docker" &> /dev/null; then
           dock_sock="$int_sock"
           echo "You have write permissions over Docker socket $dock_sock" | sed {$E} "s,$dock_sock,${SED_RED_YELLOW},g"
           echo "Docker enummeration:"
@@ -1391,7 +1391,7 @@ enumerateDockerSockets() {
 }
 
 checkCreateReleaseAgent(){
-  cat /proc/$$/cgroup 2>/dev/null | grep -Eo '[0-9]+:[^:]+' | grep -Eo '[^:]+$' | while read -r ss
+  cat /proc/$$/cgroup 2>/dev/null | egrep '[0-9]+:[^:]+' | egrep '[^:]+$' | while read -r ss
   do
       if unshare -UrmC --propagation=unchanged bash -c "mount -t cgroup -o $ss cgroup /tmp/cgroup_3628d4 2>&1 >/dev/null && test -w /tmp/cgroup_3628d4/release_agent" >/dev/null 2>&1 ; then
           release_agent_breakout3="Yes (unshare with $ss)";
@@ -1866,7 +1866,7 @@ fi
 
 if [ -d "/dev" ] || [ "$DEBUG" ] ; then
     print_2title "Any sd*/disk* disk in /dev? (limit 20)"
-    ls /dev 2>/dev/null | grep -Ei "^sd|^disk" | sed "s,crypt,${SED_RED}," | head -n 20
+    ls /dev 2>/dev/null | egrep -i "^sd|^disk" | sed "s,crypt,${SED_RED}," | head -n 20
     echo ""
 fi
 
@@ -2187,7 +2187,7 @@ if [ "$inContainer" ]; then
         echo ""
         
         print_3title "Kubernetes env vars"
-        (env | set) | grep -Ei "kubernetes|kube" | egrep -v "^WF=|^Wfolders=|^mounted=|^USEFUL_SOFTWARE='|^INT_HIDDEN_FILES=|^containerType="
+        (env | set) | egrep -i "kubernetes|kube" | egrep -v "^WF=|^Wfolders=|^mounted=|^USEFUL_SOFTWARE='|^INT_HIDDEN_FILES=|^containerType="
         echo ""
 
         print_3title "Current sa user k8s permissions"
@@ -2920,7 +2920,7 @@ if ! [ "$SEARCH_IN_FOLDER" ] && ! [ "$NOUSEPS" ]; then
       continue
     fi
     ppid_user=$(get_user_by_pid "$ppid")
-    if echo "$user" | grep -Eqv "$ppid_user|root$"; then
+    if echo "$user" | egrep -v "$ppid_user|root$" &> /dev/null; then
       echo "Proc $pid with ppid $ppid is run by user $user but the ppid user is $ppid_user" | sed {$E} "s,$sh_usrs,${SED_LIGHT_CYAN}," | sed "s,$USER,${SED_LIGHT_MAGENTA}," | sed {$E} "s,$nosh_usrs,${SED_BLUE}," | sed "s,root,${SED_RED},"
     fi
   done
@@ -3091,13 +3091,13 @@ if ! [ "$IAMROOT" ]; then
     if ! [ "$IAMROOT" ] && [ -w "$s" ] && [ -f "$s" ] && ! [ "$SEARCH_IN_FOLDER" ]; then
       echo "Writable .socket file: $s" | sed "s,/.*,${SED_RED},g"
     fi
-    socketsbinpaths=$(grep -Eo '^(Exec).*?=[!@+-]*/[a-zA-Z0-9_/\-]+' "$s" 2>/dev/null | cut -d '=' -f2 | sed 's,^[@\+!-]*,,')
+    socketsbinpaths=$(egrep '^(Exec).*?=[!@+-]*/[a-zA-Z0-9_/\-]+' "$s" 2>/dev/null | cut -d '=' -f2 | sed 's,^[@\+!-]*,,')
     printf "%s\n" "$socketsbinpaths" | while read sb; do
       if [ -w "$sb" ]; then
         echo "$s is calling this writable executable: $sb" | sed "s,writable.*,${SED_RED},g"
       fi
     done
-    socketslistpaths=$(grep -Eo '^(Listen).*?=[!@+-]*/[a-zA-Z0-9_/\-]+' "$s" 2>/dev/null | cut -d '=' -f2 | sed 's,^[@\+!-]*,,')
+    socketslistpaths=$(egrep '^(Listen).*?=[!@+-]*/[a-zA-Z0-9_/\-]+' "$s" 2>/dev/null | cut -d '=' -f2 | sed 's,^[@\+!-]*,,')
     printf "%s\n" "$socketslistpaths" | while read sl; do
       if [ -w "$sl" ]; then
         echo "$s is calling this writable listener: $sl" | sed "s,writable.*,${SED_RED},g";
@@ -3113,12 +3113,12 @@ if ! [ "$IAMROOT" ]; then
     print_2title "Unix Sockets Listening"
     print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#sockets"
     # Search sockets using netstat and ss
-    unix_scks_list=$(ss -xlp -H state listening 2>/dev/null | grep -Eo "/.* " | cut -d " " -f1)
+    unix_scks_list=$(ss -xlp -H state listening 2>/dev/null | egrep "/.* " | cut -d " " -f1)
     if ! [ "$unix_scks_list" ];then
-      unix_scks_list=$(ss -l -p -A 'unix' 2>/dev/null | grep -Ei "listen|Proc" | grep -Eo "/[a-zA-Z0-9\._/\-]+")
+      unix_scks_list=$(ss -l -p -A 'unix' 2>/dev/null | egrep -i "listen|Proc" | egrep "/[a-zA-Z0-9\._/\-]+")
     fi
     if ! [ "$unix_scks_list" ];then
-      unix_scks_list=$(netstat -a -p --unix 2>/dev/null | grep -Ei "listen|PID" | grep -Eo "/[a-zA-Z0-9\._/\-]+" | tail -n +2)
+      unix_scks_list=$(netstat -a -p --unix 2>/dev/null | egrep -i "listen|PID" | egrep "/[a-zA-Z0-9\._/\-]+" | tail -n +2)
     fi
       unix_scks_list3=$(lsof -U 2>/dev/null | awk '{print $9}' | grep "/") 
   fi
@@ -3172,7 +3172,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   if [ "$dbuslist" ]; then
     busctl list | while read l; do
       echo "$l" | sed {$E} "s,$dbuslistG,${SED_GREEN},g" | sed {$E} "s,$nosh_usrs,${SED_BLUE}," | sed {$E} "s,$rootcommon,${SED_GREEN}," | sed {$E} "s,$knw_usrs,${SED_GREEN}," | sed "s,$USER,${SED_LIGHT_MAGENTA}," | sed "s,root,${SED_RED},";
-      if ! echo "$l" | egrep -E "$dbuslistG" &> /dev/null; then
+      if ! echo "$l" | egrep "$dbuslistG" &> /dev/null; then
         srvc_object=$(echo $l | cut -d " " -f1)
         srvc_object_info=$(busctl status "$srvc_object" 2>/dev/null | egrep "^UID|^EUID|^OwnerUID" | tr '\n' ' ')
         if [ "$srvc_object_info" ]; then
@@ -3444,7 +3444,7 @@ if [ "$ptrace_scope" ] && [ "$ptrace_scope" -eq 0 ]; then
     echo "Current user has .sudo_as_admin_successful file, so he can execute with sudo" | sed {$E} "s,.*,${SED_RED},";
   fi
 
-  if ps -eo pid,command -u "$(id -u)" | grep -v "$PPID" | grep -v " " | grep -E '(ash|ksh|csh|dash|bash|zsh|tcsh|sh)$' &> /dev/null; then
+  if ps -eo pid,command -u "$(id -u)" | grep -v "$PPID" | grep -v " " | egrep '(ash|ksh|csh|dash|bash|zsh|tcsh|sh)$' &> /dev/null; then
     echo "Current user has other interactive shells running: " | sed {$E} "s,.*,${SED_RED},g";
     ps -eo pid,command -u "$(id -u)" | grep -v "$PPID" | grep -v " " | egrep '(ash|ksh|csh|dash|bash|zsh|tcsh|sh)$'
   fi
@@ -3837,7 +3837,7 @@ fi
 
 if [ "$PSTORAGE_KUBERNETES" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Kubernetes Files (limit 70)"
-    (env || set) | grep -Ei "kubernetes|kube" | grep -v "PSTORAGE_KUBERNETES|USEFUL_SOFTWARE" | sed {$E} "s,kubernetes|kube,${SED_RED},"
+    (env || set) | egrep -i "kubernetes|kube" | grep -v "PSTORAGE_KUBERNETES|USEFUL_SOFTWARE" | sed {$E} "s,kubernetes|kube,${SED_RED},"
     if ! [ "`echo \"$PSTORAGE_KUBERNETES\" | egrep \"kubeconfig$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "kubeconfig"; fi; fi; printf "%s" "$PSTORAGE_KUBERNETES" | egrep "kubeconfig$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,kubeconfig$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,server:|cluster:|namespace:|user:|exec:,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_KUBERNETES\" | egrep \"bootstrap-kubeconfig$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "bootstrap-kubeconfig"; fi; fi; printf "%s" "$PSTORAGE_KUBERNETES" | egrep "bootstrap-kubeconfig$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,bootstrap-kubeconfig$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,server:|cluster:|namespace:|user:|exec:,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_KUBERNETES\" | egrep \"kubelet-kubeconfig$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "kubelet-kubeconfig"; fi; fi; printf "%s" "$PSTORAGE_KUBERNETES" | egrep "kubelet-kubeconfig$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,kubelet-kubeconfig$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,server:|cluster:|namespace:|user:|exec:,${SED_RED},g"; done; echo "";
@@ -5091,7 +5091,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
     for capVB in $capsVB; do
       capname="$(echo $capVB | cut -d ':' -f 1)"
       capbins="$(echo $capVB | cut -d ':' -f 2)"
-      if [ "$(echo $cb | grep -Ei $capname)" ] && [ "$(echo $cb | egrep $capbins)" ]; then
+      if [ "$(echo $cb | egrep -i $capname)" ] && [ "$(echo $cb | egrep $capbins)" ]; then
         echo "$cb" | sed {$E} "s,.*,${SED_RED_YELLOW},"
         capsVB_vuln="1"
         break
@@ -5402,7 +5402,7 @@ print_2title "Modified interesting files in the last 5mins (limit 100)"
 find $ROOT_FOLDER -type f -mmin -5 ! -path "/proc/*" ! -path "/sys/*" ! -path "/run/*" ! -path "/dev/*" ! -path "/var/lib/*" ! -path "/private/var/*" 2>/dev/null | grep -v "/linpeas" | head -n 100 | sed {$E} "s,$Wfolders,${SED_RED},"
 echo ""
 
-if command -v logrotate >/dev/null && logrotate --version | head -n 1 | grep -Eq "[012]\.[0-9]+\.|3\.[0-9]\.|3\.1[0-7]\.|3\.18\.0"; then #3.18.0 and below
+if command -v logrotate >/dev/null && logrotate --version | head -n 1 | egrep "[012]\.[0-9]+\.|3\.[0-9]\.|3\.1[0-7]\.|3\.18\.0" &> /dev/null; then #3.18.0 and below
 print_2title "Writable log files (logrotten) (limit 50)"
   print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#logrotate-exploitation"
   logrotate --version 2>/dev/null || echo_not_found "logrotate"
@@ -5435,7 +5435,7 @@ fi
 
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Searching installed mail applications"
-  ls /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /etc 2>/dev/null | grep -Ewi "$mail_apps" | sort | uniq
+  ls /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /etc 2>/dev/null | egrep -wi "$mail_apps" | sort | uniq
   echo ""
 fi
 
@@ -5556,19 +5556,19 @@ fi
 
 if [ "$(history 2>/dev/null)" ] || [ "$DEBUG" ]; then
   print_2title "Searching passwords in history cmd"
-  history | grep -Ei "$pwd_inside_history" "$f" 2>/dev/null | sed {$E} "s,$pwd_inside_history,${SED_RED},"
+  history | egrep -i "$pwd_inside_history" "$f" 2>/dev/null | sed {$E} "s,$pwd_inside_history,${SED_RED},"
   echo ""
 fi
 
 if [ "$PSTORAGE_HISTORY" ] || [ "$DEBUG" ]; then
   print_2title "Searching passwords in history files"
-  printf "%s\n" "$PSTORAGE_HISTORY" | while read f; do grep -EiH "$pwd_inside_history" "$f" 2>/dev/null | sed {$E} "s,$pwd_inside_history,${SED_RED},"; done
+  printf "%s\n" "$PSTORAGE_HISTORY" | while read f; do egrep -iH "$pwd_inside_history" "$f" 2>/dev/null | sed {$E} "s,$pwd_inside_history,${SED_RED},"; done
   echo ""
 fi
 
 if [ "$PSTORAGE_PHP_FILES" ] || [ "$DEBUG" ]; then
   print_2title "Searching passwords in config PHP files"
-  printf "%s\n" "$PSTORAGE_PHP_FILES" | while read c; do grep -EiIH "(pwd|passwd|password|PASSWD|PASSWORD|dbuser|dbpass).*[=:].+|define ?\('(\w*passw|\w*user|\w*datab)" "$c" 2>/dev/null | egrep -v "function|password.*= ?\"\"|password.*= ?''" | sed '/^.\{150\}./d' | sort | uniq | sed {$E} "s,[pP][aA][sS][sS][wW]|[dD][bB]_[pP][aA][sS][sS],${SED_RED},g"; done
+  printf "%s\n" "$PSTORAGE_PHP_FILES" | while read c; do egrep -iIH "(pwd|passwd|password|PASSWD|PASSWORD|dbuser|dbpass).*[=:].+|define ?\('(\w*passw|\w*user|\w*datab)" "$c" 2>/dev/null | egrep -v "function|password.*= ?\"\"|password.*= ?''" | sed '/^.\{150\}./d' | sort | uniq | sed {$E} "s,[pP][aA][sS][sS][wW]|[dD][bB]_[pP][aA][sS][sS],${SED_RED},g"; done
   echo ""
 fi
 
@@ -5594,7 +5594,7 @@ fi
 
 if [ "$DEBUG" ] || ( ! [ "$FAST" ] && ! [ "$SUPERFAST" ] && ! [ "$SEARCH_IN_FOLDER" ] ); then
   print_2title "Searching emails inside logs (limit 70)"
-  (find /var/log/ /var/logs/ /private/var/log -type f -exec grep -I -R -E -o "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b" "{}" \;) 2>/dev/null | sort | uniq -c | sort -r -n | head -n 70 | sed {$E} "s,$knw_emails,${SED_GREEN},g"
+  (find /var/log/ /var/logs/ /private/var/log -type f -exec egrep -I -R "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b" "{}" \;) 2>/dev/null | sort | uniq -c | sort -r -n | head -n 70 | sed {$E} "s,$knw_emails,${SED_GREEN},g"
   echo ""
 fi
 

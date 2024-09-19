@@ -1116,6 +1116,67 @@ timersG22="ua-timer.timer"
 timersG23="ureadahead-stop.timer"
 
 dbuslistG="^:1\.[0-9\.]+|com.hp.hplip|com.intel.tss2.Tabrmd|com.redhat.ifcfgrh1|com.redhat.NewPrinterNotification|com.redhat.PrinterDriversInstaller|com.redhat.RHSM1|com.redhat.RHSM1.Facts|com.redhat.tuned|com.ubuntu.LanguageSelector|com.ubuntu.SoftwareProperties|com.ubuntu.SystemService|com.ubuntu.USBCreator|com.ubuntu.WhoopsiePreferences|io.netplan.Netplan|io.snapcraft.SnapdLoginService|fi.epitest.hostap.WPASupplicant|fi.w1.wpa_supplicant1|NAME|net.hadess.SwitcherooControl|org.blueman.Mechanism|org.bluez|org.debian.apt|org.fedoraproject.FirewallD1|org.fedoraproject.Setroubleshootd|org.fedoraproject.SetroubleshootFixit|org.fedoraproject.SetroubleshootPrivileged|org.freedesktop.Accounts|org.freedesktop.Avahi|org.freedesktop.bolt|org.freedesktop.ColorManager|org.freedesktop.DBus|org.freedesktop.DisplayManager|org.freedesktop.fwupd|org.freedesktop.GeoClue2|org.freedesktop.hostname1|org.freedesktop.import1|org.freedesktop.locale1|org.freedesktop.login1|org.freedesktop.machine1|org.freedesktop.ModemManager1|org.freedesktop.NetworkManager|org.freedesktop.network1|org.freedesktop.nm_dispatcher|org.freedesktop.nm_priv_helper|org.freedesktop.PackageKit|org.freedesktop.PolicyKit1|org.freedesktop.portable1|org.freedesktop.realmd|org.freedesktop.RealtimeKit1|org.freedesktop.SystemToolsBackends|org.freedesktop.SystemToolsBackends.[a-zA-Z0-9_]+|org.freedesktop.resolve1|org.freedesktop.systemd1|org.freedesktop.thermald|org.freedesktop.timedate1|org.freedesktop.timesync1|org.freedesktop.UDisks2|org.freedesktop.UPower|org.gnome.DisplayManager|org.opensuse.CupsPkHelper.Mechanism"
+dbuslistG1="^:1\.[0-9\.]+"
+dbuslistG2="com.hp.hplip"
+dbuslistG3="com.intel.tss2.Tabrmd"
+dbuslistG4="com.redhat.ifcfgrh1"
+dbuslistG5="com.redhat.NewPrinterNotification"
+dbuslistG6="com.redhat.PrinterDriversInstaller"
+dbuslistG7="com.redhat.RHSM1"
+dbuslistG8="com.redhat.RHSM1.Facts"
+dbuslistG9="com.redhat.tuned"
+dbuslistG10="com.ubuntu.LanguageSelector"
+dbuslistG11="com.ubuntu.SoftwareProperties"
+dbuslistG12="com.ubuntu.SystemService"
+dbuslistG13="com.ubuntu.USBCreator"
+dbuslistG14="com.ubuntu.WhoopsiePreferences"
+dbuslistG15="io.netplan.Netplan"
+dbuslistG16="io.snapcraft.SnapdLoginService"
+dbuslistG17="fi.epitest.hostap.WPASupplicant"
+dbuslistG18="fi.w1.wpa_supplicant1"
+dbuslistG19="NAME"
+dbuslistG20="net.hadess.SwitcherooControl"
+dbuslistG21="org.blueman.Mechanism"
+dbuslistG22="org.bluez"
+dbuslistG23="org.debian.apt"
+dbuslistG24="org.fedoraproject.FirewallD1"
+dbuslistG25="org.fedoraproject.Setroubleshootd"
+dbuslistG26="org.fedoraproject.SetroubleshootFixit"
+dbuslistG27="org.fedoraproject.SetroubleshootPrivileged"
+dbuslistG28="org.freedesktop.Accounts"
+dbuslistG29="org.freedesktop.Avahi"
+dbuslistG30="org.freedesktop.bolt"
+dbuslistG31="org.freedesktop.ColorManager"
+dbuslistG32="org.freedesktop.DBus"
+dbuslistG33="org.freedesktop.DisplayManager"
+dbuslistG34="org.freedesktop.fwupd"
+dbuslistG35="org.freedesktop.GeoClue2"
+dbuslistG36="org.freedesktop.hostname1"
+dbuslistG37="org.freedesktop.import1"
+dbuslistG38="org.freedesktop.locale1"
+dbuslistG39="org.freedesktop.login1"
+dbuslistG40="org.freedesktop.machine1"
+dbuslistG41="org.freedesktop.ModemManager1"
+dbuslistG42="org.freedesktop.NetworkManager"
+dbuslistG43="org.freedesktop.network1"
+dbuslistG44="org.freedesktop.nm_dispatcher"
+dbuslistG45="org.freedesktop.nm_priv_helper"
+dbuslistG46="org.freedesktop.PackageKit"
+dbuslistG47="org.freedesktop.PolicyKit1"
+dbuslistG48="org.freedesktop.portable1"
+dbuslistG49="org.freedesktop.realmd"
+dbuslistG50="org.freedesktop.RealtimeKit1"
+dbuslistG51="org.freedesktop.SystemToolsBackends"
+dbuslistG52="org.freedesktop.SystemToolsBackends.[a-zA-Z0-9_]+"
+dbuslistG53="org.freedesktop.resolve1"
+dbuslistG54="org.freedesktop.systemd1"
+dbuslistG55="org.freedesktop.thermald"
+dbuslistG56="org.freedesktop.timedate1"
+dbuslistG57="org.freedesktop.timesync1"
+dbuslistG58="org.freedesktop.UDisks2"
+dbuslistG59="org.freedesktop.UPower"
+dbuslistG60="org.gnome.DisplayManager"
+dbuslistG61="org.opensuse.CupsPkHelper.Mechanism"
 
 mygroups=$(groups 2>/dev/null | tr " " "|")
 
@@ -3308,7 +3369,7 @@ print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#ser
 printf "%s\n" "$PSTORAGE_SYSTEMD" | while read s; do
   if [ ! -O "" ] || [ "$SEARCH_IN_FOLDER" ]; then #Remove services that belongs to the current user or if firmware see everything
     if ! [ "$IAMROOT" ] && [ -w "$s" ] && [ -f "$s" ] && ! [ "$SEARCH_IN_FOLDER" ]; then
-      echo "$s" | sed {$E} "s,.*,${SED_RED_YELLOW},g"
+      echo "$s" | sed "s,.*,${SED_RED_YELLOW},g"
     fi
     servicebinpaths=$(egrep '^Exec.*?=[!@+-]*[a-zA-Z0-9_/\-]+' "$s" 2>/dev/null | cut -d '=' -f2 | sed 's,^[@\+!-]*,,') #Get invoked paths
     printf "%s\n" "$servicebinpaths" | while read sp; do
@@ -3320,14 +3381,14 @@ printf "%s\n" "$PSTORAGE_SYSTEMD" | while read s; do
     relpath2=$(egrep '^Exec.*=.*/bin/[a-zA-Z0-9_]*sh ' "$s" 2>/dev/null)
     if [ "$relpath1" ] || [ "$relpath2" ]; then
       if [ "$WRITABLESYSTEMDPATH" ]; then
-        echo "$s could be executing some relative path" | sed {$E} "s,.*,${SED_RED},";
+        echo "$s could be executing some relative path" | sed "s,.*,${SED_RED},";
       else
         echo "$s could be executing some relative path"
       fi
     fi
   fi
 done
-if [ ! "$WRITABLESYSTEMDPATH" ]; then echo "You can't write on systemd PATH" | sed {$E} "s,.*,${SED_GREEN},"; fi
+if [ ! "$WRITABLESYSTEMDPATH" ]; then echo "You can't write on systemd PATH" | sed "s,.*,${SED_GREEN},"; fi
 echo ""
 
 #TODO: .socket files in MACOS are folders
@@ -3418,7 +3479,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   dbuslist=$(busctl list 2>/dev/null)
   if [ "$dbuslist" ]; then
     busctl list | while read l; do
-      echo "$l" | sed {$E} "s,$dbuslistG,${SED_GREEN},g" | sed {$E} "s,$nosh_usrs,${SED_BLUE}," | sed "s,$rootcommon1,${SED_GREEN}," | sed "s,$rootcommon10,${SED_GREEN}," | sed "s,$rootcommon2,${SED_GREEN}," | sed "s,$rootcommon3,${SED_GREEN}," | sed "s,$rootcommon4,${SED_GREEN}," | sed "s,$rootcommon5,${SED_GREEN}," | sed "s,$rootcommon6,${SED_GREEN}," | sed "s,$rootcommon7,${SED_GREEN}," | sed "s,$rootcommon8,${SED_GREEN}," | sed "s,$rootcommon9,${SED_GREEN}," | sed "s,$knw_usrs1,${SED_GREEN}," | sed "s,$knw_usrs2,${SED_GREEN}," | sed "s,$knw_usrs3,${SED_GREEN}," | sed "s,$knw_usrs4,${SED_GREEN}," | sed "s,$knw_usrs5,${SED_GREEN}," | sed "s,$knw_usrs6,${SED_GREEN}," | sed "s,$knw_usrs7,${SED_GREEN}," | sed "s,$knw_usrs8,${SED_GREEN}," | sed "s,$knw_usrs9,${SED_GREEN}," | sed "s,$knw_usrs10,${SED_GREEN}," | sed "s,$knw_usrs11,${SED_GREEN}," | sed "s,$knw_usrs12,${SED_GREEN}," | sed "s,$knw_usrs13,${SED_GREEN}," | sed "s,$knw_usrs14,${SED_GREEN}," | sed "s,$knw_usrs15,${SED_GREEN}," | sed "s,$knw_usrs16,${SED_GREEN}," | sed "s,$knw_usrs17,${SED_GREEN}," | sed "s,$knw_usrs18,${SED_GREEN}," | sed "s,$knw_usrs19,${SED_GREEN}," | sed "s,$knw_usrs20,${SED_GREEN}," | sed "s,$knw_usrs21,${SED_GREEN}," | sed "s,$knw_usrs22,${SED_GREEN}," | sed "s,$knw_usrs23,${SED_GREEN}," | sed "s,$knw_usrs24,${SED_GREEN}," | sed "s,$knw_usrs25,${SED_GREEN}," | sed "s,$knw_usrs26,${SED_GREEN}," | sed "s,$knw_usrs27,${SED_GREEN}," | sed "s,$knw_usrs28,${SED_GREEN}," | sed "s,$knw_usrs29,${SED_GREEN}," | sed "s,$knw_usrs30,${SED_GREEN}," | sed "s,$knw_usrs31,${SED_GREEN}," | sed "s,$knw_usrs32,${SED_GREEN}," | sed "s,$knw_usrs33,${SED_GREEN}," | sed "s,$knw_usrs34,${SED_GREEN}," | sed "s,$knw_usrs35,${SED_GREEN}," | sed "s,$knw_usrs36,${SED_GREEN}," | sed "s,$knw_usrs36,${SED_GREEN}," | sed "s,$knw_usrs37,${SED_GREEN}," | sed "s,$knw_usrs38,${SED_GREEN}," | sed "s,$knw_usrs39,${SED_GREEN}," | sed "s,$knw_usrs40,${SED_GREEN}," | sed "s,$knw_usrs41,${SED_GREEN}," | sed "s,$knw_usrs42,${SED_GREEN}," | sed "s,$knw_usrs43,${SED_GREEN}," | sed "s,$knw_usrs44,${SED_GREEN}," | sed "s,$knw_usrs45,${SED_GREEN}," | sed "s,$knw_usrs46,${SED_GREEN}," | sed "s,$knw_usrs47,${SED_GREEN}," | sed "s,$knw_usrs48,${SED_GREEN}," | sed "s,$knw_usrs49,${SED_GREEN}," | sed "s,$knw_usrs50,${SED_GREEN}," | sed "s,$knw_usrs51,${SED_GREEN}," | sed "s,$knw_usrs52,${SED_GREEN}," | sed "s,$knw_usrs53,${SED_GREEN}," | sed "s,$knw_usrs54,${SED_GREEN}," | sed "s,$knw_usrs55,${SED_GREEN}," | sed "s,$knw_usrs56,${SED_GREEN}," | sed "s,$knw_usrs57,${SED_GREEN}," | sed "s,$knw_usrs58,${SED_GREEN}," | sed "s,$knw_usrs59,${SED_GREEN}," | sed "s,$knw_usrs60,${SED_GREEN}," | sed "s,$knw_usrs61,${SED_GREEN}," | sed "s,$knw_usrs62,${SED_GREEN}," | sed "s,$knw_usrs63,${SED_GREEN}," | sed "s,$knw_usrs64,${SED_GREEN}," | sed "s,$knw_usrs65,${SED_GREEN}," | sed "s,$knw_usrs66,${SED_GREEN}," | sed "s,$knw_usrs67,${SED_GREEN}," | sed "s,$knw_usrs68,${SED_GREEN}," | sed "s,$knw_usrs69,${SED_GREEN}," | sed "s,$knw_usrs70,${SED_GREEN}," | sed "s,$knw_usrs71,${SED_GREEN}," | sed "s,$knw_usrs72,${SED_GREEN}," | sed "s,$knw_usrs73,${SED_GREEN}," | sed "s,$knw_usrs74,${SED_GREEN}," | sed "s,$knw_usrs75,${SED_GREEN}," | sed "s,$knw_usrs76,${SED_GREEN}," | sed "s,$knw_usrs77,${SED_GREEN}," | sed "s,$knw_usrs78,${SED_GREEN}," | sed "s,$knw_usrs79,${SED_GREEN}," | sed "s,$knw_usrs80,${SED_GREEN}," | sed "s,$knw_usrs81,${SED_GREEN}," | sed "s,$knw_usrs82,${SED_GREEN}," | sed "s,$knw_usrs82,${SED_GREEN}," | sed "s,$knw_usrs83,${SED_GREEN}," | sed "s,$knw_usrs84,${SED_GREEN}," | sed "s,$knw_usrs85,${SED_GREEN}," | sed "s,$knw_usrs86,${SED_GREEN}," | sed "s,$knw_usrs87,${SED_GREEN}," | sed "s,$knw_usrs88,${SED_GREEN}," | sed "s,$knw_usrs89,${SED_GREEN}," | sed "s,$knw_usrs90,${SED_GREEN}," | sed "s,$knw_usrs91,${SED_GREEN}," | sed "s,$knw_usrs92,${SED_GREEN}," | sed "s,$knw_usrs93,${SED_GREEN}," | sed "s,$knw_usrs94,${SED_GREEN}," | sed "s,$knw_usrs95,${SED_GREEN}," | sed "s,$knw_usrs96,${SED_GREEN}," | sed "s,$knw_usrs97,${SED_GREEN}," | sed "s,$knw_usrs98,${SED_GREEN}," | sed "s,$knw_usrs99,${SED_GREEN}," | sed "s,$knw_usrs100,${SED_GREEN}," | sed "s,$knw_usrs101,${SED_GREEN}," | sed "s,$knw_usrs102,${SED_GREEN}," | sed "s,$knw_usrs103,${SED_GREEN}," | sed "s,$knw_usrs104,${SED_GREEN}," | sed "s,$knw_usrs105,${SED_GREEN}," | sed "s,$knw_usrs106,${SED_GREEN}," | sed "s,$knw_usrs107,${SED_GREEN}," | sed "s,$knw_usrs108,${SED_GREEN}," | sed "s,$knw_usrs109,${SED_GREEN}," | sed "s,$knw_usrs110,${SED_GREEN}," | sed "s,$knw_usrs111,${SED_GREEN}," | sed "s,$knw_usrs112,${SED_GREEN}," | sed "s,$knw_usrs113,${SED_GREEN}," | sed "s,$knw_usrs114,${SED_GREEN}," | sed "s,$knw_usrs115,${SED_GREEN}," | sed "s,$knw_usrs116,${SED_GREEN}," | sed "s,$knw_usrs117,${SED_GREEN}," | sed "s,$knw_usrs118,${SED_GREEN}," | sed "s,$knw_usrs119,${SED_GREEN}," | sed "s,$USER,${SED_LIGHT_MAGENTA}," | sed "s,root,${SED_RED},";
+      echo "$l" | sed "s,$dbuslistG1,${SED_GREEN},g" | sed "s,$dbuslistG2,${SED_GREEN},g" | sed "s,$dbuslistG3,${SED_GREEN},g" | sed "s,$dbuslistG4,${SED_GREEN},g" | sed "s,$dbuslistG5,${SED_GREEN},g" | sed "s,$dbuslistG6,${SED_GREEN},g" | sed "s,$dbuslistG7,${SED_GREEN},g" | sed "s,$dbuslistG8,${SED_GREEN},g" | sed "s,$dbuslistG9,${SED_GREEN},g" | sed "s,$dbuslistG10,${SED_GREEN},g" | sed "s,$dbuslistG11,${SED_GREEN},g" | sed "s,$dbuslistG12,${SED_GREEN},g" | sed "s,$dbuslistG13,${SED_GREEN},g" | sed "s,$dbuslistG14,${SED_GREEN},g" | sed "s,$dbuslistG15,${SED_GREEN},g" | sed "s,$dbuslistG16,${SED_GREEN},g" | sed "s,$dbuslistG17,${SED_GREEN},g" | sed "s,$dbuslistG18,${SED_GREEN},g" | sed "s,$dbuslistG19,${SED_GREEN},g" | sed "s,$dbuslistG20,${SED_GREEN},g" | sed "s,$dbuslistG21,${SED_GREEN},g" | sed "s,$dbuslistG22,${SED_GREEN},g" | sed "s,$dbuslistG23,${SED_GREEN},g" | sed "s,$dbuslistG24,${SED_GREEN},g" | sed "s,$dbuslistG25,${SED_GREEN},g" | sed "s,$dbuslistG26,${SED_GREEN},g" | sed "s,$dbuslistG27,${SED_GREEN},g" | sed "s,$dbuslistG28,${SED_GREEN},g" | sed "s,$dbuslistG29,${SED_GREEN},g" | sed "s,$dbuslistG30,${SED_GREEN},g" | sed "s,$dbuslistG31,${SED_GREEN},g" | sed "s,$dbuslistG32,${SED_GREEN},g" | sed "s,$dbuslistG33,${SED_GREEN},g" | sed "s,$dbuslistG34,${SED_GREEN},g" | sed "s,$dbuslistG35,${SED_GREEN},g" | sed "s,$dbuslistG36,${SED_GREEN},g" | sed "s,$dbuslistG37,${SED_GREEN},g" | sed "s,$dbuslistG38,${SED_GREEN},g" | sed "s,$dbuslistG39,${SED_GREEN},g" | sed "s,$dbuslistG40,${SED_GREEN},g" | sed "s,$dbuslistG41,${SED_GREEN},g" | sed "s,$dbuslistG42,${SED_GREEN},g" | sed "s,$dbuslistG43,${SED_GREEN},g" | sed "s,$dbuslistG44,${SED_GREEN},g" | sed "s,$dbuslistG45,${SED_GREEN},g" | sed "s,$dbuslistG46,${SED_GREEN},g" | sed "s,$dbuslistG47,${SED_GREEN},g" | sed "s,$dbuslistG48,${SED_GREEN},g" | sed "s,$dbuslistG49,${SED_GREEN},g" | sed "s,$dbuslistG50,${SED_GREEN},g" | sed "s,$dbuslistG51,${SED_GREEN},g" | sed "s,$dbuslistG52,${SED_GREEN},g" | sed "s,$dbuslistG53,${SED_GREEN},g" | sed "s,$dbuslistG54,${SED_GREEN},g" | sed "s,$dbuslistG55,${SED_GREEN},g" | sed "s,$dbuslistG56,${SED_GREEN},g" | sed "s,$dbuslistG57,${SED_GREEN},g" | sed "s,$dbuslistG58,${SED_GREEN},g" | sed "s,$dbuslistG59,${SED_GREEN},g" | sed "s,$dbuslistG60,${SED_GREEN},g" | sed "s,$dbuslistG61,${SED_GREEN},g" | sed {$E} "s,$nosh_usrs,${SED_BLUE}," | sed "s,$rootcommon1,${SED_GREEN}," | sed "s,$rootcommon10,${SED_GREEN}," | sed "s,$rootcommon2,${SED_GREEN}," | sed "s,$rootcommon3,${SED_GREEN}," | sed "s,$rootcommon4,${SED_GREEN}," | sed "s,$rootcommon5,${SED_GREEN}," | sed "s,$rootcommon6,${SED_GREEN}," | sed "s,$rootcommon7,${SED_GREEN}," | sed "s,$rootcommon8,${SED_GREEN}," | sed "s,$rootcommon9,${SED_GREEN}," | sed "s,$knw_usrs1,${SED_GREEN}," | sed "s,$knw_usrs2,${SED_GREEN}," | sed "s,$knw_usrs3,${SED_GREEN}," | sed "s,$knw_usrs4,${SED_GREEN}," | sed "s,$knw_usrs5,${SED_GREEN}," | sed "s,$knw_usrs6,${SED_GREEN}," | sed "s,$knw_usrs7,${SED_GREEN}," | sed "s,$knw_usrs8,${SED_GREEN}," | sed "s,$knw_usrs9,${SED_GREEN}," | sed "s,$knw_usrs10,${SED_GREEN}," | sed "s,$knw_usrs11,${SED_GREEN}," | sed "s,$knw_usrs12,${SED_GREEN}," | sed "s,$knw_usrs13,${SED_GREEN}," | sed "s,$knw_usrs14,${SED_GREEN}," | sed "s,$knw_usrs15,${SED_GREEN}," | sed "s,$knw_usrs16,${SED_GREEN}," | sed "s,$knw_usrs17,${SED_GREEN}," | sed "s,$knw_usrs18,${SED_GREEN}," | sed "s,$knw_usrs19,${SED_GREEN}," | sed "s,$knw_usrs20,${SED_GREEN}," | sed "s,$knw_usrs21,${SED_GREEN}," | sed "s,$knw_usrs22,${SED_GREEN}," | sed "s,$knw_usrs23,${SED_GREEN}," | sed "s,$knw_usrs24,${SED_GREEN}," | sed "s,$knw_usrs25,${SED_GREEN}," | sed "s,$knw_usrs26,${SED_GREEN}," | sed "s,$knw_usrs27,${SED_GREEN}," | sed "s,$knw_usrs28,${SED_GREEN}," | sed "s,$knw_usrs29,${SED_GREEN}," | sed "s,$knw_usrs30,${SED_GREEN}," | sed "s,$knw_usrs31,${SED_GREEN}," | sed "s,$knw_usrs32,${SED_GREEN}," | sed "s,$knw_usrs33,${SED_GREEN}," | sed "s,$knw_usrs34,${SED_GREEN}," | sed "s,$knw_usrs35,${SED_GREEN}," | sed "s,$knw_usrs36,${SED_GREEN}," | sed "s,$knw_usrs36,${SED_GREEN}," | sed "s,$knw_usrs37,${SED_GREEN}," | sed "s,$knw_usrs38,${SED_GREEN}," | sed "s,$knw_usrs39,${SED_GREEN}," | sed "s,$knw_usrs40,${SED_GREEN}," | sed "s,$knw_usrs41,${SED_GREEN}," | sed "s,$knw_usrs42,${SED_GREEN}," | sed "s,$knw_usrs43,${SED_GREEN}," | sed "s,$knw_usrs44,${SED_GREEN}," | sed "s,$knw_usrs45,${SED_GREEN}," | sed "s,$knw_usrs46,${SED_GREEN}," | sed "s,$knw_usrs47,${SED_GREEN}," | sed "s,$knw_usrs48,${SED_GREEN}," | sed "s,$knw_usrs49,${SED_GREEN}," | sed "s,$knw_usrs50,${SED_GREEN}," | sed "s,$knw_usrs51,${SED_GREEN}," | sed "s,$knw_usrs52,${SED_GREEN}," | sed "s,$knw_usrs53,${SED_GREEN}," | sed "s,$knw_usrs54,${SED_GREEN}," | sed "s,$knw_usrs55,${SED_GREEN}," | sed "s,$knw_usrs56,${SED_GREEN}," | sed "s,$knw_usrs57,${SED_GREEN}," | sed "s,$knw_usrs58,${SED_GREEN}," | sed "s,$knw_usrs59,${SED_GREEN}," | sed "s,$knw_usrs60,${SED_GREEN}," | sed "s,$knw_usrs61,${SED_GREEN}," | sed "s,$knw_usrs62,${SED_GREEN}," | sed "s,$knw_usrs63,${SED_GREEN}," | sed "s,$knw_usrs64,${SED_GREEN}," | sed "s,$knw_usrs65,${SED_GREEN}," | sed "s,$knw_usrs66,${SED_GREEN}," | sed "s,$knw_usrs67,${SED_GREEN}," | sed "s,$knw_usrs68,${SED_GREEN}," | sed "s,$knw_usrs69,${SED_GREEN}," | sed "s,$knw_usrs70,${SED_GREEN}," | sed "s,$knw_usrs71,${SED_GREEN}," | sed "s,$knw_usrs72,${SED_GREEN}," | sed "s,$knw_usrs73,${SED_GREEN}," | sed "s,$knw_usrs74,${SED_GREEN}," | sed "s,$knw_usrs75,${SED_GREEN}," | sed "s,$knw_usrs76,${SED_GREEN}," | sed "s,$knw_usrs77,${SED_GREEN}," | sed "s,$knw_usrs78,${SED_GREEN}," | sed "s,$knw_usrs79,${SED_GREEN}," | sed "s,$knw_usrs80,${SED_GREEN}," | sed "s,$knw_usrs81,${SED_GREEN}," | sed "s,$knw_usrs82,${SED_GREEN}," | sed "s,$knw_usrs82,${SED_GREEN}," | sed "s,$knw_usrs83,${SED_GREEN}," | sed "s,$knw_usrs84,${SED_GREEN}," | sed "s,$knw_usrs85,${SED_GREEN}," | sed "s,$knw_usrs86,${SED_GREEN}," | sed "s,$knw_usrs87,${SED_GREEN}," | sed "s,$knw_usrs88,${SED_GREEN}," | sed "s,$knw_usrs89,${SED_GREEN}," | sed "s,$knw_usrs90,${SED_GREEN}," | sed "s,$knw_usrs91,${SED_GREEN}," | sed "s,$knw_usrs92,${SED_GREEN}," | sed "s,$knw_usrs93,${SED_GREEN}," | sed "s,$knw_usrs94,${SED_GREEN}," | sed "s,$knw_usrs95,${SED_GREEN}," | sed "s,$knw_usrs96,${SED_GREEN}," | sed "s,$knw_usrs97,${SED_GREEN}," | sed "s,$knw_usrs98,${SED_GREEN}," | sed "s,$knw_usrs99,${SED_GREEN}," | sed "s,$knw_usrs100,${SED_GREEN}," | sed "s,$knw_usrs101,${SED_GREEN}," | sed "s,$knw_usrs102,${SED_GREEN}," | sed "s,$knw_usrs103,${SED_GREEN}," | sed "s,$knw_usrs104,${SED_GREEN}," | sed "s,$knw_usrs105,${SED_GREEN}," | sed "s,$knw_usrs106,${SED_GREEN}," | sed "s,$knw_usrs107,${SED_GREEN}," | sed "s,$knw_usrs108,${SED_GREEN}," | sed "s,$knw_usrs109,${SED_GREEN}," | sed "s,$knw_usrs110,${SED_GREEN}," | sed "s,$knw_usrs111,${SED_GREEN}," | sed "s,$knw_usrs112,${SED_GREEN}," | sed "s,$knw_usrs113,${SED_GREEN}," | sed "s,$knw_usrs114,${SED_GREEN}," | sed "s,$knw_usrs115,${SED_GREEN}," | sed "s,$knw_usrs116,${SED_GREEN}," | sed "s,$knw_usrs117,${SED_GREEN}," | sed "s,$knw_usrs118,${SED_GREEN}," | sed "s,$knw_usrs119,${SED_GREEN}," | sed "s,$USER,${SED_LIGHT_MAGENTA}," | sed "s,root,${SED_RED},";
       if ! echo "$l" | egrep "$dbuslistG" &> /dev/null; then
         srvc_object=$(echo $l | cut -d " " -f1)
         srvc_object_info=$(busctl status "$srvc_object" 2>/dev/null | egrep "^UID|^EUID|^OwnerUID" | tr '\n' ' ')

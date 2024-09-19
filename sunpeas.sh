@@ -3555,7 +3555,7 @@ fi
 
 print_2title "Active Ports"
 print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#open-ports"
-( (netstat -punta || ss -nltpu || netstat -anv) | grep -i listen) 2>/dev/null | sed "s,127.0.[0-9]+.[0-9]+,${SED_RED},g" | sed "s,:::,${SED_RED},g" | sed "s,::1:,${SED_RED},g" | sed "s,0\.0\.0\.0,${SED_RED},g"
+( (netstat -punta || ss -nltpu || netstat -f inet -P tcp -an || netstat -anv) | grep -i listen) 2>/dev/null | sed "s,127.0.[0-9]+.[0-9]+,${SED_RED},g" | sed "s,:::,${SED_RED},g" | sed "s,::1:,${SED_RED},g" | sed "s,0\.0\.0\.0,${SED_RED},g"
 echo ""
 
 if [ "$MACPEAS" ]; then
@@ -5792,9 +5792,9 @@ if [ "$PSTORAGE_DATABASE" ] || [ "$DEBUG" ]; then
   FILECMD="$(command -v file 2>/dev/null || echo -n '')"
   printf "%s\n" "$PSTORAGE_DATABASE" | while read f; do
     if [ "$FILECMD" ]; then
-      echo "Found "$(file "$f") | sed {$E} "s,\.db|\.sql|\.sqlite|\.sqlite3,${SED_RED},g";
+      echo "Found "$(file "$f") | sed "s,\.db,${SED_RED},g" | sed "s,\.sql,${SED_RED},g" | sed "s,\.sqlite,${SED_RED},g" | sed "s,\.sqlite3,${SED_RED},g";
     else
-      echo "Found $f" | sed {$E} "s,\.db|\.sql|\.sqlite|\.sqlite3,${SED_RED},g";
+      echo "Found $f" | sed "s,\.db,${SED_RED},g" | sed "s,\.sql,${SED_RED},g" | sed "s,\.sqlite,${SED_RED},g" | sed "s,\.sqlite3,${SED_RED},g";
     fi
   done
   SQLITEPYTHON=""

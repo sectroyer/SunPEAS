@@ -4194,7 +4194,7 @@ if [ "$PSTORAGE_CLOUD_CREDENTIALS" ] || [ "$DEBUG" ]; then
     if ! [ "`echo \"$PSTORAGE_CLOUD_CREDENTIALS\" | egrep \"\.boto$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".boto"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_CREDENTIALS" | egrep "\.boto$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.boto$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_CLOUD_CREDENTIALS\" | egrep \"\.credentials\.json$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".credentials.json"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_CREDENTIALS" | egrep "\.credentials\.json$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.credentials\.json$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_CLOUD_CREDENTIALS\" | egrep \"firebase-tools\.json$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "firebase-tools.json"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_CREDENTIALS" | egrep "firebase-tools\.json$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,firebase-tools\.json$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,id_token.*|access_token.*|refresh_token.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_CLOUD_CREDENTIALS\" | egrep \"access_tokens\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "access_tokens.db"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_CREDENTIALS" | egrep "access_tokens\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,access_tokens\.db$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CLOUD_CREDENTIALS\" | egrep \"access_tokens\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "access_tokens.db"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_CREDENTIALS" | egrep "access_tokens\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,access_tokens\.db$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_CLOUD_CREDENTIALS\" | egrep \"access_tokens\.json$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "access_tokens.json"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_CREDENTIALS" | egrep "access_tokens\.json$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,access_tokens\.json$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_CLOUD_CREDENTIALS\" | egrep \"accessTokens\.json$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "accessTokens.json"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_CREDENTIALS" | egrep "accessTokens\.json$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,accessTokens\.json$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_CLOUD_CREDENTIALS\" | egrep \"gcloud$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "gcloud"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_CREDENTIALS" | egrep "gcloud$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,gcloud$,${SED_RED},"; find "$f" -name "*" | while read ff; do ls -ld "$ff" | sed "s,.*,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "b'authorization'.*" | sed "s,b'authorization'.*,${SED_RED},g"; done; echo "";done; echo "";
@@ -4250,448 +4250,448 @@ if [ "$PSTORAGE_REDIS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Redis Files (limit 70)"
     ( redis-server --version || echo_not_found "redis-server") 2>/dev/null
     if [ "`redis-cli INFO 2>/dev/null`" ] && ! [ "`redis-cli INFO 2>/dev/null | grep -i NOAUTH`" ]; then echo "Redis isn't password protected" | sed "s,.*,${SED_RED},"; fi
-    if ! [ "`echo \"$PSTORAGE_REDIS\" | egrep \"redis\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "redis.conf"; fi; fi; printf "%s" "$PSTORAGE_REDIS" | egrep "redis\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,redis\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,masterauth.*|requirepass.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_REDIS\" | egrep \"redis\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "redis.conf"; fi; fi; printf "%s" "$PSTORAGE_REDIS" | egrep "redis\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,redis\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,masterauth.*|requirepass.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_MOSQUITTO" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Mosquitto Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_MOSQUITTO\" | egrep \"mosquitto\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "mosquitto.conf"; fi; fi; printf "%s" "$PSTORAGE_MOSQUITTO" | egrep "mosquitto\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,mosquitto\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,password_file.*|psk_file.*|allow_anonymous.*true|auth,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_MOSQUITTO\" | egrep \"mosquitto\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "mosquitto.conf"; fi; fi; printf "%s" "$PSTORAGE_MOSQUITTO" | egrep "mosquitto\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,mosquitto\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,password_file.*|psk_file.*|allow_anonymous.*true|auth,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_NEO4J" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Neo4j Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_NEO4J\" | egrep \"neo4j$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "neo4j"; fi; fi; printf "%s" "$PSTORAGE_NEO4J" | egrep "neo4j$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,neo4j$,${SED_RED},"; find "$f" -name "auth" | while read ff; do ls -ld "$ff" | sed {$E} "s,auth,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_NEO4J\" | egrep \"neo4j$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "neo4j"; fi; fi; printf "%s" "$PSTORAGE_NEO4J" | egrep "neo4j$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,neo4j$,${SED_RED},"; find "$f" -name "auth" | while read ff; do ls -ld "$ff" | sed "s,auth,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_CLOUD_INIT" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Cloud Init Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_CLOUD_INIT\" | egrep \"cloud\.cfg$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "cloud.cfg"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_INIT" | egrep "cloud\.cfg$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,cloud\.cfg$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "consumer_key|token_key|token_secret|metadata_url|password:|passwd:|PRIVATE KEY|PRIVATE KEY|encrypted_data_bag_secret|_proxy" | egrep -v "\W+\#|^#" | sed {$E} "s,consumer_key|token_key|token_secret|metadata_url|password:|passwd:|PRIVATE KEY|PRIVATE KEY|encrypted_data_bag_secret|_proxy,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CLOUD_INIT\" | egrep \"cloud\.cfg$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "cloud.cfg"; fi; fi; printf "%s" "$PSTORAGE_CLOUD_INIT" | egrep "cloud\.cfg$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,cloud\.cfg$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "consumer_key|token_key|token_secret|metadata_url|password:|passwd:|PRIVATE KEY|PRIVATE KEY|encrypted_data_bag_secret|_proxy" | egrep -v "\W+\#|^#" | sed {$E} "s,consumer_key|token_key|token_secret|metadata_url|password:|passwd:|PRIVATE KEY|PRIVATE KEY|encrypted_data_bag_secret|_proxy,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_ERLANG" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Erlang Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_ERLANG\" | egrep \"\.erlang\.cookie$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".erlang.cookie"; fi; fi; printf "%s" "$PSTORAGE_ERLANG" | egrep "\.erlang\.cookie$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.erlang\.cookie$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ERLANG\" | egrep \"\.erlang\.cookie$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".erlang.cookie"; fi; fi; printf "%s" "$PSTORAGE_ERLANG" | egrep "\.erlang\.cookie$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.erlang\.cookie$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_SIP" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing SIP Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_SIP\" | egrep \"sip\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sip.conf"; fi; fi; printf "%s" "$PSTORAGE_SIP" | egrep "sip\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sip\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,secret.*|allowguest.*=.*true,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SIP\" | egrep \"amportal\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "amportal.conf"; fi; fi; printf "%s" "$PSTORAGE_SIP" | egrep "amportal\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,amportal\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*PASS.*=.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SIP\" | egrep \"FreePBX\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "FreePBX.conf"; fi; fi; printf "%s" "$PSTORAGE_SIP" | egrep "FreePBX\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,FreePBX\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep ".*AMPDB.*=.*" | sed {$E} "s,.*AMPDB.*=.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SIP\" | egrep \"Elastix\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Elastix.conf"; fi; fi; printf "%s" "$PSTORAGE_SIP" | egrep "Elastix\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,Elastix\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*pwd.*=.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SIP\" | egrep \"sip\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sip.conf"; fi; fi; printf "%s" "$PSTORAGE_SIP" | egrep "sip\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed  "s,sip\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,secret.*|allowguest.*=.*true,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SIP\" | egrep \"amportal\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "amportal.conf"; fi; fi; printf "%s" "$PSTORAGE_SIP" | egrep "amportal\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,amportal\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*PASS.*=.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SIP\" | egrep \"FreePBX\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "FreePBX.conf"; fi; fi; printf "%s" "$PSTORAGE_SIP" | egrep "FreePBX\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,FreePBX\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep ".*AMPDB.*=.*" | sed  "s,.*AMPDB.*=.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SIP\" | egrep \"Elastix\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Elastix.conf"; fi; fi; printf "%s" "$PSTORAGE_SIP" | egrep "Elastix\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,Elastix\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*pwd.*=.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_GMV_AUTH" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing GMV Auth Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_GMV_AUTH\" | egrep \"gvm-tools\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "gvm-tools.conf"; fi; fi; printf "%s" "$PSTORAGE_GMV_AUTH" | egrep "gvm-tools\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,gvm-tools\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|password.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_GMV_AUTH\" | egrep \"gvm-tools\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "gvm-tools.conf"; fi; fi; printf "%s" "$PSTORAGE_GMV_AUTH" | egrep "gvm-tools\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,gvm-tools\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|password.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_IPSEC" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing IPSec Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_IPSEC\" | egrep \"ipsec\.secrets$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ipsec.secrets"; fi; fi; printf "%s" "$PSTORAGE_IPSEC" | egrep "ipsec\.secrets$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ipsec\.secrets$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*PSK.*|.*RSA.*|.*EAP =.*|.*XAUTH.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_IPSEC\" | egrep \"ipsec\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ipsec.conf"; fi; fi; printf "%s" "$PSTORAGE_IPSEC" | egrep "ipsec\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ipsec\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*PSK.*|.*RSA.*|.*EAP =.*|.*XAUTH.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_IPSEC\" | egrep \"ipsec\.secrets$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ipsec.secrets"; fi; fi; printf "%s" "$PSTORAGE_IPSEC" | egrep "ipsec\.secrets$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ipsec\.secrets$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*PSK.*|.*RSA.*|.*EAP =.*|.*XAUTH.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_IPSEC\" | egrep \"ipsec\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ipsec.conf"; fi; fi; printf "%s" "$PSTORAGE_IPSEC" | egrep "ipsec\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ipsec\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*PSK.*|.*RSA.*|.*EAP =.*|.*XAUTH.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_IRSSI" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing IRSSI Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_IRSSI\" | egrep \"\.irssi$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".irssi"; fi; fi; printf "%s" "$PSTORAGE_IRSSI" | egrep "\.irssi$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.irssi$,${SED_RED},"; find "$f" -name "config" | while read ff; do ls -ld "$ff" | sed {$E} "s,config,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,password.*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_IRSSI\" | egrep \"\.irssi$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".irssi"; fi; fi; printf "%s" "$PSTORAGE_IRSSI" | egrep "\.irssi$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.irssi$,${SED_RED},"; find "$f" -name "config" | while read ff; do ls -ld "$ff" | sed "s,config,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed "s,password.*,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_KEYRING" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Keyring Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_KEYRING\" | egrep \"keyrings$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "keyrings"; fi; fi; printf "%s" "$PSTORAGE_KEYRING" | egrep "keyrings$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,keyrings$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_KEYRING\" | egrep \"\.keyring$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.keyring"; fi; fi; printf "%s" "$PSTORAGE_KEYRING" | egrep "\.keyring$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.keyring$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_KEYRING\" | egrep \"\.keystore$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.keystore"; fi; fi; printf "%s" "$PSTORAGE_KEYRING" | egrep "\.keystore$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.keystore$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_KEYRING\" | egrep \"\.jks$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.jks"; fi; fi; printf "%s" "$PSTORAGE_KEYRING" | egrep "\.jks$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.jks$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_KEYRING\" | egrep \"keyrings$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "keyrings"; fi; fi; printf "%s" "$PSTORAGE_KEYRING" | egrep "keyrings$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,keyrings$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_KEYRING\" | egrep \"\.keyring$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.keyring"; fi; fi; printf "%s" "$PSTORAGE_KEYRING" | egrep "\.keyring$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.keyring$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_KEYRING\" | egrep \"\.keystore$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.keystore"; fi; fi; printf "%s" "$PSTORAGE_KEYRING" | egrep "\.keystore$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.keystore$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_KEYRING\" | egrep \"\.jks$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.jks"; fi; fi; printf "%s" "$PSTORAGE_KEYRING" | egrep "\.jks$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.jks$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_VIRTUAL_DISKS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Virtual Disks Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_VIRTUAL_DISKS\" | egrep \"\.vhd$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.vhd"; fi; fi; printf "%s" "$PSTORAGE_VIRTUAL_DISKS" | egrep "\.vhd$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.vhd$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_VIRTUAL_DISKS\" | egrep \"\.vhdx$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.vhdx"; fi; fi; printf "%s" "$PSTORAGE_VIRTUAL_DISKS" | egrep "\.vhdx$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.vhdx$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_VIRTUAL_DISKS\" | egrep \"\.vmdk$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.vmdk"; fi; fi; printf "%s" "$PSTORAGE_VIRTUAL_DISKS" | egrep "\.vmdk$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.vmdk$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_VIRTUAL_DISKS\" | egrep \"\.vhd$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.vhd"; fi; fi; printf "%s" "$PSTORAGE_VIRTUAL_DISKS" | egrep "\.vhd$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.vhd$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_VIRTUAL_DISKS\" | egrep \"\.vhdx$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.vhdx"; fi; fi; printf "%s" "$PSTORAGE_VIRTUAL_DISKS" | egrep "\.vhdx$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.vhdx$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_VIRTUAL_DISKS\" | egrep \"\.vmdk$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.vmdk"; fi; fi; printf "%s" "$PSTORAGE_VIRTUAL_DISKS" | egrep "\.vmdk$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.vmdk$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_FILEZILLA" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Filezilla Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_FILEZILLA\" | egrep \"filezilla$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "filezilla"; fi; fi; printf "%s" "$PSTORAGE_FILEZILLA" | egrep "filezilla$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,filezilla$,${SED_RED},"; find "$f" -name "sitemanager.xml" | while read ff; do ls -ld "$ff" | sed {$E} "s,sitemanager.xml,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "^;" | sed {$E} "s,Host.*|Port.*|Protocol.*|User.*|Pass.*,${SED_RED},g"; done; echo "";done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FILEZILLA\" | egrep \"filezilla\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "filezilla.xml"; fi; fi; printf "%s" "$PSTORAGE_FILEZILLA" | egrep "filezilla\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,filezilla\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FILEZILLA\" | egrep \"recentservers\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "recentservers.xml"; fi; fi; printf "%s" "$PSTORAGE_FILEZILLA" | egrep "recentservers\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,recentservers\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FILEZILLA\" | egrep \"filezilla$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "filezilla"; fi; fi; printf "%s" "$PSTORAGE_FILEZILLA" | egrep "filezilla$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,filezilla$,${SED_RED},"; find "$f" -name "sitemanager.xml" | while read ff; do ls -ld "$ff" | sed "s,sitemanager.xml,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "^;" | sed {$E} "s,Host.*|Port.*|Protocol.*|User.*|Pass.*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FILEZILLA\" | egrep \"filezilla\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "filezilla.xml"; fi; fi; printf "%s" "$PSTORAGE_FILEZILLA" | egrep "filezilla\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,filezilla\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FILEZILLA\" | egrep \"recentservers\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "recentservers.xml"; fi; fi; printf "%s" "$PSTORAGE_FILEZILLA" | egrep "recentservers\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,recentservers\.xml$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_BACKUP_MANAGER" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Backup Manager Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_BACKUP_MANAGER\" | egrep \"storage\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "storage.php"; fi; fi; printf "%s" "$PSTORAGE_BACKUP_MANAGER" | egrep "storage\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,storage\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "'pass'|'password'|'user'|'database'|'host'" | sed {$E} "s,password|pass|user|database|host,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_BACKUP_MANAGER\" | egrep \"database\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "database.php"; fi; fi; printf "%s" "$PSTORAGE_BACKUP_MANAGER" | egrep "database\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,database\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "'pass'|'password'|'user'|'database'|'host'" | sed {$E} "s,password|pass|user|database|host,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_BACKUP_MANAGER\" | egrep \"storage\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "storage.php"; fi; fi; printf "%s" "$PSTORAGE_BACKUP_MANAGER" | egrep "storage\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,storage\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "'pass'|'password'|'user'|'database'|'host'" | sed {$E} "s,password|pass|user|database|host,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_BACKUP_MANAGER\" | egrep \"database\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "database.php"; fi; fi; printf "%s" "$PSTORAGE_BACKUP_MANAGER" | egrep "database\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,database\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "'pass'|'password'|'user'|'database'|'host'" | sed {$E} "s,password|pass|user|database|host,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_GIT" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Git Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_GIT\" | egrep \"\.git-credentials$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".git-credentials"; fi; fi; printf "%s" "$PSTORAGE_GIT" | egrep "\.git-credentials$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.git-credentials$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_GIT\" | egrep \"\.git-credentials$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".git-credentials"; fi; fi; printf "%s" "$PSTORAGE_GIT" | egrep "\.git-credentials$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.git-credentials$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_ATLANTIS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Atlantis Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_ATLANTIS\" | egrep \"atlantis\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "atlantis.db"; fi; fi; printf "%s" "$PSTORAGE_ATLANTIS" | egrep "atlantis\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,atlantis\.db$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,CloneURL|Username,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ATLANTIS\" | egrep \"atlantis\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "atlantis.db"; fi; fi; printf "%s" "$PSTORAGE_ATLANTIS" | egrep "atlantis\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,atlantis\.db$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,CloneURL|Username,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_CACHE_VI" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Cache Vi Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_CACHE_VI\" | egrep \"\.swp$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.swp"; fi; fi; printf "%s" "$PSTORAGE_CACHE_VI" | egrep "\.swp$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.swp$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_CACHE_VI\" | egrep \"\.viminfo$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.viminfo"; fi; fi; printf "%s" "$PSTORAGE_CACHE_VI" | egrep "\.viminfo$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.viminfo$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CACHE_VI\" | egrep \"\.swp$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.swp"; fi; fi; printf "%s" "$PSTORAGE_CACHE_VI" | egrep "\.swp$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.swp$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CACHE_VI\" | egrep \"\.viminfo$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.viminfo"; fi; fi; printf "%s" "$PSTORAGE_CACHE_VI" | egrep "\.viminfo$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.viminfo$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_FIREFOX" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Firefox Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_FIREFOX\" | egrep \"\.mozilla$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".mozilla"; fi; fi; printf "%s" "$PSTORAGE_FIREFOX" | egrep "\.mozilla$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.mozilla$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FIREFOX\" | egrep \"Firefox$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Firefox"; fi; fi; printf "%s" "$PSTORAGE_FIREFOX" | egrep "Firefox$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,Firefox$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FIREFOX\" | egrep \"\.mozilla$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".mozilla"; fi; fi; printf "%s" "$PSTORAGE_FIREFOX" | egrep "\.mozilla$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.mozilla$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FIREFOX\" | egrep \"Firefox$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Firefox"; fi; fi; printf "%s" "$PSTORAGE_FIREFOX" | egrep "Firefox$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,Firefox$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_CHROME" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Chrome Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_CHROME\" | egrep \"google-chrome$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "google-chrome"; fi; fi; printf "%s" "$PSTORAGE_CHROME" | egrep "google-chrome$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,google-chrome$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_CHROME\" | egrep \"Chrome$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Chrome"; fi; fi; printf "%s" "$PSTORAGE_CHROME" | egrep "Chrome$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,Chrome$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CHROME\" | egrep \"google-chrome$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "google-chrome"; fi; fi; printf "%s" "$PSTORAGE_CHROME" | egrep "google-chrome$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,google-chrome$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CHROME\" | egrep \"Chrome$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Chrome"; fi; fi; printf "%s" "$PSTORAGE_CHROME" | egrep "Chrome$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,Chrome$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_OPERA" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Opera Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_OPERA\" | egrep \"com\.operasoftware\.Opera$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "com.operasoftware.Opera"; fi; fi; printf "%s" "$PSTORAGE_OPERA" | egrep "com\.operasoftware\.Opera$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,com\.operasoftware\.Opera$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OPERA\" | egrep \"com\.operasoftware\.Opera$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "com.operasoftware.Opera"; fi; fi; printf "%s" "$PSTORAGE_OPERA" | egrep "com\.operasoftware\.Opera$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,com\.operasoftware\.Opera$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_SAFARI" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Safari Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_SAFARI\" | egrep \"Safari$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Safari"; fi; fi; printf "%s" "$PSTORAGE_SAFARI" | egrep "Safari$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,Safari$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SAFARI\" | egrep \"Safari$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Safari"; fi; fi; printf "%s" "$PSTORAGE_SAFARI" | egrep "Safari$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,Safari$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_AUTOLOGIN" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Autologin Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_AUTOLOGIN\" | egrep \"autologin$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "autologin"; fi; fi; printf "%s" "$PSTORAGE_AUTOLOGIN" | egrep "autologin$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,autologin$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,passwd,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_AUTOLOGIN\" | egrep \"autologin\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "autologin.conf"; fi; fi; printf "%s" "$PSTORAGE_AUTOLOGIN" | egrep "autologin\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,autologin\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,passwd,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_AUTOLOGIN\" | egrep \"autologin$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "autologin"; fi; fi; printf "%s" "$PSTORAGE_AUTOLOGIN" | egrep "autologin$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,autologin$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,passwd,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_AUTOLOGIN\" | egrep \"autologin\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "autologin.conf"; fi; fi; printf "%s" "$PSTORAGE_AUTOLOGIN" | egrep "autologin\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,autologin\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,passwd,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_FASTCGI" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing FastCGI Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_FASTCGI\" | egrep \"fastcgi_params$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "fastcgi_params"; fi; fi; printf "%s" "$PSTORAGE_FASTCGI" | egrep "fastcgi_params$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,fastcgi_params$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "DB_NAME|DB_USER|DB_PASS" | sed {$E} "s,DB_NAME|DB_USER|DB_PASS,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FASTCGI\" | egrep \"fastcgi_params$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "fastcgi_params"; fi; fi; printf "%s" "$PSTORAGE_FASTCGI" | egrep "fastcgi_params$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,fastcgi_params$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "DB_NAME|DB_USER|DB_PASS" | sed {$E} "s,DB_NAME|DB_USER|DB_PASS,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_FAT_FREE" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Fat-Free Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_FAT_FREE\" | egrep \"fat\.config$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "fat.config"; fi; fi; printf "%s" "$PSTORAGE_FAT_FREE" | egrep "fat\.config$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,fat\.config$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "password.*" | sed {$E} "s,password.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FAT_FREE\" | egrep \"fat\.config$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "fat.config"; fi; fi; printf "%s" "$PSTORAGE_FAT_FREE" | egrep "fat\.config$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,fat\.config$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "password.*" | sed "s,password.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_SHODAN" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Shodan Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_SHODAN\" | egrep \"api_key$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "api_key"; fi; fi; printf "%s" "$PSTORAGE_SHODAN" | egrep "api_key$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,api_key$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SHODAN\" | egrep \"api_key$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "api_key"; fi; fi; printf "%s" "$PSTORAGE_SHODAN" | egrep "api_key$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,api_key$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_CONCOURSE" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Concourse Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_CONCOURSE\" | egrep \"\.flyrc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".flyrc"; fi; fi; printf "%s" "$PSTORAGE_CONCOURSE" | egrep "\.flyrc$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.flyrc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,token:*|value:.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_CONCOURSE\" | egrep \"concourse-auth$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "concourse-auth"; fi; fi; printf "%s" "$PSTORAGE_CONCOURSE" | egrep "concourse-auth$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,concourse-auth$,${SED_RED},"; find "$f" -name "host-key" | while read ff; do ls -ld "$ff" | sed {$E} "s,host-key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,RSA PRIVATE KEY,${SED_RED},g"; done; echo "";find "$f" -name "local-users" | while read ff; do ls -ld "$ff" | sed {$E} "s,local-users,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";find "$f" -name "session-signing-key" | while read ff; do ls -ld "$ff" | sed {$E} "s,session-signing-key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";find "$f" -name "worker-key-pub" | while read ff; do ls -ld "$ff" | sed {$E} "s,worker-key-pub,${SED_RED},"; done; echo "";done; echo "";
-    if ! [ "`echo \"$PSTORAGE_CONCOURSE\" | egrep \"concourse-keys$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "concourse-keys"; fi; fi; printf "%s" "$PSTORAGE_CONCOURSE" | egrep "concourse-keys$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,concourse-keys$,${SED_RED},"; find "$f" -name "host_key" | while read ff; do ls -ld "$ff" | sed {$E} "s,host_key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,RSA PRIVATE KEY,${SED_RED},g"; done; echo "";find "$f" -name "session_signing_key" | while read ff; do ls -ld "$ff" | sed {$E} "s,session_signing_key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";find "$f" -name "worker_key.pub" | while read ff; do ls -ld "$ff" | sed {$E} "s,worker_key.pub,${SED_RED},"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CONCOURSE\" | egrep \"\.flyrc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".flyrc"; fi; fi; printf "%s" "$PSTORAGE_CONCOURSE" | egrep "\.flyrc$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.flyrc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,token:*|value:.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CONCOURSE\" | egrep \"concourse-auth$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "concourse-auth"; fi; fi; printf "%s" "$PSTORAGE_CONCOURSE" | egrep "concourse-auth$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,concourse-auth$,${SED_RED},"; find "$f" -name "host-key" | while read ff; do ls -ld "$ff" | sed "s,host-key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed "s,RSA PRIVATE KEY,${SED_RED},g"; done; echo "";find "$f" -name "local-users" | while read ff; do ls -ld "$ff" | sed "s,local-users,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";find "$f" -name "session-signing-key" | while read ff; do ls -ld "$ff" | sed "s,session-signing-key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";find "$f" -name "worker-key-pub" | while read ff; do ls -ld "$ff" | sed "s,worker-key-pub,${SED_RED},"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CONCOURSE\" | egrep \"concourse-keys$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "concourse-keys"; fi; fi; printf "%s" "$PSTORAGE_CONCOURSE" | egrep "concourse-keys$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,concourse-keys$,${SED_RED},"; find "$f" -name "host_key" | while read ff; do ls -ld "$ff" | sed "s,host_key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed "s,RSA PRIVATE KEY,${SED_RED},g"; done; echo "";find "$f" -name "session_signing_key" | while read ff; do ls -ld "$ff" | sed "s,session_signing_key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";find "$f" -name "worker_key.pub" | while read ff; do ls -ld "$ff" | sed "s,worker_key.pub,${SED_RED},"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_BOTO" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Boto Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_BOTO\" | egrep \"\.boto$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".boto"; fi; fi; printf "%s" "$PSTORAGE_BOTO" | egrep "\.boto$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.boto$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_BOTO\" | egrep \"\.boto$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".boto"; fi; fi; printf "%s" "$PSTORAGE_BOTO" | egrep "\.boto$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.boto$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_SNMP" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing SNMP Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_SNMP\" | egrep \"snmpd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "snmpd.conf"; fi; fi; printf "%s" "$PSTORAGE_SNMP" | egrep "snmpd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,snmpd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "rocommunity|rwcommunity|extend.*|^createUser" | sed {$E} "s,rocommunity|rwcommunity|extend.*|^createUser,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SNMP\" | egrep \"snmpd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "snmpd.conf"; fi; fi; printf "%s" "$PSTORAGE_SNMP" | egrep "snmpd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,snmpd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "rocommunity|rwcommunity|extend.*|^createUser" | sed {$E} "s,rocommunity|rwcommunity|extend.*|^createUser,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_PYPIRC" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Pypirc Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_PYPIRC\" | egrep \"\.pypirc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".pypirc"; fi; fi; printf "%s" "$PSTORAGE_PYPIRC" | egrep "\.pypirc$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.pypirc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username|password,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_PYPIRC\" | egrep \"\.pypirc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".pypirc"; fi; fi; printf "%s" "$PSTORAGE_PYPIRC" | egrep "\.pypirc$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.pypirc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username|password,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_POSTFIX" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Postfix Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_POSTFIX\" | egrep \"postfix$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "postfix"; fi; fi; printf "%s" "$PSTORAGE_POSTFIX" | egrep "postfix$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,postfix$,${SED_RED},"; find "$f" -name "master.cf" | while read ff; do ls -ld "$ff" | sed {$E} "s,master.cf,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "user=" | sed {$E} "s,user=|argv=,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_POSTFIX\" | egrep \"postfix$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "postfix"; fi; fi; printf "%s" "$PSTORAGE_POSTFIX" | egrep "postfix$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,postfix$,${SED_RED},"; find "$f" -name "master.cf" | while read ff; do ls -ld "$ff" | sed "s,master.cf,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "user=" | sed {$E} "s,user=|argv=,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_CLOUDFLARE" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing CloudFlare Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_CLOUDFLARE\" | egrep \"\.cloudflared$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".cloudflared"; fi; fi; printf "%s" "$PSTORAGE_CLOUDFLARE" | egrep "\.cloudflared$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.cloudflared$,${SED_RED},"; ls -lRA "$f";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CLOUDFLARE\" | egrep \"\.cloudflared$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".cloudflared"; fi; fi; printf "%s" "$PSTORAGE_CLOUDFLARE" | egrep "\.cloudflared$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.cloudflared$,${SED_RED},"; ls -lRA "$f";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_HTTP_CONF" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Http conf Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_HTTP_CONF\" | egrep \"httpd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "httpd.conf"; fi; fi; printf "%s" "$PSTORAGE_HTTP_CONF" | egrep "httpd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,httpd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "htaccess.*|htpasswd.*" | egrep -v "\W+\#|^#" | sed {$E} "s,htaccess.*|htpasswd.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_HTTP_CONF\" | egrep \"httpd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "httpd.conf"; fi; fi; printf "%s" "$PSTORAGE_HTTP_CONF" | egrep "httpd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,httpd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "htaccess.*|htpasswd.*" | egrep -v "\W+\#|^#" | sed {$E} "s,htaccess.*|htpasswd.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_HTPASSWD" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Htpasswd Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_HTPASSWD\" | egrep \"\.htpasswd$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".htpasswd"; fi; fi; printf "%s" "$PSTORAGE_HTPASSWD" | egrep "\.htpasswd$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.htpasswd$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_HTPASSWD\" | egrep \"\.htpasswd$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".htpasswd"; fi; fi; printf "%s" "$PSTORAGE_HTPASSWD" | egrep "\.htpasswd$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.htpasswd$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed "s,.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_LDAPRC" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Ldaprc Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_LDAPRC\" | egrep \"\.ldaprc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".ldaprc"; fi; fi; printf "%s" "$PSTORAGE_LDAPRC" | egrep "\.ldaprc$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.ldaprc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_LDAPRC\" | egrep \"\.ldaprc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".ldaprc"; fi; fi; printf "%s" "$PSTORAGE_LDAPRC" | egrep "\.ldaprc$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.ldaprc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed "s,.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_ENV" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Env Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_ENV\" | egrep \"\.env.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".env*"; fi; fi; printf "%s" "$PSTORAGE_ENV" | egrep "\.env.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.env.*$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,[pP][aA][sS][sS].*|[tT][oO][kK][eE][N]|[dD][bB]|[pP][rR][iI][vV][aA][tT][eE]|[kK][eE][yY],${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ENV\" | egrep \"\.env.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".env*"; fi; fi; printf "%s" "$PSTORAGE_ENV" | egrep "\.env.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.env.*$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,[pP][aA][sS][sS].*|[tT][oO][kK][eE][N]|[dD][bB]|[pP][rR][iI][vV][aA][tT][eE]|[kK][eE][yY],${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_MSMTPRC" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Msmtprc Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_MSMTPRC\" | egrep \"\.msmtprc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".msmtprc"; fi; fi; printf "%s" "$PSTORAGE_MSMTPRC" | egrep "\.msmtprc$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.msmtprc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,user.*|password.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_MSMTPRC\" | egrep \"\.msmtprc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".msmtprc"; fi; fi; printf "%s" "$PSTORAGE_MSMTPRC" | egrep "\.msmtprc$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.msmtprc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,user.*|password.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_INFLUXDB" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing InfluxDB Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_INFLUXDB\" | egrep \"influxdb\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "influxdb.conf"; fi; fi; printf "%s" "$PSTORAGE_INFLUXDB" | egrep "influxdb\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,influxdb\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,auth-enabled.*=.*false|token|https-private-key,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_INFLUXDB\" | egrep \"influxdb\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "influxdb.conf"; fi; fi; printf "%s" "$PSTORAGE_INFLUXDB" | egrep "influxdb\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,influxdb\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,auth-enabled.*=.*false|token|https-private-key,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_ZABBIX" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Zabbix Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix_server\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix_server.conf"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix_server\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,zabbix_server\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,DBName|DBUser|DBPassword,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix_agentd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix_agentd.conf"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix_agentd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,zabbix_agentd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,TLSPSKFile|psk,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,zabbix$,${SED_RED},"; find "$f" -name "*.psk" | while read ff; do ls -ld "$ff" | sed {$E} "s,.psk,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix_server\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix_server.conf"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix_server\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,zabbix_server\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,DBName|DBUser|DBPassword,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix_agentd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix_agentd.conf"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix_agentd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,zabbix_agentd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed "s,TLSPSKFile|psk,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,zabbix$,${SED_RED},"; find "$f" -name "*.psk" | while read ff; do ls -ld "$ff" | sed "s,.psk,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_GITHUB" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Github Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_GITHUB\" | egrep \"\.github$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".github"; fi; fi; printf "%s" "$PSTORAGE_GITHUB" | egrep "\.github$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.github$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_GITHUB\" | egrep \"\.gitconfig$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".gitconfig"; fi; fi; printf "%s" "$PSTORAGE_GITHUB" | egrep "\.gitconfig$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.gitconfig$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_GITHUB\" | egrep \"\.git-credentials$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".git-credentials"; fi; fi; printf "%s" "$PSTORAGE_GITHUB" | egrep "\.git-credentials$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.git-credentials$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_GITHUB\" | egrep \"\.git$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".git"; fi; fi; printf "%s" "$PSTORAGE_GITHUB" | egrep "\.git$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.git$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_GITHUB\" | egrep \"\.github$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".github"; fi; fi; printf "%s" "$PSTORAGE_GITHUB" | egrep "\.github$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.github$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_GITHUB\" | egrep \"\.gitconfig$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".gitconfig"; fi; fi; printf "%s" "$PSTORAGE_GITHUB" | egrep "\.gitconfig$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.gitconfig$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_GITHUB\" | egrep \"\.git-credentials$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".git-credentials"; fi; fi; printf "%s" "$PSTORAGE_GITHUB" | egrep "\.git-credentials$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.git-credentials$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_GITHUB\" | egrep \"\.git$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".git"; fi; fi; printf "%s" "$PSTORAGE_GITHUB" | egrep "\.git$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.git$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_SVN" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Svn Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_SVN\" | egrep \"\.svn$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".svn"; fi; fi; printf "%s" "$PSTORAGE_SVN" | egrep "\.svn$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.svn$,${SED_RED},"; ls -lRA "$f";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SVN\" | egrep \"\.svn$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".svn"; fi; fi; printf "%s" "$PSTORAGE_SVN" | egrep "\.svn$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.svn$,${SED_RED},"; ls -lRA "$f";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_KEEPASS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Keepass Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_KEEPASS\" | egrep \"\.kdbx$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.kdbx"; fi; fi; printf "%s" "$PSTORAGE_KEEPASS" | egrep "\.kdbx$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.kdbx$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_KEEPASS\" | egrep \"KeePass\.config.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "KeePass.config*"; fi; fi; printf "%s" "$PSTORAGE_KEEPASS" | egrep "KeePass\.config.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,KeePass\.config.*$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_KEEPASS\" | egrep \"KeePass\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "KeePass.ini"; fi; fi; printf "%s" "$PSTORAGE_KEEPASS" | egrep "KeePass\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,KeePass\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_KEEPASS\" | egrep \"KeePass\.enforced.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "KeePass.enforced*"; fi; fi; printf "%s" "$PSTORAGE_KEEPASS" | egrep "KeePass\.enforced.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,KeePass\.enforced.*$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_KEEPASS\" | egrep \"\.kdbx$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.kdbx"; fi; fi; printf "%s" "$PSTORAGE_KEEPASS" | egrep "\.kdbx$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.kdbx$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_KEEPASS\" | egrep \"KeePass\.config.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "KeePass.config*"; fi; fi; printf "%s" "$PSTORAGE_KEEPASS" | egrep "KeePass\.config.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,KeePass\.config.*$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_KEEPASS\" | egrep \"KeePass\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "KeePass.ini"; fi; fi; printf "%s" "$PSTORAGE_KEEPASS" | egrep "KeePass\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,KeePass\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_KEEPASS\" | egrep \"KeePass\.enforced.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "KeePass.enforced*"; fi; fi; printf "%s" "$PSTORAGE_KEEPASS" | egrep "KeePass\.enforced.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,KeePass\.enforced.*$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_PRE_SHARED_KEYS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Pre-Shared Keys Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_PRE_SHARED_KEYS\" | egrep \"\.psk$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.psk"; fi; fi; printf "%s" "$PSTORAGE_PRE_SHARED_KEYS" | egrep "\.psk$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.psk$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_PRE_SHARED_KEYS\" | egrep \"\.psk$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.psk"; fi; fi; printf "%s" "$PSTORAGE_PRE_SHARED_KEYS" | egrep "\.psk$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.psk$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_PASS_STORE_DIRECTORIES" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Pass Store Directories Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_PASS_STORE_DIRECTORIES\" | egrep \"\.password-store$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".password-store"; fi; fi; printf "%s" "$PSTORAGE_PASS_STORE_DIRECTORIES" | egrep "\.password-store$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.password-store$,${SED_RED},"; ls -lRA "$f";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_PASS_STORE_DIRECTORIES\" | egrep \"\.password-store$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".password-store"; fi; fi; printf "%s" "$PSTORAGE_PASS_STORE_DIRECTORIES" | egrep "\.password-store$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.password-store$,${SED_RED},"; ls -lRA "$f";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_FTP" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing FTP Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"vsftpd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "vsftpd.conf"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "vsftpd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,vsftpd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "anonymous_enable|anon_upload_enable|anon_mkdir_write_enable|anon_root|chown_uploads|chown_username|local_enable|no_anon_password|write_enable" | sed {$E} "s,anonymous_enable|anon_upload_enable|anon_mkdir_write_enable|anon_root|chown_uploads|chown_username|local_enable|no_anon_password|write_enable|[yY][eE][sS],${SED_RED},g" | sed {$E} "s,\s[nN][oO]|=[nN][oO],${SED_GOOD},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"\.ftpconfig$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.ftpconfig"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "\.ftpconfig$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.ftpconfig$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"ffftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ffftp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "ffftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ffftp\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ftp\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"ftp\.config$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ftp.config"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "ftp\.config$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ftp\.config$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"sites\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sites.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "sites\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sites\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"wcx_ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "wcx_ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "wcx_ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,wcx_ftp\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"winscp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "winscp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "winscp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,winscp\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"ws_ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ws_ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "ws_ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ws_ftp\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"vsftpd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "vsftpd.conf"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "vsftpd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,vsftpd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "anonymous_enable|anon_upload_enable|anon_mkdir_write_enable|anon_root|chown_uploads|chown_username|local_enable|no_anon_password|write_enable" | sed {$E} "s,anonymous_enable|anon_upload_enable|anon_mkdir_write_enable|anon_root|chown_uploads|chown_username|local_enable|no_anon_password|write_enable|[yY][eE][sS],${SED_RED},g" | sed {$E} "s,\s[nN][oO]|=[nN][oO],${SED_GOOD},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"\.ftpconfig$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.ftpconfig"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "\.ftpconfig$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.ftpconfig$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"ffftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ffftp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "ffftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ffftp\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ftp\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"ftp\.config$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ftp.config"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "ftp\.config$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ftp\.config$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"sites\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sites.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "sites\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,sites\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"wcx_ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "wcx_ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "wcx_ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,wcx_ftp\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"winscp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "winscp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "winscp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,winscp\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FTP\" | egrep \"ws_ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ws_ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_FTP" | egrep "ws_ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ws_ftp\.ini$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_SAMBA" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Samba Files (limit 70)"
     smbstatus 2>/dev/null
-    if ! [ "`echo \"$PSTORAGE_SAMBA\" | egrep \"smb\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "smb.conf"; fi; fi; printf "%s" "$PSTORAGE_SAMBA" | egrep "smb\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,smb\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "browseable|read only|writable|guest ok|enable privileges|create mask|directory mask|logon script|magic script|magic output" | sed {$E} "s,browseable.*yes|read only.*no|writable.*yes|guest ok.*yes|enable privileges.*yes|create mask.*|directory mask.*|logon script.*|magic script.*|magic output.*,${SED_RED},g" | sed {$E} "s,browseable.*no|read only.*yes|writable.*no|guest ok.*no|enable privileges.*no,${SED_GOOD},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SAMBA\" | egrep \"smb\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "smb.conf"; fi; fi; printf "%s" "$PSTORAGE_SAMBA" | egrep "smb\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,smb\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "browseable|read only|writable|guest ok|enable privileges|create mask|directory mask|logon script|magic script|magic output" | sed {$E} "s,browseable.*yes|read only.*no|writable.*yes|guest ok.*yes|enable privileges.*yes|create mask.*|directory mask.*|logon script.*|magic script.*|magic output.*,${SED_RED},g" | sed {$E} "s,browseable.*no|read only.*yes|writable.*no|guest ok.*no|enable privileges.*no,${SED_GOOD},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_DNS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing DNS Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_DNS\" | egrep \"bind$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "bind"; fi; fi; printf "%s" "$PSTORAGE_DNS" | egrep "bind$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,bind$,${SED_RED},"; find "$f" -name "*" | while read ff; do ls -ld "$ff" | sed {$E} "s,.*,${SED_RED},"; done; echo "";find "$f" -name "*.key" | while read ff; do ls -ld "$ff" | sed {$E} "s,.key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";find "$f" -name "named.conf*" | while read ff; do ls -ld "$ff" | sed {$E} "s,named.conf.*,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#|//" | sed {$E} "s,allow-query|allow-recursion|allow-transfer|zone-statistics|file .*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_DNS\" | egrep \"bind$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "bind"; fi; fi; printf "%s" "$PSTORAGE_DNS" | egrep "bind$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,bind$,${SED_RED},"; find "$f" -name "*" | while read ff; do ls -ld "$ff" | sed "s,.*,${SED_RED},"; done; echo "";find "$f" -name "*.key" | while read ff; do ls -ld "$ff" | sed "s,.key,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed "s,.*,${SED_RED},g"; done; echo "";find "$f" -name "named.conf*" | while read ff; do ls -ld "$ff" | sed "s,named.conf.*,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#|//" | sed {$E} "s,allow-query|allow-recursion|allow-transfer|zone-statistics|file .*,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_SEEDDMS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing SeedDMS Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_SEEDDMS\" | egrep \"seeddms.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "seeddms*"; fi; fi; printf "%s" "$PSTORAGE_SEEDDMS" | egrep "seeddms.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,seeddms.*$,${SED_RED},"; find "$f" -name "settings.xml" | while read ff; do ls -ld "$ff" | sed {$E} "s,settings.xml,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "=" | sed {$E} "s,[pP][aA][sS][sS],${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SEEDDMS\" | egrep \"seeddms.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "seeddms*"; fi; fi; printf "%s" "$PSTORAGE_SEEDDMS" | egrep "seeddms.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,seeddms.*$,${SED_RED},"; find "$f" -name "settings.xml" | while read ff; do ls -ld "$ff" | sed "s,settings.xml,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "=" | sed "s,[pP][aA][sS][sS],${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_DDCLIENT" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Ddclient Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_DDCLIENT\" | egrep \"ddclient\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ddclient.conf"; fi; fi; printf "%s" "$PSTORAGE_DDCLIENT" | egrep "ddclient\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ddclient\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*password.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_DDCLIENT\" | egrep \"ddclient\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ddclient.conf"; fi; fi; printf "%s" "$PSTORAGE_DDCLIENT" | egrep "ddclient\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ddclient\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*password.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_SENTRY" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Sentry Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_SENTRY\" | egrep \"sentry$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sentry"; fi; fi; printf "%s" "$PSTORAGE_SENTRY" | egrep "sentry$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sentry$,${SED_RED},"; find "$f" -name "config.yml" | while read ff; do ls -ld "$ff" | sed {$E} "s,config.yml,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,*key*,${SED_RED},g"; done; echo "";done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SENTRY\" | egrep \"sentry\.conf\.py$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sentry.conf.py"; fi; fi; printf "%s" "$PSTORAGE_SENTRY" | egrep "sentry\.conf\.py$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sentry\.conf\.py$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,[pP][aA][sS][sS].*|[uU][sS][eE][rR].*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SENTRY\" | egrep \"sentry$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sentry"; fi; fi; printf "%s" "$PSTORAGE_SENTRY" | egrep "sentry$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,sentry$,${SED_RED},"; find "$f" -name "config.yml" | while read ff; do ls -ld "$ff" | sed "s,config.yml,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed "s,*key*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SENTRY\" | egrep \"sentry\.conf\.py$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sentry.conf.py"; fi; fi; printf "%s" "$PSTORAGE_SENTRY" | egrep "sentry\.conf\.py$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,sentry\.conf\.py$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,[pP][aA][sS][sS].*|[uU][sS][eE][rR].*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_STRAPI" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Strapi Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_STRAPI\" | egrep \"environments$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "environments"; fi; fi; printf "%s" "$PSTORAGE_STRAPI" | egrep "environments$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,environments$,${SED_RED},"; find "$f" -name "custom.json" | while read ff; do ls -ld "$ff" | sed {$E} "s,custom.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "database.json" | while read ff; do ls -ld "$ff" | sed {$E} "s,database.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "request.json" | while read ff; do ls -ld "$ff" | sed {$E} "s,request.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "response.json" | while read ff; do ls -ld "$ff" | sed {$E} "s,response.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "security.json" | while read ff; do ls -ld "$ff" | sed {$E} "s,security.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "server.json" | while read ff; do ls -ld "$ff" | sed {$E} "s,server.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_STRAPI\" | egrep \"environments$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "environments"; fi; fi; printf "%s" "$PSTORAGE_STRAPI" | egrep "environments$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,environments$,${SED_RED},"; find "$f" -name "custom.json" | while read ff; do ls -ld "$ff" | sed "s,custom.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "database.json" | while read ff; do ls -ld "$ff" | sed "s,database.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "request.json" | while read ff; do ls -ld "$ff" | sed "s,request.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "response.json" | while read ff; do ls -ld "$ff" | sed "s,response.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "security.json" | while read ff; do ls -ld "$ff" | sed "s,security.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";find "$f" -name "server.json" | while read ff; do ls -ld "$ff" | sed "s,server.json,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,username.*|[pP][aA][sS][sS].*|secret.*,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_CACTI" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Cacti Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_CACTI\" | egrep \"cacti$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "cacti"; fi; fi; printf "%s" "$PSTORAGE_CACTI" | egrep "cacti$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,cacti$,${SED_RED},"; find "$f" -name "config.php" | while read ff; do ls -ld "$ff" | sed {$E} "s,config.php,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "database_pw|database_user|database_pass|database_type|database_default|detabase_hostname|database_port|database_ssl" | sed {$E} "s,database_pw.*|database_user.*|database_pass.*,${SED_RED},g"; done; echo "";find "$f" -name "config.php.dist" | while read ff; do ls -ld "$ff" | sed {$E} "s,config.php.dist,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "database_pw|database_user|database_pass|database_type|database_default|detabase_hostname|database_port|database_ssl" | sed {$E} "s,database_pw.*|database_user.*|database_pass.*,${SED_RED},g"; done; echo "";find "$f" -name "installer.php" | while read ff; do ls -ld "$ff" | sed {$E} "s,installer.php,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "database_pw|database_user|database_pass|database_type|database_default|detabase_hostname|database_port|database_ssl" | sed {$E} "s,database_pw.*|database_user.*|database_pass.*,${SED_RED},g"; done; echo "";find "$f" -name "check_all_pages" | while read ff; do ls -ld "$ff" | sed {$E} "s,check_all_pages,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "database_pw|database_user|database_pass|database_type|database_default|detabase_hostname|database_port|database_ssl" | sed {$E} "s,database_pw.*|database_user.*|database_pass.*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_CACTI\" | egrep \"cacti$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "cacti"; fi; fi; printf "%s" "$PSTORAGE_CACTI" | egrep "cacti$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,cacti$,${SED_RED},"; find "$f" -name "config.php" | while read ff; do ls -ld "$ff" | sed "s,config.php,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "database_pw|database_user|database_pass|database_type|database_default|detabase_hostname|database_port|database_ssl" | sed {$E} "s,database_pw.*|database_user.*|database_pass.*,${SED_RED},g"; done; echo "";find "$f" -name "config.php.dist" | while read ff; do ls -ld "$ff" | sed "s,config.php.dist,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "database_pw|database_user|database_pass|database_type|database_default|detabase_hostname|database_port|database_ssl" | sed {$E} "s,database_pw.*|database_user.*|database_pass.*,${SED_RED},g"; done; echo "";find "$f" -name "installer.php" | while read ff; do ls -ld "$ff" | sed "s,installer.php,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "database_pw|database_user|database_pass|database_type|database_default|detabase_hostname|database_port|database_ssl" | sed {$E} "s,database_pw.*|database_user.*|database_pass.*,${SED_RED},g"; done; echo "";find "$f" -name "check_all_pages" | while read ff; do ls -ld "$ff" | sed "s,check_all_pages,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "database_pw|database_user|database_pass|database_type|database_default|detabase_hostname|database_port|database_ssl" | sed {$E} "s,database_pw.*|database_user.*|database_pass.*,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_ROUNDCUBE" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Roundcube Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_ROUNDCUBE\" | egrep \"roundcube$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "roundcube"; fi; fi; printf "%s" "$PSTORAGE_ROUNDCUBE" | egrep "roundcube$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,roundcube$,${SED_RED},"; find "$f" -name "config.inc.php" | while read ff; do ls -ld "$ff" | sed {$E} "s,config.inc.php,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "config\[" | sed {$E} "s,db_dsnw,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ROUNDCUBE\" | egrep \"roundcube$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "roundcube"; fi; fi; printf "%s" "$PSTORAGE_ROUNDCUBE" | egrep "roundcube$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,roundcube$,${SED_RED},"; find "$f" -name "config.inc.php" | while read ff; do ls -ld "$ff" | sed "s,config.inc.php,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "config\[" | sed "s,db_dsnw,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_PASSBOLT" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Passbolt Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_PASSBOLT\" | egrep \"passbolt\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "passbolt.php"; fi; fi; printf "%s" "$PSTORAGE_PASSBOLT" | egrep "passbolt\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,passbolt\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "host|port|username|password|database" | egrep -v "^#" | sed {$E} "s,[pP][aA][sS][sS].*|[uU][sS][eE][rR].*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_PASSBOLT\" | egrep \"passbolt\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "passbolt.php"; fi; fi; printf "%s" "$PSTORAGE_PASSBOLT" | egrep "passbolt\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,passbolt\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "host|port|username|password|database" | egrep -v "^#" | sed {$E} "s,[pP][aA][sS][sS].*|[uU][sS][eE][rR].*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_JETTY" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Jetty Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_JETTY\" | egrep \"jetty-realm\.properties$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "jetty-realm.properties"; fi; fi; printf "%s" "$PSTORAGE_JETTY" | egrep "jetty-realm\.properties$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,jetty-realm\.properties$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_JETTY\" | egrep \"jetty-realm\.properties$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "jetty-realm.properties"; fi; fi; printf "%s" "$PSTORAGE_JETTY" | egrep "jetty-realm\.properties$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,jetty-realm\.properties$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed "s,.*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_JENKINS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Jenkins Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"master\.key$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "master.key"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "master\.key$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,master\.key$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"hudson\.util\.Secret$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "hudson.util.Secret"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "hudson\.util\.Secret$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,hudson\.util\.Secret$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"credentials\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "credentials.xml"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "credentials\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,credentials\.xml$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,secret.*|password.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"config\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "config.xml"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "config\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,config\.xml$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "secret.*|password.*" | sed {$E} "s,secret.*|password.*,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"jenkins$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*jenkins"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "jenkins$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,jenkins$,${SED_RED},"; find "$f" -name "build.xml" | while read ff; do ls -ld "$ff" | sed {$E} "s,build.xml,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "secret.*|password.*" | sed {$E} "s,secret.*|password.*,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"master\.key$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "master.key"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "master\.key$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,master\.key$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"hudson\.util\.Secret$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "hudson.util.Secret"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "hudson\.util\.Secret$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,hudson\.util\.Secret$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"credentials\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "credentials.xml"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "credentials\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,credentials\.xml$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,secret.*|password.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"config\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "config.xml"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "config\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,config\.xml$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "secret.*|password.*" | sed {$E} "s,secret.*|password.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_JENKINS\" | egrep \"jenkins$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*jenkins"; fi; fi; printf "%s" "$PSTORAGE_JENKINS" | egrep "jenkins$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,jenkins$,${SED_RED},"; find "$f" -name "build.xml" | while read ff; do ls -ld "$ff" | sed "s,build.xml,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep "secret.*|password.*" | sed {$E} "s,secret.*|password.*,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
 
 if [ "$PSTORAGE_WGET" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Wget Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_WGET\" | egrep \"\.wgetrc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".wgetrc"; fi; fi; printf "%s" "$PSTORAGE_WGET" | egrep "\.wgetrc$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.wgetrc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,[pP][aA][sS][sS].*|[uU][sS][eE][rR].*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WGET\" | egrep \"\.wgetrc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".wgetrc"; fi; fi; printf "%s" "$PSTORAGE_WGET" | egrep "\.wgetrc$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.wgetrc$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "^#" | sed {$E} "s,[pP][aA][sS][sS].*|[uU][sS][eE][rR].*,${SED_RED},g"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_INTERESTING_LOGS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Interesting logs Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_INTERESTING_LOGS\" | egrep \"access\.log$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "access.log"; fi; fi; printf "%s" "$PSTORAGE_INTERESTING_LOGS" | egrep "access\.log$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,access\.log$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_INTERESTING_LOGS\" | egrep \"error\.log$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "error.log"; fi; fi; printf "%s" "$PSTORAGE_INTERESTING_LOGS" | egrep "error\.log$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,error\.log$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_INTERESTING_LOGS\" | egrep \"access\.log$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "access.log"; fi; fi; printf "%s" "$PSTORAGE_INTERESTING_LOGS" | egrep "access\.log$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,access\.log$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_INTERESTING_LOGS\" | egrep \"error\.log$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "error.log"; fi; fi; printf "%s" "$PSTORAGE_INTERESTING_LOGS" | egrep "error\.log$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,error\.log$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_OTHER_INTERESTING" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Other Interesting Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.bashrc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".bashrc"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.bashrc$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.bashrc$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.google_authenticator$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".google_authenticator"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.google_authenticator$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.google_authenticator$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"hosts\.equiv$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "hosts.equiv"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "hosts\.equiv$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,hosts\.equiv$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.lesshst$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".lesshst"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.lesshst$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.lesshst$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.plan$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".plan"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.plan$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.plan$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.profile$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".profile"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.profile$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.profile$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.recently-used\.xbel$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".recently-used.xbel"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.recently-used\.xbel$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.recently-used\.xbel$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.rhosts$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".rhosts"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.rhosts$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.rhosts$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.sudo_as_admin_successful$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".sudo_as_admin_successful"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.sudo_as_admin_successful$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.sudo_as_admin_successful$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.bashrc$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".bashrc"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.bashrc$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.bashrc$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.google_authenticator$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".google_authenticator"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.google_authenticator$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.google_authenticator$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"hosts\.equiv$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "hosts.equiv"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "hosts\.equiv$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,hosts\.equiv$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.lesshst$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".lesshst"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.lesshst$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.lesshst$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.plan$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".plan"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.plan$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.plan$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.profile$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".profile"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.profile$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.profile$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.recently-used\.xbel$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".recently-used.xbel"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.recently-used\.xbel$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.recently-used\.xbel$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.rhosts$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".rhosts"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.rhosts$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.rhosts$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_OTHER_INTERESTING\" | egrep \"\.sudo_as_admin_successful$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found ".sudo_as_admin_successful"; fi; fi; printf "%s" "$PSTORAGE_OTHER_INTERESTING" | egrep "\.sudo_as_admin_successful$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.sudo_as_admin_successful$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_WINDOWS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Windows Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"\.rdg$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.rdg"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "\.rdg$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.rdg$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"AppEvent\.Evt$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "AppEvent.Evt"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "AppEvent\.Evt$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,AppEvent\.Evt$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"autounattend\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "autounattend.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "autounattend\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,autounattend\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"ConsoleHost_history\.txt$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ConsoleHost_history.txt"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "ConsoleHost_history\.txt$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ConsoleHost_history\.txt$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"FreeSSHDservice\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "FreeSSHDservice.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "FreeSSHDservice\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,FreeSSHDservice\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"NetSetup\.log$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "NetSetup.log"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "NetSetup\.log$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,NetSetup\.log$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"Ntds\.dit$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Ntds.dit"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "Ntds\.dit$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,Ntds\.dit$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"protecteduserkey\.bin$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "protecteduserkey.bin"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "protecteduserkey\.bin$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,protecteduserkey\.bin$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"RDCMan\.settings$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "RDCMan.settings"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "RDCMan\.settings$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,RDCMan\.settings$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"SAM$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "SAM"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "SAM$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,SAM$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"SYSTEM$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "SYSTEM"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "SYSTEM$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,SYSTEM$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"SecEvent\.Evt$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "SecEvent.Evt"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "SecEvent\.Evt$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,SecEvent\.Evt$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"appcmd\.exe$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "appcmd.exe"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "appcmd\.exe$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,appcmd\.exe$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"bash\.exe$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "bash.exe"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "bash\.exe$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,bash\.exe$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"datasources\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "datasources.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "datasources\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,datasources\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"default\.sav$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "default.sav"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "default\.sav$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,default\.sav$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"drives\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "drives.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "drives\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,drives\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"groups\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "groups.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "groups\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,groups\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"https-xampp\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "https-xampp.conf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "https-xampp\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,https-xampp\.conf$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"https\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "https.conf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "https\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,https\.conf$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"iis6\.log$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "iis6.log"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "iis6\.log$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,iis6\.log$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"index\.dat$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "index.dat"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "index\.dat$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,index\.dat$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"my\.cnf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "my.cnf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "my\.cnf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,my\.cnf$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"my\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "my.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "my\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,my\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"ntuser\.dat$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ntuser.dat"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "ntuser\.dat$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ntuser\.dat$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"pagefile\.sys$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pagefile.sys"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "pagefile\.sys$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,pagefile\.sys$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"printers\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "printers.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "printers\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,printers\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"recentservers\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "recentservers.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "recentservers\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,recentservers\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"scclient\.exe$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "scclient.exe"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "scclient\.exe$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,scclient\.exe$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"scheduledtasks\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "scheduledtasks.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "scheduledtasks\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,scheduledtasks\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"security\.sav$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "security.sav"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "security\.sav$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,security\.sav$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"server\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "server.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "server\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,server\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"setupinfo$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "setupinfo"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "setupinfo$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,setupinfo$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"setupinfo\.bak$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "setupinfo.bak"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "setupinfo\.bak$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,setupinfo\.bak$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"sitemanager\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sitemanager.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "sitemanager\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sitemanager\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"sites\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sites.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "sites\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sites\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"software$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "software"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "software$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,software$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"software\.sav$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "software.sav"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "software\.sav$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,software\.sav$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"sysprep\.inf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sysprep.inf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "sysprep\.inf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sysprep\.inf$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"sysprep\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sysprep.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "sysprep\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sysprep\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"system\.sav$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "system.sav"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "system\.sav$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,system\.sav$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"unattend\.inf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "unattend.inf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "unattend\.inf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,unattend\.inf$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"unattend\.txt$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "unattend.txt"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "unattend\.txt$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,unattend\.txt$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"unattend\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "unattend.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "unattend\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,unattend\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"unattended\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "unattended.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "unattended\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,unattended\.xml$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"wcx_ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "wcx_ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "wcx_ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,wcx_ftp\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"ws_ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ws_ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "ws_ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ws_ftp\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"web.*\.config$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "web*.config"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "web.*\.config$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,web.*\.config$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"winscp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "winscp.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "winscp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,winscp\.ini$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"wsl\.exe$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "wsl.exe"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "wsl\.exe$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,wsl\.exe$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"plum\.sqlite$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "plum.sqlite"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "plum\.sqlite$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,plum\.sqlite$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"\.rdg$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.rdg"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "\.rdg$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.rdg$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"AppEvent\.Evt$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "AppEvent.Evt"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "AppEvent\.Evt$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,AppEvent\.Evt$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"autounattend\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "autounattend.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "autounattend\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,autounattend\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"ConsoleHost_history\.txt$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ConsoleHost_history.txt"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "ConsoleHost_history\.txt$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ConsoleHost_history\.txt$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"FreeSSHDservice\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "FreeSSHDservice.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "FreeSSHDservice\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,FreeSSHDservice\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"NetSetup\.log$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "NetSetup.log"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "NetSetup\.log$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,NetSetup\.log$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"Ntds\.dit$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "Ntds.dit"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "Ntds\.dit$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,Ntds\.dit$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"protecteduserkey\.bin$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "protecteduserkey.bin"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "protecteduserkey\.bin$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,protecteduserkey\.bin$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"RDCMan\.settings$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "RDCMan.settings"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "RDCMan\.settings$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,RDCMan\.settings$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"SAM$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "SAM"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "SAM$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,SAM$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"SYSTEM$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "SYSTEM"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "SYSTEM$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,SYSTEM$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"SecEvent\.Evt$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "SecEvent.Evt"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "SecEvent\.Evt$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,SecEvent\.Evt$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"appcmd\.exe$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "appcmd.exe"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "appcmd\.exe$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,appcmd\.exe$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"bash\.exe$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "bash.exe"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "bash\.exe$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,bash\.exe$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"datasources\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "datasources.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "datasources\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,datasources\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"default\.sav$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "default.sav"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "default\.sav$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,default\.sav$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"drives\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "drives.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "drives\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,drives\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"groups\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "groups.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "groups\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,groups\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"https-xampp\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "https-xampp.conf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "https-xampp\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,https-xampp\.conf$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"https\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "https.conf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "https\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,https\.conf$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"iis6\.log$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "iis6.log"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "iis6\.log$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,iis6\.log$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"index\.dat$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "index.dat"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "index\.dat$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,index\.dat$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"my\.cnf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "my.cnf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "my\.cnf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,my\.cnf$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"my\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "my.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "my\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,my\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"ntuser\.dat$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ntuser.dat"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "ntuser\.dat$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ntuser\.dat$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"pagefile\.sys$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pagefile.sys"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "pagefile\.sys$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,pagefile\.sys$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"printers\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "printers.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "printers\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,printers\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"recentservers\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "recentservers.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "recentservers\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,recentservers\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"scclient\.exe$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "scclient.exe"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "scclient\.exe$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,scclient\.exe$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"scheduledtasks\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "scheduledtasks.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "scheduledtasks\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,scheduledtasks\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"security\.sav$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "security.sav"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "security\.sav$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,security\.sav$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"server\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "server.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "server\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,server\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"setupinfo$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "setupinfo"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "setupinfo$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,setupinfo$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"setupinfo\.bak$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "setupinfo.bak"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "setupinfo\.bak$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,setupinfo\.bak$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"sitemanager\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sitemanager.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "sitemanager\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,sitemanager\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"sites\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sites.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "sites\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,sites\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"software$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "software"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "software$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,software$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"software\.sav$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "software.sav"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "software\.sav$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,software\.sav$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"sysprep\.inf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sysprep.inf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "sysprep\.inf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,sysprep\.inf$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"sysprep\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sysprep.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "sysprep\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,sysprep\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"system\.sav$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "system.sav"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "system\.sav$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,system\.sav$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"unattend\.inf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "unattend.inf"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "unattend\.inf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,unattend\.inf$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"unattend\.txt$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "unattend.txt"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "unattend\.txt$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,unattend\.txt$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"unattend\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "unattend.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "unattend\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,unattend\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"unattended\.xml$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "unattended.xml"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "unattended\.xml$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,unattended\.xml$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"wcx_ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "wcx_ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "wcx_ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,wcx_ftp\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"ws_ftp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ws_ftp.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "ws_ftp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ws_ftp\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"web.*\.config$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "web*.config"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "web.*\.config$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,web.*\.config$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"winscp\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "winscp.ini"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "winscp\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,winscp\.ini$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"wsl\.exe$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "wsl.exe"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "wsl\.exe$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,wsl\.exe$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_WINDOWS\" | egrep \"plum\.sqlite$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "plum.sqlite"; fi; fi; printf "%s" "$PSTORAGE_WINDOWS" | egrep "plum\.sqlite$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,plum\.sqlite$,${SED_RED},"; done; echo "";
 fi
 
 
@@ -4700,8 +4700,8 @@ fi
 if [ "$PSTORAGE_FREEIPA" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing FreeIPA Files (limit 70)"
     ipa_exists="$(command -v ipa)"; if [ "$ipa_exists" ]; then print_info "https://book.hacktricks.xyz/linux-hardening/freeipa-pentesting"; fi
-    if ! [ "`echo \"$PSTORAGE_FREEIPA\" | egrep \"ipa$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ipa"; fi; fi; printf "%s" "$PSTORAGE_FREEIPA" | egrep "ipa$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,ipa$,${SED_RED},"; find "$f" -name "default.conf" | while read ff; do ls -ld "$ff" | sed {$E} "s,default.conf,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$"; done; echo "";done; echo "";
-    if ! [ "`echo \"$PSTORAGE_FREEIPA\" | egrep \"dirsrv$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "dirsrv"; fi; fi; printf "%s" "$PSTORAGE_FREEIPA" | egrep "dirsrv$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,dirsrv$,${SED_RED},"; find "$f" -name "id2rntry.db" | while read ff; do ls -ld "$ff" | sed {$E} "s,id2rntry.db,${SED_RED},"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FREEIPA\" | egrep \"ipa$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "ipa"; fi; fi; printf "%s" "$PSTORAGE_FREEIPA" | egrep "ipa$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,ipa$,${SED_RED},"; find "$f" -name "default.conf" | while read ff; do ls -ld "$ff" | sed "s,default.conf,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_FREEIPA\" | egrep \"dirsrv$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "dirsrv"; fi; fi; printf "%s" "$PSTORAGE_FREEIPA" | egrep "dirsrv$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,dirsrv$,${SED_RED},"; find "$f" -name "id2rntry.db" | while read ff; do ls -ld "$ff" | sed "s,id2rntry.db,${SED_RED},"; done; echo "";done; echo "";
 fi
 
 
@@ -4741,8 +4741,8 @@ if [ "$PSTORAGE_KCPASSWORD" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing kcpassword files"
   print_info "https://book.hacktricks.xyz/macos/macos-security-and-privilege-escalation#kcpassword"
   printf "%s\n" "$PSTORAGE_KCPASSWORD" | while read f; do
-    echo "$f" | sed {$E} "s,.*,${SED_RED},"
-    base64 "$f" 2>/dev/null | sed {$E} "s,.*,${SED_RED},"
+    echo "$f" | sed "s,.*,${SED_RED},"
+    base64 "$f" 2>/dev/null | sed "s,.*,${SED_RED},"
   done
   echo ""
 fi
@@ -4762,38 +4762,38 @@ if [ "$kadmin_exists" ] || [ "$klist_exists" ] || [ "$kinit_exists" ] || [ "$PST
   else echo "ptrace protection is enabled ($ptrace_scope), you need to disable it to search for tickets inside processes memory" | sed "s,is enabled,${SED_GREEN},g";
   fi
   
-  (env || printenv) 2>/dev/null | egrep "^KRB5" | sed {$E} "s,KRB5,${SED_RED},g"
+  (env || printenv) 2>/dev/null | egrep "^KRB5" | sed "s,KRB5,${SED_RED},g"
 
   printf "%s\n" "$PSTORAGE_KERBEROS" | while read f; do
     if [ -r "$f" ]; then
       if echo "$f" | grep .k5login &> /dev/null; then
         echo ".k5login file (users with access to the user who has this file in his home)"
-        cat "$f" 2>/dev/null | sed {$E} "s,.*,${SED_RED},g"
+        cat "$f" 2>/dev/null | sed "s,.*,${SED_RED},g"
       elif echo "$f" | grep keytab &> /dev/null; then
         echo ""
         echo "keytab file found, you may be able to impersonate some kerberos principals and add users or modify passwords"
-        klist -k "$f" 2>/dev/null | sed {$E} "s,.*,${SED_RED},g"
+        klist -k "$f" 2>/dev/null | sed "s,.*,${SED_RED},g"
         printf "$(klist -k $f 2>/dev/null)\n" | awk '{print $2}' | while read l; do
           if [ "$l" ] && echo "$l" | grep "@" &> /dev/null; then
-            printf "$ITALIC  --- Impersonation command: ${NC}kadmin -k -t /etc/krb5.keytab -p \"$l\"\n" | sed {$E} "s,$l,${SED_RED},g"
+            printf "$ITALIC  --- Impersonation command: ${NC}kadmin -k -t /etc/krb5.keytab -p \"$l\"\n" | sed "s,$l,${SED_RED},g"
             #kadmin -k -t /etc/krb5.keytab -p "$l" -q getprivs 2>/dev/null #This should show the permissions of each impersoanted user, the thing is that in a test it showed that every user had the same permissions (even if they didn't). So this test isn't valid
             #We could also try to create a new user or modify a password, but I'm not user if linpeas should do that
           fi
         done
       elif echo "$f" | grep krb5.conf &> /dev/null; then
         ls -l "$f"
-        cat "$f" 2>/dev/null | sed {$E} "s,default_ccache_name,${SED_RED},";
+        cat "$f" 2>/dev/null | sed "s,default_ccache_name,${SED_RED},";
       elif echo "$f" | grep kadm5.acl &> /dev/null; then
         ls -l "$f" 
         cat "$f" 2>/dev/null
       elif echo "$f" | grep sssd.conf &> /dev/null; then
         ls -l "$f"
-        cat "$f" 2>/dev/null | sed {$E} "s,cache_credentials ?= ?[tT][rR][uU][eE],${SED_RED},";
+        cat "$f" 2>/dev/null | sed "s,cache_credentials ?= ?[tT][rR][uU][eE],${SED_RED},";
       elif echo "$f" | grep secrets.ldb &> /dev/null; then
-        echo "You could use SSSDKCMExtractor to extract the tickets stored here" | sed {$E} "s,SSSDKCMExtractor,${SED_RED},";
+        echo "You could use SSSDKCMExtractor to extract the tickets stored here" | sed "s,SSSDKCMExtractor,${SED_RED},";
         ls -l "$f"
       elif echo "$f" | grep .secrets.mkey &> /dev/null; then
-        echo "This is the secrets file to use with SSSDKCMExtractor" | sed {$E} "s,SSSDKCMExtractor,${SED_RED},";
+        echo "This is the secrets file to use with SSSDKCMExtractor" | sed "s,SSSDKCMExtractor,${SED_RED},";
         ls -l "$f"
       fi
     fi
@@ -4841,14 +4841,14 @@ if [ "$PSTORAGE_MYSQL" ] || [ "$DEBUG" ]; then
     else
       for f in $(find $d -name debian.cnf 2>/dev/null); do
         if [ -r "$f" ]; then
-          echo "We can read the mysql debian.cnf. You can use this username/password to log in MySQL" | sed {$E} "s,.*,${SED_RED},"
+          echo "We can read the mysql debian.cnf. You can use this username/password to log in MySQL" | sed "s,.*,${SED_RED},"
           cat "$f"
         fi
       done
       
       for f in $(find $d -name user.MYD 2>/dev/null); do
         if [ -r "$f" ]; then
-          echo "We can read the Mysql Hashes from $f" | sed {$E} "s,.*,${SED_RED},"
+          echo "We can read the Mysql Hashes from $f" | sed "s,.*,${SED_RED},"
           egrep -a "[-_\.\*a-Z0-9]{3,}" "$f" | grep -v "mysql_native_password"
         fi
       done
@@ -4871,7 +4871,7 @@ if [ "$PSTORAGE_MYSQL" ] || [ "$DEBUG" ]; then
     mysqlexec=$(whereis lib_mysqludf_sys.so 2>/dev/null | egrep -v '^lib_mysqludf_sys.so:$' | grep "lib_mysqludf_sys\.so")
     if [ "$mysqlexec" ]; then
       echo "Found $mysqlexec. $(whereis lib_mysqludf_sys.so)"
-      echo "If you can login in MySQL you can execute commands doing: SELECT sys_eval('id');" | sed {$E} "s,.*,${SED_RED},"
+      echo "If you can login in MySQL you can execute commands doing: SELECT sys_eval('id');" | sed "s,.*,${SED_RED},"
     fi
   done
 fi
@@ -4892,8 +4892,8 @@ if [ "$(command -v mysql || echo -n '')" ] || [ "$(command -v mysqladmin || echo
   print_list "MySQL connection using default root/root ........... "
   mysqlconnect=$(mysqladmin -uroot -proot version 2>/dev/null)
   if [ "$mysqlconnect" ]; then
-    echo "Yes" | sed {$E} "s,.*,${SED_RED},"
-    mysql -u root --password=root -e "SELECT User,Host,authentication_string FROM mysql.user;" 2>/dev/null | sed {$E} "s,.*,${SED_RED},"
+    echo "Yes" | sed "s,.*,${SED_RED},"
+    mysql -u root --password=root -e "SELECT User,Host,authentication_string FROM mysql.user;" 2>/dev/null | sed "s,.*,${SED_RED},"
   else echo_no
   fi
 
@@ -4901,8 +4901,8 @@ if [ "$(command -v mysql || echo -n '')" ] || [ "$(command -v mysqladmin || echo
   print_list "MySQL connection using root/toor ................... "
   mysqlconnect=$(mysqladmin -uroot -ptoor version 2>/dev/null)
   if [ "$mysqlconnect" ]; then
-    echo "Yes" | sed {$E} "s,.*,${SED_RED},"
-    mysql -u root --password=toor -e "SELECT User,Host,authentication_string FROM mysql.user;" 2>/dev/null | sed {$E} "s,.*,${SED_RED},"
+    echo "Yes" | sed "s,.*,${SED_RED},"
+    mysql -u root --password=toor -e "SELECT User,Host,authentication_string FROM mysql.user;" 2>/dev/null | sed "s,.*,${SED_RED},"
   else echo_no
   fi
 
@@ -4910,8 +4910,8 @@ if [ "$(command -v mysql || echo -n '')" ] || [ "$(command -v mysqladmin || echo
   mysqlconnectnopass=$(mysqladmin -uroot version 2>/dev/null)
   print_list "MySQL connection using root/NOPASS ................. "
   if [ "$mysqlconnectnopass" ]; then
-    echo "Yes" | sed {$E} "s,.*,${SED_RED},"
-    mysql -u root -e "SELECT User,Host,authentication_string FROM mysql.user;" 2>/dev/null | sed {$E} "s,.*,${SED_RED},"
+    echo "Yes" | sed "s,.*,${SED_RED},"
+    mysql -u root -e "SELECT User,Host,authentication_string FROM mysql.user;" 2>/dev/null | sed "s,.*,${SED_RED},"
   else echo_no
   fi
   echo ""
@@ -4922,16 +4922,16 @@ if [ "$PSTORAGE_PGP_GPG" ] || [ "$DEBUG" ]; then
     ( (command -v gpg && gpg --list-keys) || echo_not_found "gpg") 2>/dev/null
     ( (command -v netpgpkeys && netpgpkeys --list-keys) || echo_not_found "netpgpkeys") 2>/dev/null
     (command -v netpgp || echo_not_found "netpgp") 2>/dev/null
-    if ! [ "`echo \"$PSTORAGE_PGP_GPG\" | egrep \"\.pgp$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.pgp"; fi; fi; printf "%s" "$PSTORAGE_PGP_GPG" | egrep "\.pgp$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.pgp$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_PGP_GPG\" | egrep \"\.gpg$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.gpg"; fi; fi; printf "%s" "$PSTORAGE_PGP_GPG" | egrep "\.gpg$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.gpg$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_PGP_GPG\" | egrep \"\.gnupg$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.gnupg"; fi; fi; printf "%s" "$PSTORAGE_PGP_GPG" | egrep "\.gnupg$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.gnupg$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_PGP_GPG\" | egrep \"\.pgp$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.pgp"; fi; fi; printf "%s" "$PSTORAGE_PGP_GPG" | egrep "\.pgp$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.pgp$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_PGP_GPG\" | egrep \"\.gpg$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.gpg"; fi; fi; printf "%s" "$PSTORAGE_PGP_GPG" | egrep "\.gpg$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.gpg$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_PGP_GPG\" | egrep \"\.gnupg$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.gnupg"; fi; fi; printf "%s" "$PSTORAGE_PGP_GPG" | egrep "\.gnupg$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.gnupg$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
 fi
 
 
 if [ "$PSTORAGE_PHP_SESSIONS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing PHP Sessions Files (limit 70)"
     ls /var/lib/php/sessions 2>/dev/null || echo_not_found /var/lib/php/sessions
-    if ! [ "`echo \"$PSTORAGE_PHP_SESSIONS\" | egrep \"sess_.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sess_*"; fi; fi; printf "%s" "$PSTORAGE_PHP_SESSIONS" | egrep "sess_.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,sess_.*$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_PHP_SESSIONS\" | egrep \"sess_.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "sess_*"; fi; fi; printf "%s" "$PSTORAGE_PHP_SESSIONS" | egrep "sess_.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,sess_.*$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
 fi
 
 
@@ -4945,18 +4945,18 @@ fi
 if [ "$PSTORAGE_POSTGRESQL" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing PostgreSQL Files (limit 70)"
     echo "Version: $(warn_exec psql -V 2>/dev/null)"
-    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"pgadmin.*\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pgadmin*.db"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "pgadmin.*\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,pgadmin.*\.db$,${SED_RED},"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"pg_hba\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pg_hba.conf"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "pg_hba\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,pg_hba\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,auth|password|md5|user=|pass=|trust,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"postgresql\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "postgresql.conf"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "postgresql\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,postgresql\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,auth|password|md5|user=|pass=|trust,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"pgsql\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pgsql.conf"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "pgsql\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,pgsql\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,auth|password|md5|user=|pass=|trust,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"pgadmin4\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pgadmin4.db"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "pgadmin4\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,pgadmin4\.db$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"pgadmin.*\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pgadmin*.db"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "pgadmin.*\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,pgadmin.*\.db$,${SED_RED},"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"pg_hba\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pg_hba.conf"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "pg_hba\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,pg_hba\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,auth|password|md5|user=|pass=|trust,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"postgresql\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "postgresql.conf"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "postgresql\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,postgresql\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,auth|password|md5|user=|pass=|trust,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"pgsql\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pgsql.conf"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "pgsql\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,pgsql\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "\W+\#|^#" | sed {$E} "s,auth|password|md5|user=|pass=|trust,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_POSTGRESQL\" | egrep \"pgadmin4\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "pgadmin4.db"; fi; fi; printf "%s" "$PSTORAGE_POSTGRESQL" | egrep "pgadmin4\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,pgadmin4\.db$,${SED_RED},"; done; echo "";
 fi
 
 
 if [ "$TIMEOUT" ] && [ "$(command -v psql || echo -n '')" ] || [ "$DEBUG" ]; then  # In some OS (like OpenBSD) it will expect the password from console and will pause the script. Also, this OS doesn't have the "timeout" command so lets only use this checks in OS that has it.
 #checks to see if any postgres password exists and connects to DB 'template0' - following commands are a variant on this
   print_list "PostgreSQL connection to template0 using postgres/NOPASS ........ "
-  if [ "$(timeout 1 psql -U postgres -d template0 -c 'select version()' 2>/dev/null)" ]; then echo "Yes" | sed {$E} "s,.*,${SED_RED},"
+  if [ "$(timeout 1 psql -U postgres -d template0 -c 'select version()' 2>/dev/null)" ]; then echo "Yes" | sed "s,.*,${SED_RED},"
   else echo_no
   fi
 
@@ -4966,12 +4966,12 @@ if [ "$TIMEOUT" ] && [ "$(command -v psql || echo -n '')" ] || [ "$DEBUG" ]; the
   fi
 
   print_list "PostgreSQL connection to template0 using pgsql/NOPASS ........... "
-  if [ "$(timeout 1 psql -U pgsql -d template0 -c 'select version()' 2>/dev/null)" ]; then echo "Yes" | sed {$E} "s,.*,${SED_RED},"
+  if [ "$(timeout 1 psql -U pgsql -d template0 -c 'select version()' 2>/dev/null)" ]; then echo "Yes" | sed "s,.*,${SED_RED},"
   else echo_no
   fi
 
   print_list "PostgreSQL connection to template1 using pgsql/NOPASS ........... "
-  if [ "$(timeout 1 psql -U pgsql -d template1 -c 'select version()' 2> /dev/null)" ]; then echo "Yes" | sed {$E} "s,.*,${SED_RED},"
+  if [ "$(timeout 1 psql -U pgsql -d template1 -c 'select version()' 2> /dev/null)" ]; then echo "Yes" | sed "s,.*,${SED_RED},"
   else echo_no
   fi
   echo ""
@@ -4983,7 +4983,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
     print_2title "Checking if runc is available"
     print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation/runc-privilege-escalation"
     if [ "$runc" ]; then
-      echo "runc was found in $runc, you may be able to escalate privileges with it" | sed {$E} "s,.*,${SED_RED},"
+      echo "runc was found in $runc, you may be able to escalate privileges with it" | sed "s,.*,${SED_RED},"
     fi
     echo ""
   fi
@@ -5010,7 +5010,7 @@ if ([ "$screensess" ] || [ "$screensess2" ] || [ "$DEBUG" ]) && ! [ "$SEARCH_IN_
   screensess2=$(find /run/screen -type d -path "/run/screen/S-*" 2>/dev/null)
   
   screen -v
-  printf "$screensess\n$screensess2" | sed {$E} "s,.*,${SED_RED}," | sed {$E} "s,No Sockets found.*,${C}[32m&${C}[0m,"
+  printf "$screensess\n$screensess2" | sed "s,.*,${SED_RED}," | sed "s,No Sockets found.*,${C}[32m&${C}[0m,"
   
   find /run/screen -type s -path "/run/screen/S-*" -not -user $USER '(' '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')' 2>/dev/null | while read f; do
     echo "Other user screen socket is writable: $f" | sed "s,$f,${SED_RED_YELLOW},"
@@ -5047,12 +5047,12 @@ fi
 
 if [ "$PSTORAGE_SSH" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing SSH Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"id_dsa.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "id_dsa*"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "id_dsa.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,id_dsa.*$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"id_rsa.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "id_rsa*"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "id_rsa.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,id_rsa.*$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"known_hosts$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "known_hosts"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "known_hosts$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,known_hosts$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"authorized_hosts$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "authorized_hosts"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "authorized_hosts$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,authorized_hosts$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"authorized_keys$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "authorized_keys"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "authorized_keys$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,authorized_keys$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed {$E} "s,command=.*,${SED_RED},g" | sed {$E} "s,from=[\w\._\-]+,${SED_GOOD},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"\.pub$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.pub"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "\.pub$" | while read f; do ls -ld "$f" 2>/dev/null | sed {$E} "s,\.pub$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "command=.*" | sed {$E} "s,command=.*,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"id_dsa.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "id_dsa*"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "id_dsa.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,id_dsa.*$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"id_rsa.*$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "id_rsa*"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "id_rsa.*$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,id_rsa.*$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"known_hosts$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "known_hosts"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "known_hosts$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,known_hosts$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"authorized_hosts$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "authorized_hosts"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "authorized_hosts$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,authorized_hosts$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"authorized_keys$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "authorized_keys"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "authorized_keys$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,authorized_keys$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,command=.*,${SED_RED},g" | sed "s,from=[\w\._\-]+,${SED_GOOD},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_SSH\" | egrep \"\.pub$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "*.pub"; fi; fi; printf "%s" "$PSTORAGE_SSH" | egrep "\.pub$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,\.pub$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "command=.*" | sed "s,command=.*,${SED_RED},g"; done; echo "";
 fi
 
 
@@ -5075,11 +5075,11 @@ fi
 
 if [ "$privatekeyfilesetc" ] || [ "$privatekeyfileshome" ] || [ "$privatekeyfilesroot" ] || [ "$privatekeyfilesmnt" ] ; then
   echo ""
-  print_3title "Possible private SSH keys were found!" | sed {$E} "s,private SSH keys,${SED_RED},"
-  if [ "$privatekeyfilesetc" ]; then printf "$privatekeyfilesetc\n" | sed {$E} "s,.*,${SED_RED},"; fi
-  if [ "$privatekeyfileshome" ]; then printf "$privatekeyfileshome\n" | sed {$E} "s,.*,${SED_RED},"; fi
-  if [ "$privatekeyfilesroot" ]; then printf "$privatekeyfilesroot\n" | sed {$E} "s,.*,${SED_RED},"; fi
-  if [ "$privatekeyfilesmnt" ]; then printf "$privatekeyfilesmnt\n" | sed {$E} "s,.*,${SED_RED},"; fi
+  print_3title "Possible private SSH keys were found!" | sed "s,private SSH keys,${SED_RED},"
+  if [ "$privatekeyfilesetc" ]; then printf "$privatekeyfilesetc\n" | sed "s,.*,${SED_RED},"; fi
+  if [ "$privatekeyfileshome" ]; then printf "$privatekeyfileshome\n" | sed "s,.*,${SED_RED},"; fi
+  if [ "$privatekeyfilesroot" ]; then printf "$privatekeyfilesroot\n" | sed "s,.*,${SED_RED},"; fi
+  if [ "$privatekeyfilesmnt" ]; then printf "$privatekeyfilesmnt\n" | sed "s,.*,${SED_RED},"; fi
   echo ""
 fi
 if [ "$certsb4_grep" ] || [ "$PSTORAGE_CERTSBIN" ]; then
@@ -5114,19 +5114,19 @@ if [ "$writable_agents" ]; then
 fi
 if [ "$PSTORAGE_SSH_CONFIG" ]; then
   print_3title "Some home ssh config file was found"
-  printf "%s\n" "$PSTORAGE_SSH_CONFIG" | while read f; do ls "$f" | sed {$E} "s,$f,${SED_RED},"; cat "$f" 2>/dev/null | grep -Iv "^$" | grep -v "^#" | sed {$E} "s,User|ProxyCommand,${SED_RED},"; done
+  printf "%s\n" "$PSTORAGE_SSH_CONFIG" | while read f; do ls "$f" | sed "s,$f,${SED_RED},"; cat "$f" 2>/dev/null | grep -Iv "^$" | grep -v "^#" | sed {$E} "s,User|ProxyCommand,${SED_RED},"; done
   echo ""
 fi
 if [ "$hostsdenied" ]; then
   print_3title "/etc/hosts.denied file found, read the rules:"
   printf "$hostsdenied\n"
-  cat " ${ROOT_FOLDER}etc/hosts.denied" 2>/dev/null | grep -v "#" | grep -Iv "^$" | sed {$E} "s,.*,${SED_GREEN},"
+  cat " ${ROOT_FOLDER}etc/hosts.denied" 2>/dev/null | grep -v "#" | grep -Iv "^$" | sed "s,.*,${SED_GREEN},"
   echo ""
 fi
 if [ "$hostsallow" ]; then
   print_3title "/etc/hosts.allow file found, trying to read the rules:"
   printf "$hostsallow\n"
-  cat " ${ROOT_FOLDER}etc/hosts.allow" 2>/dev/null | grep -v "#" | grep -Iv "^$" | sed {$E} "s,.*,${SED_RED},"
+  cat " ${ROOT_FOLDER}etc/hosts.allow" 2>/dev/null | grep -v "#" | grep -Iv "^$" | sed "s,.*,${SED_RED},"
   echo ""
 fi
 if [ "$sshconfig" ]; then
@@ -5143,7 +5143,7 @@ if ([ "$tmuxdefsess" ] || [ "$tmuxnondefsess" ] || [ "$tmuxsess2" ] || [ "$DEBUG
   print_2title "Searching tmux sessions"$N
   print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#open-shell-sessions"
   tmux -V
-  printf "$tmuxdefsess\n$tmuxnondefsess\n$tmuxsess2" | sed {$E} "s,.*,${SED_RED}," | sed {$E} "s,no server running on.*,${C}[32m&${C}[0m,"
+  printf "$tmuxdefsess\n$tmuxnondefsess\n$tmuxsess2" | sed "s,.*,${SED_RED}," | sed "s,no server running on.*,${C}[32m&${C}[0m,"
 
   find /tmp -type s -path "/tmp/tmux*" -not -user $USER '(' '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')' 2>/dev/null | while read f; do
     echo "Other user tmux socket is writable: $f" | sed "s,$f,${SED_RED_YELLOW},"
@@ -5157,7 +5157,7 @@ if [ "$PSTORAGE_VAULT_SSH_HELPER" ] || [ "$DEBUG" ]; then
   printf "%s\n" "$PSTORAGE_VAULT_SSH_HELPER" | while read f; do cat "$f" 2>/dev/null; vault-ssh-helper -verify-only -config "$f" 2>/dev/null; done
   echo ""
   vault secrets list 2>/dev/null
-  printf "%s\n" "$PSTORAGE_VAULT_SSH_TOKEN" | sed {$E} "s,.*,${SED_RED}," 2>/dev/null
+  printf "%s\n" "$PSTORAGE_VAULT_SSH_TOKEN" | sed "s,.*,${SED_RED}," 2>/dev/null
 fi
 echo ""
 
@@ -5199,14 +5199,14 @@ printf "%s\n" "$suids_files" | while read s; do
   if [ "$sname" = "."  ] || [ "$sname" = ".."  ]; then
     true #Don't do nothing
   elif ! [ "$IAMROOT" ] && [ -O "$sname" ]; then
-    echo "You own the SUID file: $sname" | sed {$E} "s,.*,${SED_RED},"
+    echo "You own the SUID file: $sname" | sed "s,.*,${SED_RED},"
   elif ! [ "$IAMROOT" ] && [ -w "$sname" ]; then #If write permision, win found (no check exploits)
-    echo "You can write SUID file: $sname" | sed {$E} "s,.*,${SED_RED_YELLOW},"
+    echo "You can write SUID file: $sname" | sed "s,.*,${SED_RED_YELLOW},"
   else
     c="a"
     for b in $sidB; do
       if echo $s | grep $(echo $b | cut -d % -f 1) &> /dev/null; then
-        echo "$s" | sed {$E} "s,$(echo $b | cut -d % -f 1),${C}[1;31m&  --->  $(echo $b | cut -d % -f 2)${C}[0m,"
+        echo "$s" | sed "s,$(echo $b | cut -d % -f 1),${C}[1;31m&  --->  $(echo $b | cut -d % -f 2)${C}[0m,"
         c=""
         break;
       fi
@@ -5215,7 +5215,7 @@ printf "%s\n" "$suids_files" | while read s; do
       if echo "$s" | egrep "$sidG1" &> /dev/null || echo "$s" | egrep "$sidG2" &> /dev/null || echo "$s" | egrep "$sidG3" &> /dev/null || echo "$s" | egrep "$sidG4" &> /dev/null || echo "$s" | egrep "$sidVB" &> /dev/null || echo "$s" | egrep "$sidVB2" &> /dev/null; then
         echo "$s" | sed {$E} "s,$sidG1,${SED_GREEN}," | sed {$E} "s,$sidG2,${SED_GREEN}," | sed {$E} "s,$sidG3,${SED_GREEN}," | sed {$E} "s,$sidG4,${SED_GREEN}," | sed {$E} "s,$sidVB,${SED_RED_YELLOW}," | sed {$E} "s,$sidVB2,${SED_RED_YELLOW},"
       else
-        echo "$s (Unknown SUID binary!)" | sed {$E} "s,/.*,${SED_RED},"
+        echo "$s (Unknown SUID binary!)" | sed "s,/.*,${SED_RED},"
         printf $ITALIC
         if ! [ "$FAST" ]; then
           
@@ -5278,14 +5278,14 @@ printf "%s\n" "$sgids_files" | while read s; do
   if [ "$sname" = "."  ] || [ "$sname" = ".."  ]; then
     true #Don't do nothing
   elif ! [ "$IAMROOT" ] && [ -O "$sname" ]; then
-    echo "You own the SGID file: $sname" | sed {$E} "s,.*,${SED_RED},"
+    echo "You own the SGID file: $sname" | sed "s,.*,${SED_RED},"
   elif ! [ "$IAMROOT" ] && [ -w "$sname" ]; then #If write permision, win found (no check exploits)
-    echo "You can write SGID file: $sname" | sed {$E} "s,.*,${SED_RED_YELLOW},"
+    echo "You can write SGID file: $sname" | sed "s,.*,${SED_RED_YELLOW},"
   else
     c="a"
     for b in $sidB; do
       if echo "$s" | egrep $(echo $b | cut -d % -f 1) &> /dev/null; then
-        echo "$s" | sed {$E} "s,$(echo $b | cut -d % -f 1),${C}[1;31m&  --->  $(echo $b | cut -d % -f 2)${C}[0m,"
+        echo "$s" | sed "s,$(echo $b | cut -d % -f 1),${C}[1;31m&  --->  $(echo $b | cut -d % -f 2)${C}[0m,"
         c=""
         break;
       fi
@@ -5294,7 +5294,7 @@ printf "%s\n" "$sgids_files" | while read s; do
       if echo "$s" | egrep "$sidG1" &> /dev/null || echo "$s" | egrep "$sidG2" &> /dev/null || echo "$s" | egrep "$sidG3" &> /dev/null || echo "$s" | egrep "$sidG4" &> /dev/null || echo "$s" | egrep "$sidVB" &> /dev/null || echo "$s" | egrep "$sidVB2" &> /dev/null; then
         echo "$s" | sed {$E} "s,$sidG1,${SED_GREEN}," | sed {$E} "s,$sidG2,${SED_GREEN}," | sed {$E} "s,$sidG3,${SED_GREEN}," | sed {$E} "s,$sidG4,${SED_GREEN}," | sed {$E} "s,$sidVB,${SED_RED_YELLOW}," | sed {$E} "s,$sidVB2,${SED_RED_YELLOW},"
       else
-        echo "$s (Unknown SGID binary)" | sed {$E} "s,/.*,${SED_RED},"
+        echo "$s (Unknown SGID binary)" | sed "s,/.*,${SED_RED},"
         printf $ITALIC
         if ! [ "$FAST" ]; then
         
@@ -5389,11 +5389,11 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   
   else
     print_3title "Current shell capabilities"
-    (cat "/proc/$$/status" | grep Cap | sed {$E} "s,.*0000000000000000|CapBnd:	0000003fffffffff,${SED_GREEN},") 2>/dev/null || echo_not_found "/proc/$$/status"
+    (cat "/proc/$$/status" | grep Cap | sed "s,.*0000000000000000,${SED_GREEN}," | sed "sCapBnd:	0000003fffffffff,${SED_GREEN},") 2>/dev/null || echo_not_found "/proc/$$/status"
     echo ""
     
     print_3title "Parent proc capabilities"
-    (cat "/proc/$PPID/status" | grep Cap | sed {$E} "s,.*0000000000000000|CapBnd:	0000003fffffffff,${SED_GREEN},") 2>/dev/null || echo_not_found "/proc/$PPID/status"
+    (cat "/proc/$PPID/status" | grep Cap | sed "s,.*0000000000000000,${SED_GREEN}," | sed "sCapBnd:	0000003fffffffff,${SED_GREEN},") 2>/dev/null || echo_not_found "/proc/$PPID/status"
     echo ""
   fi
   echo ""
@@ -5405,7 +5405,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
       capname="$(echo $capVB | cut -d ':' -f 1)"
       capbins="$(echo $capVB | cut -d ':' -f 2)"
       if [ "$(echo $cb | egrep -i $capname)" ] && [ "$(echo $cb | egrep $capbins)" ]; then
-        echo "$cb" | sed {$E} "s,.*,${SED_RED_YELLOW},"
+        echo "$cb" | sed "s,.*,${SED_RED_YELLOW},"
         capsVB_vuln="1"
         break
       fi
@@ -5416,7 +5416,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
     fi
 
     if ! [ "$IAMROOT" ] && [ -w "$(echo $cb | cut -d" " -f1)" ]; then
-      echo "$cb is writable" | sed {$E} "s,.*,${SED_RED},"
+      echo "$cb is writable" | sed "s,.*,${SED_RED},"
     fi
   done
   echo ""
@@ -5436,7 +5436,7 @@ if ! [ "$SEARCH_IN_FOLDER" ] && ! [ "$IAMROOT" ]; then
   print_2title "Checking misconfigurations of ld.so"
   print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#ld.so"
   if [ -f "/etc/ld.so.conf" ] && [ -w "/etc/ld.so.conf" ]; then 
-    echo "You have write privileges over /etc/ld.so.conf" | sed {$E} "s,.*,${SED_RED_YELLOW},"; 
+    echo "You have write privileges over /etc/ld.so.conf" | sed "s,.*,${SED_RED_YELLOW},"; 
     printf $RED$ITALIC"/etc/ld.so.conf\n"$NC;
   else
     printf $GREEN$ITALIC"/etc/ld.so.conf\n"$NC;
@@ -5452,7 +5452,7 @@ if ! [ "$SEARCH_IN_FOLDER" ] && ! [ "$IAMROOT" ]; then
       fpath=$(dirname "$ini_path")
 
       if [ -d "/etc/ld.so.conf" ] && [ -w "$fpath" ]; then 
-        echo "You have write privileges over $fpath" | sed {$E} "s,.*,${SED_RED_YELLOW},"; 
+        echo "You have write privileges over $fpath" | sed "s,.*,${SED_RED_YELLOW},"; 
         printf $RED_YELLOW$ITALIC"$fpath\n"$NC;
       else
         printf $GREEN$ITALIC"$fpath\n"$NC;
@@ -5464,7 +5464,7 @@ if ! [ "$SEARCH_IN_FOLDER" ] && ! [ "$IAMROOT" ]; then
 
       for f in $fpath/*; do
         if [ -w "$f" ]; then 
-          echo "You have write privileges over $f" | sed {$E} "s,.*,${SED_RED_YELLOW},"; 
+          echo "You have write privileges over $f" | sed "s,.*,${SED_RED_YELLOW},"; 
           printf $RED_YELLOW$ITALIC"$f\n"$NC;
         else
           printf $GREEN$ITALIC"  $f\n"$NC;
@@ -5472,7 +5472,7 @@ if ! [ "$SEARCH_IN_FOLDER" ] && ! [ "$IAMROOT" ]; then
 
         cat "$f" | grep -v "^#" | while read l2; do
           if [ -f "$l2" ] && [ -w "$l2" ]; then 
-            echo "You have write privileges over $l2" | sed {$E} "s,.*,${SED_RED_YELLOW},"; 
+            echo "You have write privileges over $l2" | sed "s,.*,${SED_RED_YELLOW},"; 
             printf $RED_YELLOW$ITALIC"  - $l2\n"$NC;
           else
             echo $ITALIC"  - $l2"$NC | sed {$E} "s,$l2,${SED_GREEN}," | sed {$E} "s,$Wfolders,${SED_RED_YELLOW},g";
@@ -5485,13 +5485,13 @@ if ! [ "$SEARCH_IN_FOLDER" ] && ! [ "$IAMROOT" ]; then
 
 
   if [ -f "/etc/ld.so.preload" ] && [ -w "/etc/ld.so.preload" ]; then 
-    echo "You have write privileges over /etc/ld.so.preload" | sed {$E} "s,.*,${SED_RED_YELLOW},"; 
+    echo "You have write privileges over /etc/ld.so.preload" | sed "s,.*,${SED_RED_YELLOW},"; 
   else
     printf $ITALIC$GREEN"/etc/ld.so.preload\n"$NC;
   fi
   cat /etc/ld.so.preload 2>/dev/null | sed {$E} "s,$Wfolders,${SED_RED_YELLOW},g"
   cat /etc/ld.so.preload 2>/dev/null | while read l; do
-    if [ -f "$l" ] && [ -w "$l" ]; then echo "You have write privileges over $l" | sed {$E} "s,.*,${SED_RED_YELLOW},"; fi
+    if [ -f "$l" ] && [ -w "$l" ]; then echo "You have write privileges over $l" | sed "s,.*,${SED_RED_YELLOW},"; fi
   done
 
 fi
@@ -5534,27 +5534,27 @@ fi
 ##-- IPF) Hashes in passwd file
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_list "Hashes inside passwd file? ........... "
-  if grep -v '^[^:]*:[x\*\!]\|^#\|^$' /etc/passwd /etc/master.passwd /etc/group &>/dev/null; then grep -v '^[^:]*:[x\*]\|^#\|^$' /etc/passwd /etc/pwd.db /etc/master.passwd /etc/group 2>/dev/null | sed {$E} "s,.*,${SED_RED},"
+  if grep -v '^[^:]*:[x\*\!]\|^#\|^$' /etc/passwd /etc/master.passwd /etc/group &>/dev/null; then grep -v '^[^:]*:[x\*]\|^#\|^$' /etc/passwd /etc/pwd.db /etc/master.passwd /etc/group 2>/dev/null | sed "s,.*,${SED_RED},"
   else echo_no
   fi
 
   ##-- IPF) Writable in passwd file
   print_list "Writable passwd file? ................ "
-  if [ -w "/etc/passwd" ]; then echo "/etc/passwd is writable" | sed {$E} "s,.*,${SED_RED_YELLOW},"
-  elif [ -w "/etc/pwd.db" ]; then echo "/etc/pwd.db is writable" | sed {$E} "s,.*,${SED_RED_YELLOW},"
-  elif [ -w "/etc/master.passwd" ]; then echo "/etc/master.passwd is writable" | sed {$E} "s,.*,${SED_RED_YELLOW},"
+  if [ -w "/etc/passwd" ]; then echo "/etc/passwd is writable" | sed "s,.*,${SED_RED_YELLOW},"
+  elif [ -w "/etc/pwd.db" ]; then echo "/etc/pwd.db is writable" | sed "s,.*,${SED_RED_YELLOW},"
+  elif [ -w "/etc/master.passwd" ]; then echo "/etc/master.passwd is writable" | sed "s,.*,${SED_RED_YELLOW},"
   else echo_no
   fi
 
   ##-- IPF) Credentials in fstab
   print_list "Credentials in fstab/mtab? ........... "
-  if egrep "(user|username|login|pass|password|pw|credentials)[=:]" /etc/fstab /etc/mtab &>/dev/null; then egrep "(user|username|login|pass|password|pw|credentials)[=:]" /etc/fstab /etc/mtab 2>/dev/null | sed {$E} "s,.*,${SED_RED},"
+  if egrep "(user|username|login|pass|password|pw|credentials)[=:]" /etc/fstab /etc/mtab &>/dev/null; then egrep "(user|username|login|pass|password|pw|credentials)[=:]" /etc/fstab /etc/mtab 2>/dev/null | sed "s,.*,${SED_RED},"
   else echo_no
   fi
 
   ##-- IPF) Read shadow files
   print_list "Can I read shadow files? ............. "
-  if [ "$(cat /etc/shadow /etc/shadow- /etc/shadow~ /etc/gshadow /etc/gshadow- /etc/master.passwd /etc/spwd.db 2>/dev/null)" ]; then cat /etc/shadow /etc/shadow- /etc/shadow~ /etc/gshadow /etc/gshadow- /etc/master.passwd /etc/spwd.db 2>/dev/null | sed {$E} "s,.*,${SED_RED},"
+  if [ "$(cat /etc/shadow /etc/shadow- /etc/shadow~ /etc/gshadow /etc/gshadow- /etc/master.passwd /etc/spwd.db 2>/dev/null)" ]; then cat /etc/shadow /etc/shadow- /etc/shadow~ /etc/gshadow /etc/gshadow- /etc/master.passwd /etc/spwd.db 2>/dev/null | sed "s,.*,${SED_RED},"
   else echo_no
   fi
 
@@ -5574,8 +5574,8 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
 
   ##-- IPF) network-scripts
   print_list "Can I write in network-scripts? ...... "
-  if ! [ "$IAMROOT" ] && [ -w "/etc/sysconfig/network-scripts/" ]; then echo "You have write privileges on /etc/sysconfig/network-scripts/" | sed {$E} "s,.*,${SED_RED_YELLOW},"
-  elif [ "$(find /etc/sysconfig/network-scripts/ '(' -not -type l -and '(' '(' -user $USER ')' -or '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')' ')' 2>/dev/null)" ]; then echo "You have write privileges on $(find /etc/sysconfig/network-scripts/ '(' -not -type l -and '(' '(' -user $USER ')' -or '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')' ')' 2>/dev/null)" | sed {$E} "s,.*,${SED_RED_YELLOW},"
+  if ! [ "$IAMROOT" ] && [ -w "/etc/sysconfig/network-scripts/" ]; then echo "You have write privileges on /etc/sysconfig/network-scripts/" | sed "s,.*,${SED_RED_YELLOW},"
+  elif [ "$(find /etc/sysconfig/network-scripts/ '(' -not -type l -and '(' '(' -user $USER ')' -or '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')' ')' 2>/dev/null)" ]; then echo "You have write privileges on $(find /etc/sysconfig/network-scripts/ '(' -not -type l -and '(' '(' -user $USER ')' -or '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')' ')' 2>/dev/null)" | sed "s,.*,${SED_RED_YELLOW},"
   else echo_no
   fi
 
@@ -5587,7 +5587,7 @@ fi
 
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Searching root files in home dirs (limit 30)"
-  (find $HOMESEARCH -user root 2>/dev/null | head -n 30 | sed {$E} "s,$sh_usrs,${SED_LIGHT_CYAN},g" | sed "s,$USER,${SED_RED},g") || echo_not_found
+  (find $HOMESEARCH -user root 2>/dev/null | head -n 30 | sed "s,$sh_usrs,${SED_LIGHT_CYAN},g" | sed "s,$USER,${SED_RED},g") || echo_not_found
   echo ""
 fi
 
@@ -5599,7 +5599,7 @@ fi
 
 if ! [ "$IAMROOT" ]; then
   print_2title "Readable files belonging to root and readable by me but not world readable"
-  (find $ROOT_FOLDER -type f -user root ! -perm -o=r ! -path "/proc/*" 2>/dev/null | grep -v "\.journal" | while read f; do if [ -r "$f" ]; then ls -l "$f" 2>/dev/null | sed {$E} "s,/.*,${SED_RED},"; fi; done) || echo_not_found
+  (find $ROOT_FOLDER -type f -user root ! -perm -o=r ! -path "/proc/*" 2>/dev/null | grep -v "\.journal" | while read f; do if [ -r "$f" ]; then ls -l "$f" 2>/dev/null | sed "s,/.*,${SED_RED},"; fi; done) || echo_not_found
   echo ""
 fi
 
@@ -5653,9 +5653,9 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   echo $PATH | tr ":" "\n" | while read d; do
     for f in $(find "$d" -name "*.sh" -o -name "*.sh.*" 2>/dev/null); do
       if ! [ "$IAMROOT" ] && [ -O "$f" ]; then
-        echo "You own the script: $f" | sed {$E} "s,.*,${SED_RED},"
+        echo "You own the script: $f" | sed "s,.*,${SED_RED},"
       elif ! [ "$IAMROOT" ] && [ -w "$f" ]; then #If write permision, win found (no check exploits)
-        echo "You can write script: $f" | sed {$E} "s,.*,${SED_RED_YELLOW},"
+        echo "You can write script: $f" | sed "s,.*,${SED_RED_YELLOW},"
       else
         echo $f | sed {$E} "s,$shscripsG,${SED_GREEN}," | sed {$E} "s,$Wfolders,${SED_RED},";
       fi
@@ -5667,7 +5667,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   if [ "$broken_links" ] || [ "$DEBUG" ]; then 
     print_2title "Broken links in path"
     echo $PATH | tr ":" "\n" | while read d; do
-      find "$d" -type l 2>/dev/null | xargs file 2>/dev/null | grep broken | sed {$E} "s,broken,${SED_RED},";
+      find "$d" -type l 2>/dev/null | xargs file 2>/dev/null | grep broken | sed "s,broken,${SED_RED},";
     done
     echo ""
   fi
@@ -5704,9 +5704,9 @@ fi
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Unexpected in root"
   if [ "$MACPEAS" ]; then
-    (find $ROOT_FOLDER -maxdepth 1 | egrep -v "$commonrootdirsMacG" | sed {$E} "s,.*,${SED_RED},") || echo_not_found
+    (find $ROOT_FOLDER -maxdepth 1 | egrep -v "$commonrootdirsMacG" | sed "s,.*,${SED_RED},") || echo_not_found
   else
-    (find $ROOT_FOLDER -maxdepth 1 | egrep -v "$commonrootdirsG" | sed {$E} "s,.*,${SED_RED},") || echo_not_found
+    (find $ROOT_FOLDER -maxdepth 1 | egrep -v "$commonrootdirsG" | sed "s,.*,${SED_RED},") || echo_not_found
   fi
   echo ""
 fi
@@ -5894,14 +5894,14 @@ fi
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Checking for TTY (sudo/su) passwords in audit logs"
   aureport --tty 2>/dev/null | egrep "su |sudo " | sed {$E} "s,su|sudo,${SED_RED},g"
-  find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed {$E} "s,\"su\"|\"sudo\",${SED_RED},g" | sed {$E} "s,data=.*,${SED_RED},g"
+  find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed {$E} "s,\"su\"|\"sudo\",${SED_RED},g" | sed "s,data=.*,${SED_RED},g"
   echo ""
 fi
 
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Checking for TTY (sudo/su) passwords in audit logs"
   aureport --tty 2>/dev/null | egrep "su |sudo " | sed {$E} "s,su|sudo,${SED_RED},g"
-  find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed {$E} "s,\"su\"|\"sudo\",${SED_RED},g" | sed {$E} "s,data=.*,${SED_RED},g"
+  find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed {$E} "s,\"su\"|\"sudo\",${SED_RED},g" | sed "s,data=.*,${SED_RED},g"
   echo ""
 fi
 

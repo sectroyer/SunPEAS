@@ -5124,7 +5124,7 @@ fi
 if [ "$sshconfig" ]; then
   echo ""
   echo "Searching inside /etc/ssh/ssh_config for interesting info"
-  grep -v "^#"  ${ROOT_FOLDER}etc/ssh/ssh_config 2>/dev/null | egrep -v "\W+\#|^#" 2>/dev/null | grep -v "^$" | sed {$E} "s,Host,${SED_RED}," | sed "sForwardAgent,${SED_RED}," | sed "sUser,${SED_RED}," | sed "sProxyCommand,${SED_RED},"
+  grep -v "^#"  ${ROOT_FOLDER}etc/ssh/ssh_config 2>/dev/null | egrep -v "\W+\#|^#" 2>/dev/null | grep -v "^$" | sed {$E} "s,Host,${SED_RED}," | sed "s,ForwardAgent,${SED_RED}," | sed "s,User,${SED_RED}," | sed "s,ProxyCommand,${SED_RED},"
 fi
 echo ""
 
@@ -5873,7 +5873,7 @@ fi
 
 if [ "$PSTORAGE_PHP_FILES" ] || [ "$DEBUG" ]; then
   print_2title "Searching passwords in config PHP files"
-  printf "%s\n" "$PSTORAGE_PHP_FILES" | while read c; do egrep -iIH "(pwd|passwd|password|PASSWD|PASSWORD|dbuser|dbpass).*[=:].+|define ?\('(\w*passw|\w*user|\w*datab)" "$c" 2>/dev/null | egrep -v "function|password.*= ?\"\"|password.*= ?''" | sed '/^.\{150\}./d' | sort | uniq | sed {$E} "s,[pP][aA][sS][sS][wW]|[dD][bB]_[pP][aA][sS][sS],${SED_RED},g"; done
+  printf "%s\n" "$PSTORAGE_PHP_FILES" | while read c; do egrep -iIH "(pwd|passwd|password|PASSWD|PASSWORD|dbuser|dbpass).*[=:].+|define ?\('(\w*passw|\w*user|\w*datab)" "$c" 2>/dev/null | egrep -v "function|password.*= ?\"\"|password.*= ?''" | sed '/^.\{150\}./d' | sort | uniq | sed "s,[dD][bB]_[pP][aA][sS][sS],${SED_RED},g" | sed "s,[pP][aA][sS][sS][wW]${SED_RED},g" ; done
   echo ""
 fi
 
@@ -5885,15 +5885,15 @@ fi
 
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Checking for TTY (sudo/su) passwords in audit logs"
-  aureport --tty 2>/dev/null | egrep "su |sudo " | sed {$E} "s,su|sudo,${SED_RED},g"
+  aureport --tty 2>/dev/null | egrep "su |sudo " | sed "s,sudo,${SED_RED},g" | sed "s,su,${SED_RED},g" 
   find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed {$E} "s,\"su\"|\"sudo\",${SED_RED},g" | sed "s,data=.*,${SED_RED},g"
   echo ""
 fi
 
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Checking for TTY (sudo/su) passwords in audit logs"
-  aureport --tty 2>/dev/null | egrep "su |sudo " | sed {$E} "s,su|sudo,${SED_RED},g"
-  find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed {$E} "s,\"su\"|\"sudo\",${SED_RED},g" | sed "s,data=.*,${SED_RED},g"
+  aureport --tty 2>/dev/null | egrep "su |sudo " | sed "s,sudo,${SED_RED},g" | sed "s,su,${SED_RED},g" 
+  find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed "s,\"sudo\",${SED_RED},g" | sed "s,\"su\",${SED_RED},g" | sed "s,data=.*,${SED_RED},g"
   echo ""
 fi
 
@@ -5905,7 +5905,7 @@ fi
 
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Searching passwords inside logs (limit 70)"
-  (find /var/log/ /var/logs/ /private/var/log -type f -exec grep -R -i "pwd\|passw" "{}" \;) 2>/dev/null | sed '/^.\{150\}./d' | sort | uniq | grep -v "File does not exist:\|modules-config/config-set-passwords\|config-set-passwords already ran\|script not found or unable to stat:\|\"GET /.*\" 404" | head -n 70 | sed {$E} "s,pwd|passw,${SED_RED},"
+  (find /var/log/ /var/logs/ /private/var/log -type f -exec grep -R -i "pwd\|passw" "{}" \;) 2>/dev/null | sed '/^.\{150\}./d' | sort | uniq | grep -v "File does not exist:\|modules-config/config-set-passwords\|config-set-passwords already ran\|script not found or unable to stat:\|\"GET /.*\" 404" | head -n 70 | sed "s,pwd,${SED_RED}," | sed "s,passw,${SED_RED}," 
   echo ""
 fi
 

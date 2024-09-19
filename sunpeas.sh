@@ -4325,8 +4325,7 @@ fi
 
 if [ "$PSTORAGE_BACKUP_MANAGER" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Backup Manager Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_BACKUP_MANAGER\" | egrep \"storage\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "storage.php"; fi; fi; printf "%s" "$PSTORAGE_BACKUP_MANAGER" | egrep "storage\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,storage\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "'pass'|'password'|'user'|'database'|'host'" | sed "s,password,${SED_RED},g" | sed "s,pass,${SED_RED},g" | sed "s,user,${SED_RED},g" | sed "s,database,${SED_RED},g" | sed "s,host,${SED_RED},g"
-		; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_BACKUP_MANAGER\" | egrep \"storage\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "storage.php"; fi; fi; printf "%s" "$PSTORAGE_BACKUP_MANAGER" | egrep "storage\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,storage\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "'pass'|'password'|'user'|'database'|'host'" | sed "s,password,${SED_RED},g" | sed "s,pass,${SED_RED},g" | sed "s,user,${SED_RED},g" | sed "s,database,${SED_RED},g" | sed "s,host,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_BACKUP_MANAGER\" | egrep \"database\.php$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "database.php"; fi; fi; printf "%s" "$PSTORAGE_BACKUP_MANAGER" | egrep "database\.php$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,database\.php$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep "'pass'|'password'|'user'|'database'|'host'" | sed "s,password,${SED_RED},g" | sed "s,pass,${SED_RED},g" | sed "s,user,${SED_RED},g" | sed "s,database,${SED_RED},g" | sed "s,host,${SED_RED},g"; done; echo "";
 fi
 

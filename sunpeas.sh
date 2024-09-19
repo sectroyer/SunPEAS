@@ -577,11 +577,11 @@ icmp_recon (){
   #Discover hosts inside a /24 subnetwork using ping (start pingging broadcast addresses)
 	IP3=$(echo $1 | cut -d "." -f 1,2,3)
 
-  (timeout 1 ping -b -c 1 "$IP3.255" 2>/dev/null | grep "icmp_seq" | sed {$E} "s,[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+,${SED_RED},") &
-  (timeout 1 ping -b -c 1 "255.255.255.255" 2>/dev/null | grep "icmp_seq" | sed {$E} "s,[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+,${SED_RED},") &
+  (timeout 1 ping -b -c 1 "$IP3.255" 2>/dev/null | grep "icmp_seq" | sed "s,[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*,${SED_RED},") &
+  (timeout 1 ping -b -c 1 "255.255.255.255" 2>/dev/null | grep "icmp_seq" | sed "s,[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*,${SED_RED},") &
 	for j in $(myseq 0 254)
 	do
-    (timeout 1 ping -b -c 1 "$IP3.$j" 2>/dev/null | grep "icmp_seq" | sed {$E} "s,[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+,${SED_RED},") &
+    (timeout 1 ping -b -c 1 "$IP3.$j" 2>/dev/null | grep "icmp_seq" | sed "s,[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*,${SED_RED},") &
 	done
   wait
 }
@@ -600,7 +600,7 @@ tcp_recon (){
       if [ "$FOUND_BASH" ] && [ "$(command -v timeout 2>/dev/null || echo -n '')" ]; then
         timeout 2.5 $FOUND_BASH -c "(echo </dev/tcp/$IP3.$j/$p) 2>/dev/null && echo -e \"\n[+] Open port at: $IP3.$j:$p\"" &
       elif [ "$NC_SCAN" ]; then
-        ($NC_SCAN "$IP3"."$j" "$p" 2>&1 | grep -iv "Connection refused\|No route\|Version\|bytes\| out" | sed {$E} "s,[0-9\.],${SED_RED},g") &
+        ($NC_SCAN "$IP3"."$j" "$p" 2>&1 | grep -iv "Connection refused\|No route\|Version\|bytes\| out" | sed "s,[0-9\.],${SED_RED},g") &
       fi
     done
     wait
@@ -672,7 +672,7 @@ tcp_port_scan (){
     if [ "$FOUND_BASH" ]; then
       $FOUND_BASH -c "(echo </dev/tcp/$IP/$p) 2>/dev/null && echo -n \"[+] Open port at: $IP:$p\"" &
     elif [ "$NC_SCAN" ]; then
-      ($NC_SCAN "$IP" "$p" 2>&1 | grep -iv "Connection refused\|No route\|Version\|bytes\| out" | sed {$E} "s,[0-9\.],${SED_RED},g") &
+      ($NC_SCAN "$IP" "$p" 2>&1 | grep -iv "Connection refused\|No route\|Version\|bytes\| out" | sed "s,[0-9\.],${SED_RED},g") &
     fi
   done
   wait
@@ -697,7 +697,7 @@ discover_network (){
 
   #Using fping if possible
   if [ "$FPING" ]; then
-    $FPING -a -q -g "$DISCOVERY" | sed {$E} "s,.*,${SED_RED},"
+    $FPING -a -q -g "$DISCOVERY" | sed "s,.*,${SED_RED},"
 
   #Loop using ping
   else
@@ -1062,17 +1062,58 @@ if ! [ "$mounted" ]; then mounted="ImPoSSssSiBlEee"; fi
 
 mountG="swap|/cdrom|/floppy|/dev/shm"
 
+mountG1="swap"
+mountG2="/cdrom"
+mountG3="/floppy"
+mountG4="/dev/shm"
+
 notmounted=$(cat /etc/fstab 2>/dev/null | grep "^/" | egrep -v "$mountG" | awk '{print $1}' | egrep -v "$mounted" | tr '\n' '|')"ImPoSSssSiBlEee"
 
-containercapsB="sys_admin|sys_ptrace|sys_module|dac_read_search|dac_override|sys_rawio|syslog|net_raw|net_admin"
+containercapsB1="sys_admin"
+containercapsB2="sys_ptrace"
+containercapsB3="sys_module"
+containercapsB4="dac_read_search"
+containercapsB5="dac_override"
+containercapsB6="sys_rawio"
+containercapsB7="syslog"
+containercapsB8="net_raw"
+containercapsB9="net_admin"
 
 GREP_IGNORE_MOUNTS="/ /|/null | proc proc |/dev/console"
 
-GCP_GOOD_SCOPES="/devstorage.read_only|/logging.write|/monitoring|/servicecontrol|/service.management.readonly|/trace.append"
+GCP_GOOD_SCOPES1="/devstorage.read_only"
+GCP_GOOD_SCOPES2="/logging.write"
+GCP_GOOD_SCOPES3="/monitoring"
+GCP_GOOD_SCOPES4="/servicecontrol"
+GCP_GOOD_SCOPES5="/service.management.readonly"
+GCP_GOOD_SCOPES6="/trace.append"
 
-GCP_BAD_SCOPES="/cloud-platform|/compute"
+GCP_BAD_SCOPES1="/cloud-platform"
+GCP_BAD_SCOPES2="/compute"
 
-timersG="anacron.timer|apt-daily.timer|apt-daily-upgrade.timer|dpkg-db-backup.timer|e2scrub_all.timer|fstrim.timer|fwupd-refresh.timer|geoipupdate.timer|io.netplan.Netplan|logrotate.timer|man-db.timer|mlocate.timer|motd-news.timer|phpsessionclean.timer|plocate-updatedb.timer|snapd.refresh.timer|snapd.snap-repair.timer|systemd-tmpfiles-clean.timer|systemd-readahead-done.timer|ua-license-check.timer|ua-messaging.timer|ua-timer.timer|ureadahead-stop.timer"
+timersG1="anacron.timer"
+timersG2="apt-daily.timer"
+timersG3="apt-daily-upgrade.timer"
+timersG4="dpkg-db-backup.timer"
+timersG5="e2scrub_all.timer"
+timersG6="fstrim.timer"
+timersG7="fwupd-refresh.timer"
+timersG8="geoipupdate.timer"
+timersG9="io.netplan.Netplan"
+timersG10="logrotate.timer"
+timersG11="man-db.timer"
+timersG12="mlocate.timer"
+timersG13="motd-news.timer"
+timersG14="phpsessionclean.timer"
+timersG15="plocate-updatedb.timer"
+timersG16="snapd.refresh.timer"
+timersG17="snapd.snap-repair.timer"
+timersG18="systemd-tmpfiles-clean.timer"
+timersG19="systemd-readahead-done.timer"
+timersG20="ua-license-check.timer"
+timersG21="ua-messaging.timer"
+timersG22="ua-timer.timer"
+timersG23="ureadahead-stop.timer"
 
 dbuslistG="^:1\.[0-9\.]+|com.hp.hplip|com.intel.tss2.Tabrmd|com.redhat.ifcfgrh1|com.redhat.NewPrinterNotification|com.redhat.PrinterDriversInstaller|com.redhat.RHSM1|com.redhat.RHSM1.Facts|com.redhat.tuned|com.ubuntu.LanguageSelector|com.ubuntu.SoftwareProperties|com.ubuntu.SystemService|com.ubuntu.USBCreator|com.ubuntu.WhoopsiePreferences|io.netplan.Netplan|io.snapcraft.SnapdLoginService|fi.epitest.hostap.WPASupplicant|fi.w1.wpa_supplicant1|NAME|net.hadess.SwitcherooControl|org.blueman.Mechanism|org.bluez|org.debian.apt|org.fedoraproject.FirewallD1|org.fedoraproject.Setroubleshootd|org.fedoraproject.SetroubleshootFixit|org.fedoraproject.SetroubleshootPrivileged|org.freedesktop.Accounts|org.freedesktop.Avahi|org.freedesktop.bolt|org.freedesktop.ColorManager|org.freedesktop.DBus|org.freedesktop.DisplayManager|org.freedesktop.fwupd|org.freedesktop.GeoClue2|org.freedesktop.hostname1|org.freedesktop.import1|org.freedesktop.locale1|org.freedesktop.login1|org.freedesktop.machine1|org.freedesktop.ModemManager1|org.freedesktop.NetworkManager|org.freedesktop.network1|org.freedesktop.nm_dispatcher|org.freedesktop.nm_priv_helper|org.freedesktop.PackageKit|org.freedesktop.PolicyKit1|org.freedesktop.portable1|org.freedesktop.realmd|org.freedesktop.RealtimeKit1|org.freedesktop.SystemToolsBackends|org.freedesktop.SystemToolsBackends.[a-zA-Z0-9_]+|org.freedesktop.resolve1|org.freedesktop.systemd1|org.freedesktop.thermald|org.freedesktop.timedate1|org.freedesktop.timesync1|org.freedesktop.UDisks2|org.freedesktop.UPower|org.gnome.DisplayManager|org.opensuse.CupsPkHelper.Mechanism"
 
@@ -1305,7 +1346,21 @@ STRACE="$(command -v strace 2>/dev/null || echo -n '')"
 
 STRINGS="$(command -v strings 2>/dev/null || echo -n '')"
 
-capsB="=ep|cap_chown|cap_former|cap_setfcap|cap_dac_override|cap_dac_read_search|cap_setuid|cap_setgid|cap_kill|cap_net_bind_service|cap_net_raw|cap_net_admin|cap_sys_admin|cap_sys_ptrace|cap_sys_module"
+capsB1="=ep"
+capsB2="cap_chown"
+capsB3="cap_former"
+capsB4="cap_setfcap"
+capsB5="cap_dac_override"
+capsB6="cap_dac_read_search"
+capsB7="cap_setuid"
+capsB8="cap_setgid"
+capsB9="cap_kill"
+capsB10="cap_net_bind_service"
+capsB11="cap_net_raw"
+capsB12="cap_net_admin"
+capsB13="cap_sys_admin"
+capsB14="cap_sys_ptrace"
+capsB15="cap_sys_module"
 
 capsVB="cap_sys_admin:mount|python \
 cap_sys_ptrace:python \
@@ -1553,7 +1608,7 @@ enumerateDockerSockets() {
       if ! [ "$IAMROOT" ] && [ -w "$int_sock" ]; then
         if echo "$int_sock" | egrep "docker" &> /dev/null; then
           dock_sock="$int_sock"
-          echo "You have write permissions over Docker socket $dock_sock" | sed {$E} "s,$dock_sock,${SED_RED_YELLOW},g"
+          echo "You have write permissions over Docker socket $dock_sock" | sed "s,$dock_sock,${SED_RED_YELLOW},g"
           echo "Docker enummeration:"
           docker_enumerated=""
 
@@ -1571,11 +1626,11 @@ enumerateDockerSockets() {
           fi
         
         else
-          echo "You have write permissions over interesting socket $int_sock" | sed {$E} "s,$int_sock,${SED_RED},g"
+          echo "You have write permissions over interesting socket $int_sock" | sed "s,$int_sock,${SED_RED},g"
         fi
 
       else
-        echo "You don't have write permissions over interesting socket $int_sock" | sed {$E} "s,$int_sock,${SED_GREEN},g"
+        echo "You don't have write permissions over interesting socket $int_sock" | sed "s,$int_sock,${SED_GREEN},g"
       fi
     done
   fi
@@ -1882,7 +1937,7 @@ su_try_pwd(){
   PASSWORDTRY=$2
   trysu=$(echo "$PASSWORDTRY" | timeout 1 su $BFUSER -c whoami 2>/dev/null)
   if [ "$trysu" ]; then
-    echo "  You can login as $BFUSER using password: $PASSWORDTRY" | sed {$E} "s,.*,${SED_RED_YELLOW},"
+    echo "  You can login as $BFUSER using password: $PASSWORDTRY" | sed "s,.*,${SED_RED_YELLOW},"
   fi
 }
 
@@ -1924,15 +1979,15 @@ print_list(){
 
 check_critial_root_path(){
   folder_path="$1"
-  if [ -w "$folder_path" ]; then echo "You have write privileges over $folder_path" | sed {$E} "s,.*,${SED_RED_YELLOW},"; fi
-  if [ "$(find $folder_path -type f '(' '(' -user $USER ')' -or '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')' 2>/dev/null)" ]; then echo "You have write privileges over $(find $folder_path -type f '(' '(' -user $USER ')' -or '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')')" | sed {$E} "s,.*,${SED_RED_YELLOW},"; fi
+  if [ -w "$folder_path" ]; then echo "You have write privileges over $folder_path" | sed "s,.*,${SED_RED_YELLOW},"; fi
+  if [ "$(find $folder_path -type f '(' '(' -user $USER ')' -or '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')' 2>/dev/null)" ]; then echo "You have write privileges over $(find $folder_path -type f '(' '(' -user $USER ')' -or '(' -perm -o=w ')' -or  '(' -perm -g=w -and '(' $wgroups ')' ')' ')')" | sed "s,.*,${SED_RED_YELLOW},"; fi
   if [ "$(find $folder_path -type f -not -user root 2>/dev/null)" ]; then echo "The following files aren't owned by root: $(find $folder_path -type f -not -user root 2>/dev/null)"; fi
 }
 
 macosNotSigned(){
   for f in $1/*; do
     if codesign -vv -d \"$f\" 2>&1 | grep 'not signed' &> /dev/null; then
-      echo "$f isn't signed" | sed {$E} "s,.*,${SED_RED},"
+      echo "$f isn't signed" | sed "s,.*,${SED_RED},"
     fi
   done
 }
@@ -2018,7 +2073,7 @@ if (busctl list 2>/dev/null | grep com.ubuntu.USBCreator &> /dev/null) || [ "$DE
         pc_major=$(echo "$pc_version" | cut -d. -f1)
         pc_minor=$(echo "$pc_version" | cut -d. -f2)
         if [ "$pc_length" -eq 4 ] && [ "$pc_major" -eq 0 ] && [ "$pc_minor"  -lt 21 ]; then
-            echo "Vulnerable!!" | sed {$E} "s,.*,${SED_RED},"
+            echo "Vulnerable!!" | sed "s,.*,${SED_RED},"
         fi
     fi
 fi
@@ -2049,7 +2104,7 @@ fi
 if [ -f "/etc/fstab" ] || [ "$DEBUG" ]; then
     print_2title "Unmounted file-system?"
     print_info "Check if you can mount umounted devices"
-    grep -v "^#" /etc/fstab 2>/dev/null | egrep -v "\W+\#|^#" | sed {$E} "s,$mountG,${SED_GREEN},g" | sed "s,$notmounted,${SED_RED},g" | sed "s%$mounted%${SED_BLUE}%g" | sed "s,$Wfolders,${SED_RED}," | sed {$E} "s,$mountpermsB,${SED_RED},g" | sed {$E} "s,$mountpermsG,${SED_GREEN},g"
+    grep -v "^#" /etc/fstab 2>/dev/null | egrep -v "\W+\#|^#" | sed "s,$mountG1,${SED_GREEN},g" | sed "s,$mountG2,${SED_GREEN},g" | sed "s,$mountG3,${SED_GREEN},g" | sed "s,$mountG4,${SED_GREEN},g" | sed "s,$notmounted,${SED_RED},g" | sed "s%$mounted%${SED_BLUE}%g" | sed "s,$Wfolders,${SED_RED}," | sed {$E} "s,$mountpermsB,${SED_RED},g" | sed {$E} "s,$mountpermsG,${SED_GREEN},g"
     echo ""
 fi
 
@@ -2272,30 +2327,30 @@ else
     if [ "$podmancontainers" -ne "0" ]; then containerCounts="${containerCounts}podman($podmancontainers) "; fi
     if [ "$lxccontainers" -ne "0" ]; then containerCounts="${containerCounts}lxc($lxccontainers) "; fi
     if [ "$rktcontainers" -ne "0" ]; then containerCounts="${containerCounts}rkt($rktcontainers) "; fi
-    echo "Yes $containerCounts" | sed {$E} "s,.*,${SED_RED},"
+    echo "Yes $containerCounts" | sed "s,.*,${SED_RED},"
     
     # List any running containers
-    if [ "$dockercontainers" -ne "0" ]; then echo "Running Docker Containers" | sed {$E} "s,.*,${SED_RED},"; docker ps | tail -n +2 2>/dev/null; echo ""; fi
-    if [ "$podmancontainers" -ne "0" ]; then echo "Running Podman Containers" | sed {$E} "s,.*,${SED_RED},"; podman ps | tail -n +2 2>/dev/null; echo ""; fi
-    if [ "$lxccontainers" -ne "0" ]; then echo "Running LXC Containers" | sed {$E} "s,.*,${SED_RED},"; lxc list 2>/dev/null; echo ""; fi
-    if [ "$rktcontainers" -ne "0" ]; then echo "Running RKT Containers" | sed {$E} "s,.*,${SED_RED},"; rkt list 2>/dev/null; echo ""; fi
+    if [ "$dockercontainers" -ne "0" ]; then echo "Running Docker Containers" | sed "s,.*,${SED_RED},"; docker ps | tail -n +2 2>/dev/null; echo ""; fi
+    if [ "$podmancontainers" -ne "0" ]; then echo "Running Podman Containers" | sed "s,.*,${SED_RED},"; podman ps | tail -n +2 2>/dev/null; echo ""; fi
+    if [ "$lxccontainers" -ne "0" ]; then echo "Running LXC Containers" | sed "s,.*,${SED_RED},"; lxc list 2>/dev/null; echo ""; fi
+    if [ "$rktcontainers" -ne "0" ]; then echo "Running RKT Containers" | sed "s,.*,${SED_RED},"; rkt list 2>/dev/null; echo ""; fi
 fi
 
 #If docker
 if echo "$containerType" | grep -i "docker" &> /dev/null; then
     print_2title "Docker Container details"
     inDockerGroup
-    print_list "Am I inside Docker group .......$NC $DOCKER_GROUP\n" | sed {$E} "s,Yes,${SED_RED_YELLOW},"
+    print_list "Am I inside Docker group .......$NC $DOCKER_GROUP\n" | sed "s,Yes,${SED_RED_YELLOW},"
     print_list "Looking and enumerating Docker Sockets (if any):\n"$NC
     enumerateDockerSockets
     print_list "Docker version .................$NC$dockerVersion"
     checkDockerVersionExploits
-    print_list "Vulnerable to CVE-2019-5736 ....$NC$VULN_CVE_2019_5736"$NC | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "Vulnerable to CVE-2019-13139 ...$NC$VULN_CVE_2019_13139"$NC | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "Vulnerable to CVE-2021-41091 ...$NC$VULN_CVE_2021_41091"$NC | sed {$E} "s,Yes,${SED_RED_YELLOW},"
+    print_list "Vulnerable to CVE-2019-5736 ....$NC$VULN_CVE_2019_5736"$NC | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "Vulnerable to CVE-2019-13139 ...$NC$VULN_CVE_2019_13139"$NC | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "Vulnerable to CVE-2021-41091 ...$NC$VULN_CVE_2021_41091"$NC | sed "s,Yes,${SED_RED_YELLOW},"
     if [ "$inContainer" ]; then
         checkDockerRootless
-        print_list "Rootless Docker? ............... $DOCKER_ROOTLESS\n"$NC | sed {$E} "s,No,${SED_RED}," | sed {$E} "s,Yes,${SED_GREEN},"
+        print_list "Rootless Docker? ............... $DOCKER_ROOTLESS\n"$NC | sed "s,No,${SED_RED}," | sed "s,Yes,${SED_GREEN},"
         echo ""
     fi
     if df -h | grep docker; then
@@ -2322,42 +2377,42 @@ if [ "$inContainer" ]; then
     if [ "$(cat /proc/self/uid_map 2>/dev/null)" ]; then (printf "enabled"; cat /proc/self/uid_map) | sed "s,enabled,${SED_GREEN},"; else echo "disabled" | sed "s,disabled,${SED_RED},"; fi
 
     checkContainerExploits
-    print_list "Vulnerable to CVE-2019-5021 .... $VULN_CVE_2019_5021\n"$NC | sed {$E} "s,Yes,${SED_RED_YELLOW},"
+    print_list "Vulnerable to CVE-2019-5021 .... $VULN_CVE_2019_5021\n"$NC | sed "s,Yes,${SED_RED_YELLOW},"
 
     print_3title "Breakout via mounts"
     print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation/docker-breakout/docker-breakout-privilege-escalation/sensitive-mounts"
     
     checkProcSysBreakouts
-    print_list "/proc mounted? ................. $proc_mounted\n" | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "/dev mounted? .................. $dev_mounted\n" | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "Run unshare .................... $run_unshare\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "release_agent breakout 1........ $release_agent_breakout1\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "release_agent breakout 2........ $release_agent_breakout2\n" | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "release_agent breakout 3........ $release_agent_breakout3\n" | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "core_pattern breakout .......... $core_pattern_breakout\n" | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "binfmt_misc breakout ........... $binfmt_misc_breakout\n" | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "uevent_helper breakout ......... $uevent_helper_breakout\n" | sed {$E} "s,Yes,${SED_RED_YELLOW},"
-    print_list "is modprobe present ............ $modprobe_present\n" | sed {$E} "s,/.*,${SED_RED},"
-    print_list "DoS via panic_on_oom ........... $panic_on_oom_dos\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "DoS via panic_sys_fs ........... $panic_sys_fs_dos\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "DoS via sysreq_trigger_dos ..... $sysreq_trigger_dos\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "/proc/config.gz readable ....... $proc_configgz_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "/proc/sched_debug readable ..... $sched_debug_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "/proc/*/mountinfo readable ..... $mountinfo_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "/sys/kernel/security present ... $security_present\n" | sed {$E} "s,Yes,${SED_RED},"
-    print_list "/sys/kernel/security writable .. $security_writable\n" | sed {$E} "s,Yes,${SED_RED},"
+    print_list "/proc mounted? ................. $proc_mounted\n" | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "/dev mounted? .................. $dev_mounted\n" | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "Run unshare .................... $run_unshare\n" | sed "s,Yes,${SED_RED},"
+    print_list "release_agent breakout 1........ $release_agent_breakout1\n" | sed "s,Yes,${SED_RED},"
+    print_list "release_agent breakout 2........ $release_agent_breakout2\n" | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "release_agent breakout 3........ $release_agent_breakout3\n" | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "core_pattern breakout .......... $core_pattern_breakout\n" | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "binfmt_misc breakout ........... $binfmt_misc_breakout\n" | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "uevent_helper breakout ......... $uevent_helper_breakout\n" | sed "s,Yes,${SED_RED_YELLOW},"
+    print_list "is modprobe present ............ $modprobe_present\n" | sed "s,/.*,${SED_RED},"
+    print_list "DoS via panic_on_oom ........... $panic_on_oom_dos\n" | sed "s,Yes,${SED_RED},"
+    print_list "DoS via panic_sys_fs ........... $panic_sys_fs_dos\n" | sed "s,Yes,${SED_RED},"
+    print_list "DoS via sysreq_trigger_dos ..... $sysreq_trigger_dos\n" | sed "s,Yes,${SED_RED},"
+    print_list "/proc/config.gz readable ....... $proc_configgz_readable\n" | sed "s,Yes,${SED_RED},"
+    print_list "/proc/sched_debug readable ..... $sched_debug_readable\n" | sed "s,Yes,${SED_RED},"
+    print_list "/proc/*/mountinfo readable ..... $mountinfo_readable\n" | sed "s,Yes,${SED_RED},"
+    print_list "/sys/kernel/security present ... $security_present\n" | sed "s,Yes,${SED_RED},"
+    print_list "/sys/kernel/security writable .. $security_writable\n" | sed "s,Yes,${SED_RED},"
     if [ "$EXTRA_CHECKS" ]; then
-      print_list "/proc/kmsg readable ............ $kmsg_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/proc/kallsyms readable ........ $kallsyms_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/proc/self/mem readable ........ $self_mem_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/proc/kcore readable ........... $kcore_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/proc/kmem readable ............ $kmem_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/proc/kmem writable ............ $kmem_writable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/proc/mem readable ............. $mem_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/proc/mem writable ............. $mem_writable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/sys/kernel/vmcoreinfo readable  $vmcoreinfo_readable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/sys/firmware/efi/vars writable  $efi_vars_writable\n" | sed {$E} "s,Yes,${SED_RED},"
-      print_list "/sys/firmware/efi/efivars writable $efi_efivars_writable\n" | sed {$E} "s,Yes,${SED_RED},"
+      print_list "/proc/kmsg readable ............ $kmsg_readable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/proc/kallsyms readable ........ $kallsyms_readable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/proc/self/mem readable ........ $self_mem_readable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/proc/kcore readable ........... $kcore_readable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/proc/kmem readable ............ $kmem_readable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/proc/kmem writable ............ $kmem_writable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/proc/mem readable ............. $mem_readable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/proc/mem writable ............. $mem_writable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/sys/kernel/vmcoreinfo readable  $vmcoreinfo_readable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/sys/firmware/efi/vars writable  $efi_vars_writable\n" | sed "s,Yes,${SED_RED},"
+      print_list "/sys/firmware/efi/efivars writable $efi_efivars_writable\n" | sed "s,Yes,${SED_RED},"
     fi
     
     echo ""
@@ -2395,10 +2450,10 @@ if [ "$inContainer" ]; then
     print_2title "Container Capabilities"
     print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation/docker-breakout/docker-breakout-privilege-escalation#capabilities-abuse-escape"
     if [ "$(command -v capsh || echo -n '')" ]; then 
-      capsh --print 2>/dev/null | sed {$E} "s,$containercapsB,${SED_RED},g"
+      capsh --print 2>/dev/null | sed "s,$containercapsB1,${SED_RED},g" | sed "s,$containercapsB2,${SED_RED},g" | sed "s,$containercapsB3,${SED_RED},g" | sed "s,$containercapsB4,${SED_RED},g" | sed "s,$containercapsB5,${SED_RED},g" | sed "s,$containercapsB6,${SED_RED},g" | sed "s,$containercapsB7,${SED_RED},g" | sed "s,$containercapsB8,${SED_RED},g" 
     else
       defautl_docker_caps="00000000a80425fb=cap_chown,cap_dac_override,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,cap_net_bind_service,cap_net_raw,cap_sys_chroot,cap_mknod,cap_audit_write,cap_setfcap"
-      cat /proc/self/status | tr '\t' ' ' | grep Cap | sed {$E} "s, .*,${SED_RED},g" | sed {$E} "s/00000000a80425fb/$defautl_docker_caps/g" | sed {$E} "s,0000000000000000|00000000a80425fb,${SED_GREEN},g"
+      cat /proc/self/status | tr '\t' ' ' | grep Cap | sed "s, .*,${SED_RED},g" | sed "s/00000000a80425fb/$defautl_docker_caps/g" | sed "s,0000000000000000,${SED_GREEN},g" | sed "s,00000000a80425fb,${SED_GREEN},g"
       echo $ITALIC"Run capsh --decode=<hex> to decode the capabilities"$NC
     fi
     echo ""
@@ -2406,9 +2461,9 @@ if [ "$inContainer" ]; then
     print_2title "Privilege Mode"
     if [ -x "$(command -v fdisk || echo -n '')" ]; then
         if [ "$(fdisk -l 2>/dev/null | wc -l)" -gt 0 ]; then
-            echo "Privilege Mode is enabled"| sed {$E} "s,enabled,${SED_RED_YELLOW},"
+            echo "Privilege Mode is enabled"| sed "s,enabled,${SED_RED_YELLOW},"
         else
-            echo "Privilege Mode is disabled"| sed {$E} "s,disabled,${SED_GREEN},"
+            echo "Privilege Mode is disabled"| sed "s,disabled,${SED_GREEN},"
         fi
     else
         echo_not_found
@@ -2416,7 +2471,7 @@ if [ "$inContainer" ]; then
     echo ""
 
     print_2title "Interesting Files Mounted"
-    (mount -l || cat /proc/self/mountinfo || cat /proc/1/mountinfo || cat /proc/mounts || cat /proc/self/mounts || cat /proc/1/mounts )2>/dev/null | egrep -v "$GREP_IGNORE_MOUNTS" | sed {$E} "s,.sock,${SED_RED}," | sed {$E} "s,docker.sock,${SED_RED_YELLOW}," | sed {$E} "s,/dev/,${SED_RED},g"
+    (mount -l || cat /proc/self/mountinfo || cat /proc/1/mountinfo || cat /proc/mounts || cat /proc/self/mounts || cat /proc/1/mounts )2>/dev/null | egrep -v "$GREP_IGNORE_MOUNTS" | sed "s,.sock,${SED_RED}," | sed "s,docker.sock,${SED_RED_YELLOW}," | sed "s,/dev/,${SED_RED},g"
     echo ""
 
     print_2title "Possible Entrypoints"
@@ -2633,7 +2688,7 @@ if [ "$is_gcp_function" = "Yes" ]; then
             echo "  Email: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/${sa}email")
             echo "  Aliases: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/${sa}aliases")
             echo "  Identity: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/${sa}identity")
-            echo "  Scopes: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/${sa}scopes") | sed {$E} "s,${GCP_GOOD_SCOPES},${SED_GREEN},g" | sed {$E} "s,${GCP_BAD_SCOPES},${SED_RED},g"
+            echo "  Scopes: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/${sa}scopes") | sed "s,${GCP_GOOD_SCOPES1},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES2},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES3},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES4},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES5},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES6},${SED_GREEN},g" | sed "s,${GCP_BAD_SCOPES},${SED_RED1},g" | sed "s,${GCP_BAD_SCOPES2},${SED_RED},g" 
             echo "  Token: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/${sa}token")
             echo "  ==============  "
         done
@@ -2729,7 +2784,7 @@ if [ "$is_gcp_vm" = "Yes" ]; then
             echo "  Email: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/$sa/email")
             echo "  Aliases: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/$sa/aliases")
             echo "  Identity: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/$sa/identity")
-            echo "  Scopes: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/$sa/scopes") | sed {$E} "s,${GCP_GOOD_SCOPES},${SED_GREEN},g" | sed {$E} "s,${GCP_BAD_SCOPES},${SED_RED},g"
+            echo "  Scopes: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/${sa}scopes") | sed "s,${GCP_GOOD_SCOPES1},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES2},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES3},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES4},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES5},${SED_GREEN},g" | sed "s,${GCP_GOOD_SCOPES6},${SED_GREEN},g" | sed "s,${GCP_BAD_SCOPES},${SED_RED1},g" | sed "s,${GCP_BAD_SCOPES2},${SED_RED},g" 
             echo "  Token: "$(eval $gcp_req "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/$sa/token")
             echo "  ==============  "
         done
@@ -3060,7 +3115,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
         cpid=$(echo "$psline" | awk '{print $2}')
         caphex=0x"$(cat /proc/$cpid/status 2> /dev/null | grep CapEff | awk '{print $2}')"
         if [ "$caphex" ] && [ "$caphex" != "0x" ] && echo "$caphex" | grep -v '0x0000000000000000' &> /dev/null; then
-          printf "  └─(${DG}Caps${NC}) "; capsh --decode=$caphex 2>/dev/null | grep -v "WARNING:" | sed {$E} "s,$capsB,${SED_RED},g"
+          printf "  └─(${DG}Caps${NC}) "; capsh --decode=$caphex 2>/dev/null | grep -v "WARNING:" | sed "s,$capsB1,${SED_RED},g" | sed "s,$capsB2,${SED_RED},g" | sed "s,$capsB3,${SED_RED},g" | sed "s,$capsB4,${SED_RED},g" | sed "s,$capsB5,${SED_RED},g" | sed "s,$capsB6,${SED_RED},g" | sed "s,$capsB7,${SED_RED},g" | sed "s,$capsB8,${SED_RED},g" | sed "s,$capsB9,${SED_RED},g" | sed "s,$capsB10,${SED_RED},g" | sed "s,$capsB12,${SED_RED},g" | sed "s,$capsB13,${SED_RED},g" | sed "s,$capsB14,${SED_RED},g" | sed "s,$capsB15,${SED_RED},g" | sed "s,$capsB11,${SED_RED},g" 
         fi
       fi
     done
@@ -3186,7 +3241,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
         program=$(defaults read "$f" ProgramArguments | egrep -v "^\(|^\)" | cut -d '"' -f 2)
       fi
       if [ -w "$program" ]; then
-        echo "$program" is writable | sed {$E} "s,.*,${SED_RED_YELLOW},";
+        echo "$program" is writable | sed "s,.*,${SED_RED_YELLOW},";
       fi
     done
     echo ""
@@ -3215,7 +3270,7 @@ fi
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "System timers"
   print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#timers"
-  (systemctl list-timers --all 2>/dev/null | egrep -v "(^$|timers listed)" | sed {$E} "s,$timersG,${SED_GREEN},") || echo_not_found
+  (systemctl list-timers --all 2>/dev/null | egrep -v "(^$|timers listed)" | sed "s,$timersG1,${SED_GREEN}," | sed "s,$timersG2,${SED_GREEN}," | sed "s,$timersG3,${SED_GREEN}," | sed "s,$timersG4,${SED_GREEN}," | sed "s,$timersG5,${SED_GREEN}," | sed "s,$timersG6,${SED_GREEN}," | sed "s,$timersG7,${SED_GREEN}," | sed "s,$timersG8,${SED_GREEN}," | sed "s,$timersG9,${SED_GREEN}," | sed "s,$timersG10,${SED_GREEN}," | sed "s,$timersG11,${SED_GREEN}," | sed "s,$timersG12,${SED_GREEN}," | sed "s,$timersG13,${SED_GREEN}," | sed "s,$timersG14,${SED_GREEN}," | sed "s,$timersG15,${SED_GREEN}," | sed "s,$timersG16,${SED_GREEN}," | sed "s,$timersG17,${SED_GREEN}," | sed "s,$timersG18,${SED_GREEN}," | sed "s,$timersG19,${SED_GREEN}," | sed "s,$timersG20,${SED_GREEN}," | sed "s,$timersG21,${SED_GREEN}," | sed "s,$timersG22,${SED_GREEN}," | sed "s,$timersG23,${SED_GREEN}," ) || echo_not_found
   echo ""
 fi
 
@@ -3223,7 +3278,7 @@ print_2title "Analyzing .timer files"
 print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#timers"
 printf "%s\n" "$PSTORAGE_TIMER" | while read t; do
   if ! [ "$IAMROOT" ] && [ -w "$t" ] && ! [ "$SEARCH_IN_FOLDER" ]; then
-    echo "$t" | sed {$E} "s,.*,${SED_RED},g"
+    echo "$t" | sed "s,.*,${SED_RED},g"
   fi
   timerbinpaths=$(grep -Po '^Unit=*(.*?$)' $t 2>/dev/null | cut -d '=' -f2)
   printf "%s\n" "$timerbinpaths" | while read tb; do
@@ -3341,10 +3396,10 @@ if ! [ "$IAMROOT" ]; then
       fi
     fi
     
-    if ! [ "$perms" ]; then echo "$l" | sed {$E} "s,$l,${SED_GREEN},g";
+    if ! [ "$perms" ]; then echo "$l" | sed "s,$l,${SED_GREEN},g";
     else 
-      echo "$l" | sed {$E} "s,$l,${SED_RED},g"
-      echo "  └─(${RED}${perms}${NC})" | sed {$E} "s,Cannot Connect,${SED_GREEN},g"
+      echo "$l" | sed "s,$l,${SED_RED},g"
+      echo "  └─(${RED}${perms}${NC})" | sed "s,Cannot Connect,${SED_GREEN},g"
       # Try to contact the socket
       socketcurl=$(curl --max-time 2 --unix-socket "$s" http:/index 2>/dev/null)
       if [ $? -eq 0 ]; then
@@ -5247,9 +5302,9 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
       cap_name=$(echo "$cap_line" | awk '{print $1}')
       cap_value=$(echo "$cap_line" | awk '{print $2}')
       if [ "$cap_name" = "CapEff:" ]; then
-        echo "$cap_name	 $(capsh --decode=0x"$cap_value" | sed {$E} "s,$capsB,${SED_RED_YELLOW},")"
+        echo "$cap_name	 $(capsh --decode=0x"$cap_value" | sed "s,$capsB1,${SED_RED_YELLOW},")" | sed "s,$capsB1,${SED_RED_YELLOW},g" | sed "s,$capsB2,${SED_RED_YELLOW},g" | sed "s,$capsB3,${SED_RED_YELLOW},g" | sed "s,$capsB4,${SED_RED_YELLOW},g" | sed "s,$capsB5,${SED_RED_YELLOW},g" | sed "s,$capsB6,${SED_RED_YELLOW},g" | sed "s,$capsB7,${SED_RED_YELLOW},g" | sed "s,$capsB8,${SED_RED_YELLOW},g" | sed "s,$capsB9,${SED_RED_YELLOW},g" | sed "s,$capsB10,${SED_RED_YELLOW},g" | sed "s,$capsB12,${SED_RED_YELLOW},g" | sed "s,$capsB13,${SED_RED_YELLOW},g" | sed "s,$capsB14,${SED_RED_YELLOW},g" | sed "s,$capsB15,${SED_RED_YELLOW},g" | sed "s,$capsB11,${SED_RED_YELLOW},g" 
       else
-        echo "$cap_name  $(capsh --decode=0x"$cap_value" | sed {$E} "s,$capsB,${SED_RED},")"
+        echo "$cap_name  $(capsh --decode=0x"$cap_value" | sed "s,$capsB1,${SED_RED},")" | sed "s,$capsB1,${SED_RED},g" | sed "s,$capsB2,${SED_RED},g" | sed "s,$capsB3,${SED_RED},g" | sed "s,$capsB4,${SED_RED},g" | sed "s,$capsB5,${SED_RED},g" | sed "s,$capsB6,${SED_RED},g" | sed "s,$capsB7,${SED_RED},g" | sed "s,$capsB8,${SED_RED},g" | sed "s,$capsB9,${SED_RED},g" | sed "s,$capsB10,${SED_RED},g" | sed "s,$capsB12,${SED_RED},g" | sed "s,$capsB13,${SED_RED},g" | sed "s,$capsB14,${SED_RED},g" | sed "s,$capsB15,${SED_RED},g" | sed "s,$capsB11,${SED_RED},g" 
       fi
     done
     echo ""
@@ -5259,9 +5314,9 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
       cap_name=$(echo "$cap_line" | awk '{print $1}')
       cap_value=$(echo "$cap_line" | awk '{print $2}')
       if [ "$cap_name" = "CapEff:" ]; then
-        echo "$cap_name	 $(capsh --decode=0x"$cap_value" | sed {$E} "s,$capsB,${SED_RED_YELLOW},")"
+        echo "$cap_name	 $(capsh --decode=0x"$cap_value" | sed "s,$capsB1,${SED_RED_YELLOW},")" | sed "s,$capsB1,${SED_RED_YELLOW},g" | sed "s,$capsB2,${SED_RED_YELLOW},g" | sed "s,$capsB3,${SED_RED_YELLOW},g" | sed "s,$capsB4,${SED_RED_YELLOW},g" | sed "s,$capsB5,${SED_RED_YELLOW},g" | sed "s,$capsB6,${SED_RED_YELLOW},g" | sed "s,$capsB7,${SED_RED_YELLOW},g" | sed "s,$capsB8,${SED_RED_YELLOW},g" | sed "s,$capsB9,${SED_RED_YELLOW},g" | sed "s,$capsB10,${SED_RED_YELLOW},g" | sed "s,$capsB12,${SED_RED_YELLOW},g" | sed "s,$capsB13,${SED_RED_YELLOW},g" | sed "s,$capsB14,${SED_RED_YELLOW},g" | sed "s,$capsB15,${SED_RED_YELLOW},g" | sed "s,$capsB11,${SED_RED_YELLOW},g" 
       else
-        echo "$cap_name	 $(capsh --decode=0x"$cap_value" | sed {$E} "s,$capsB,${SED_RED},")"
+        echo "$cap_name  $(capsh --decode=0x"$cap_value" | sed "s,$capsB1,${SED_RED},")" | sed "s,$capsB1,${SED_RED},g" | sed "s,$capsB2,${SED_RED},g" | sed "s,$capsB3,${SED_RED},g" | sed "s,$capsB4,${SED_RED},g" | sed "s,$capsB5,${SED_RED},g" | sed "s,$capsB6,${SED_RED},g" | sed "s,$capsB7,${SED_RED},g" | sed "s,$capsB8,${SED_RED},g" | sed "s,$capsB9,${SED_RED},g" | sed "s,$capsB10,${SED_RED},g" | sed "s,$capsB12,${SED_RED},g" | sed "s,$capsB13,${SED_RED},g" | sed "s,$capsB14,${SED_RED},g" | sed "s,$capsB15,${SED_RED},g" | sed "s,$capsB11,${SED_RED},g" 
       fi
     done
     echo ""
@@ -5291,7 +5346,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
     done
     
     if ! [ "$capsVB_vuln" ]; then
-      echo "$cb" | sed {$E} "s,$capsB,${SED_RED},"
+      echo "$cb" | sed "s,$capsB1,${SED_RED},g" | sed "s,$capsB2,${SED_RED},g" | sed "s,$capsB3,${SED_RED},g" | sed "s,$capsB4,${SED_RED},g" | sed "s,$capsB5,${SED_RED},g" | sed "s,$capsB6,${SED_RED},g" | sed "s,$capsB7,${SED_RED},g" | sed "s,$capsB8,${SED_RED},g" | sed "s,$capsB9,${SED_RED},g" | sed "s,$capsB10,${SED_RED},g" | sed "s,$capsB12,${SED_RED},g" | sed "s,$capsB13,${SED_RED},g" | sed "s,$capsB14,${SED_RED},g" | sed "s,$capsB15,${SED_RED},g" | sed "s,$capsB11,${SED_RED},g" 
     fi
 
     if ! [ "$IAMROOT" ] && [ -w "$(echo $cb | cut -d" " -f1)" ]; then

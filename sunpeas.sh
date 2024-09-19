@@ -1440,7 +1440,8 @@ cap_net_raw:python|tcpdump"
 
 profiledG="01-locale-fix.sh|256term.csh|256term.sh|abrt-console-notification.sh|appmenu-qt5.sh|apps-bin-path.sh|bash_completion.sh|cedilla-portuguese.sh|colorgrep.csh|colorgrep.sh|colorls.csh|colorls.sh|colorxzgrep.csh|colorxzgrep.sh|colorzgrep.csh|colorzgrep.sh|csh.local|cursor.sh|gawk.csh|gawk.sh|im-config_wayland.sh|kali.sh|lang.csh|lang.sh|less.csh|less.sh|flatpak.sh|sh.local|vim.csh|vim.sh|vte.csh|vte-2.91.sh|which2.csh|which2.sh|xauthority.sh|Z97-byobu.sh|xdg_dirs_desktop_session.sh|Z99-cloudinit-warnings.sh|Z99-cloud-locale-test.sh"
 
-mail_apps="Postfix|Dovecot|Exim|SquirrelMail|Cyrus|Sendmail|Courier"
+#mail_apps="Postfix|Dovecot|Exim|SquirrelMail|Cyrus|Sendmail|Courier"
+mail_apps='(^|[^a-zA-Z0-9])(Postfix|Dovecot|Exim|SquirrelMail|Cyrus|Sendmail|Courier)([^a-zA-Z0-9]|$)'
 
 knw_usrs1='_amavisd'
 knw_usrs2='_analyticsd'
@@ -5748,7 +5749,7 @@ fi
 
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Searching installed mail applications"
-  ls /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /etc 2>/dev/null | egrep -wi "$mail_apps" | sort | uniq
+  ls /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /etc 2>/dev/null | egrep -i "$mail_apps" | sort | uniq
   echo ""
 fi
 
@@ -5762,7 +5763,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   if [ "$PSTORAGE_BACKUPS" ] || [ "$DEBUG" ]; then
     print_2title "Backup folders"
     printf "%s\n" "$PSTORAGE_BACKUPS" | while read b ; do
-      ls -ld "$b" 2> /dev/null | sed {$E} "s,backups|backup,${SED_RED},g";
+      ls -ld "$b" 2> /dev/null | sed "s,backup,${SED_RED},g";
       ls -l "$b" 2>/dev/null && echo ""
     done
     echo ""

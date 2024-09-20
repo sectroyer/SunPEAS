@@ -1054,9 +1054,9 @@ mountpermsB="\Wsuid|\Wuser|\Wexec"
 
 mountpermsG="nosuid|nouser|noexec"
 
-mounted=$( (cat /proc/self/mountinfo || cat /proc/1/mountinfo) 2>/dev/null | cut -d " " -f5 | grep "^/" | tr '\n' '|')$(cat /etc/fstab 2>/dev/null | grep -v "#" | egrep '\W/\W' | awk '{print $1}')
+mounted=$( (cat /proc/self/mountinfo || cat /proc/1/mountinfo) 2>/dev/null | cut -d " " -f5 | grep "^/" | tr '\n' '|')$(cat /etc/vfstab 2>/dev/null | grep -v "#" | egrep '\W/\W' | awk '{print $1}')
 if ! [ "$mounted" ]; then
-  mounted=$( (mount -l || cat /proc/mounts || cat /proc/self/mounts || cat /proc/1/mounts) 2>/dev/null | grep "^/" | cut -d " " -f1 | tr '\n' '|')$(cat /etc/fstab 2>/dev/null | grep -v "#" | egrep '\W/\W' | awk '{print $1}')
+  mounted=$( (mount -l || cat /proc/mounts || cat /proc/self/mounts || cat /proc/1/mounts) 2>/dev/null | grep "^/" | cut -d " " -f1 | tr '\n' '|')$(cat /etc/vfstab 2>/dev/null | grep -v "#" | egrep '\W/\W' | awk '{print $1}')
 fi
 if ! [ "$mounted" ]; then mounted="ImPoSSssSiBlEee"; fi
 
@@ -1067,7 +1067,7 @@ mountG2="/cdrom"
 mountG3="/floppy"
 mountG4="/dev/shm"
 
-notmounted=$(cat /etc/fstab 2>/dev/null | grep "^/" | egrep -v "$mountG" | awk '{print $1}' | egrep -v "$mounted" | tr '\n' '|')"ImPoSSssSiBlEee"
+notmounted=$(cat /etc/vfstab 2>/dev/null | grep "^/" | egrep -v "$mountG" | awk '{print $1}' | egrep -v "$mounted" | tr '\n' '|')"ImPoSSssSiBlEee"
 
 containercapsB1="sys_admin"
 containercapsB2="sys_ptrace"
@@ -1583,7 +1583,40 @@ INT_HIDDEN_FILES=".Xauthority|.bashrc|.bluemix|.boto|.cer|.cloudflared|.credenti
 
 shscripsG="/0trace.sh|/alsa-info.sh|amuFormat.sh|/blueranger.sh|/crosh.sh|/dnsmap-bulk.sh|/dockerd-rootless.sh|/dockerd-rootless-setuptool.sh|/get_bluetooth_device_class.sh|/gettext.sh|/go-rhn.sh|/gvmap.sh|/kernel_log_collector.sh|/lesspipe.sh|/lprsetup.sh|/mksmbpasswd.sh|/pm-utils-bugreport-info.sh|/power_report.sh|/prl-opengl-switcher.sh|/setuporamysql.sh|/setup-nsssysinit.sh|/readlink_f.sh|/rescan-scsi-bus.sh|/start_bluetoothd.sh|/start_bluetoothlog.sh|/testacg.sh|/testlahf.sh|/unix-lpr.sh|/url_handler.sh|/write_gpt.sh"
 
-pwd_inside_history="az login|enable_autologin|7z|unzip|useradd|linenum|linpeas|mkpasswd|htpasswd|openssl|PASSW|passw|shadow|roadrecon auth|root|snyk|sudo|^su|pkexec|^ftp|mongo|psql|mysql|rdesktop|Save-AzContext|xfreerdp|^ssh|steghide|@|KEY=|TOKEN=|BEARER=|Authorization:|chpasswd"
+pwd_inside_history1="az login"
+pwd_inside_history2="enable_autologin"
+pwd_inside_history3="7z"
+pwd_inside_history4="unzip"
+pwd_inside_history5="useradd"
+pwd_inside_history6="linenum"
+pwd_inside_history7="linpeas"
+pwd_inside_history8="mkpasswd"
+pwd_inside_history9="htpasswd"
+pwd_inside_history10="openssl"
+pwd_inside_history11="PASSW"
+pwd_inside_history12="passw"
+pwd_inside_history13="shadow"
+pwd_inside_history14="roadrecon auth"
+pwd_inside_history15="root"
+pwd_inside_history16="snyk"
+pwd_inside_history17="sudo"
+pwd_inside_history18="^su"
+pwd_inside_history19="pkexec"
+pwd_inside_history20="^ftp"
+pwd_inside_history21="mongo"
+pwd_inside_history22="psql"
+pwd_inside_history23="mysql"
+pwd_inside_history24="rdesktop"
+pwd_inside_history25="Save-AzContext"
+pwd_inside_history26="xfreerdp"
+pwd_inside_history27="^ssh"
+pwd_inside_history28="steghide"
+pwd_inside_history29="@"
+pwd_inside_history30="KEY="
+pwd_inside_history31="TOKEN="
+pwd_inside_history32="BEARER="
+pwd_inside_history33="Authorization:"
+pwd_inside_history34="chpasswd"
 
 knw_emails=".*@aivazian.fsnet.co.uk|.*@angband.pl|.*@canonical.com|.*centos.org|.*debian.net|.*debian.org|.*@jff.email|.*kali.org|.*linux.it|.*@linuxia.de|.*@lists.debian-maintainers.org|.*@mit.edu|.*@oss.sgi.com|.*@qualcomm.com|.*redhat.com|.*ubuntu.com|.*@vger.kernel.org|mmyangfl@gmail.com|rogershimizu@gmail.com|thmarques@gmail.com"
 
@@ -2168,10 +2201,10 @@ if [ "$EXTRA_CHECKS" ] || [ "$DEBUG" ]; then
     echo ""
 fi
 
-if [ -f "/etc/fstab" ] || [ "$DEBUG" ]; then
+if [ -f "/etc/vfstab" ] || [ "$DEBUG" ]; then
     print_2title "Unmounted file-system?"
     print_info "Check if you can mount umounted devices"
-    grep -v "^#" /etc/fstab 2>/dev/null | egrep -v "\W+\#|^#" | sed "s,$mountG1,${SED_GREEN},g" | sed "s,$mountG2,${SED_GREEN},g" | sed "s,$mountG3,${SED_GREEN},g" | sed "s,$mountG4,${SED_GREEN},g" | sed "s,$notmounted,${SED_RED},g" | sed "s%$mounted%${SED_BLUE}%g" | sed "s,$Wfolders,${SED_RED}," | sed {$E} "s,$mountpermsB,${SED_RED},g" | sed {$E} "s,$mountpermsG,${SED_GREEN},g"
+    grep -v "^#" /etc/vfstab 2>/dev/null | egrep -v "\W+\#|^#" | sed "s,$mountG1,${SED_GREEN},g" | sed "s,$mountG2,${SED_GREEN},g" | sed "s,$mountG3,${SED_GREEN},g" | sed "s,$mountG4,${SED_GREEN},g" | sed "s,$notmounted,${SED_RED},g" | sed "s%$mounted%${SED_BLUE}%g" | sed "s,$Wfolders,${SED_RED}," | sed {$E} "s,$mountpermsB,${SED_RED},g" | sed {$E} "s,$mountpermsG,${SED_GREEN},g"
     echo ""
 fi
 
@@ -3159,8 +3192,8 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   fi
   print_info "Check weird & unexpected proceses run by root: https://book.hacktricks.xyz/linux-hardening/privilege-escalation#processes"
 
-  if [ -f "/etc/fstab" ] && cat /etc/fstab | grep "hidepid=2" &> /dev/null; then
-    echo "Looks like /etc/fstab has hidepid=2, so ps will not show processes of other users"
+  if [ -f "/etc/vfstab" ] && cat /etc/vfstab | grep "hidepid=2" &> /dev/null; then
+    echo "Looks like /etc/vfstab has hidepid=2, so ps will not show processes of other users"
   fi
 
   if [ "$NOUSEPS" ]; then
@@ -3700,13 +3733,13 @@ echo ""
 if [ "$(command -v xclip 2>/dev/null || echo -n '')" ] || [ "$(command -v xsel 2>/dev/null || echo -n '')" ] || [ "$(command -v pbpaste 2>/dev/null || echo -n '')" ] || [ "$DEBUG" ]; then
   print_2title "Clipboard or highlighted text?"
   if [ "$(command -v xclip 2>/dev/null || echo -n '')" ]; then
-    echo "Clipboard: "$(xclip -o -selection clipboard 2>/dev/null) | sed {$E} "s,$pwd_inside_history,${SED_RED},"
-    echo "Highlighted text: "$(xclip -o 2>/dev/null) | sed {$E} "s,$pwd_inside_history,${SED_RED},"
+    echo "Clipboard: "$(xclip -o -selection clipboard 2>/dev/null) | sed "s,$pwd_inside_history1,${SED_RED}," | sed "s,$pwd_inside_history2,${SED_RED}," | sed "s,$pwd_inside_history3,${SED_RED}," | sed "s,$pwd_inside_history4,${SED_RED}," | sed "s,$pwd_inside_history5,${SED_RED}," | sed "s,$pwd_inside_history6,${SED_RED}," | sed "s,$pwd_inside_history7,${SED_RED}," | sed "s,$pwd_inside_history8,${SED_RED}," | sed "s,$pwd_inside_history9,${SED_RED}," | sed "s,$pwd_inside_history10,${SED_RED}," | sed "s,$pwd_inside_history11,${SED_RED}," | sed "s,$pwd_inside_history12,${SED_RED}," | sed "s,$pwd_inside_history13,${SED_RED}," | sed "s,$pwd_inside_history14,${SED_RED}," | sed "s,$pwd_inside_history15,${SED_RED}," | sed "s,$pwd_inside_history16,${SED_RED}," | sed "s,$pwd_inside_history17,${SED_RED}," | sed "s,$pwd_inside_history18,${SED_RED}," | sed "s,$pwd_inside_history19,${SED_RED}," | sed "s,$pwd_inside_history20,${SED_RED}," | sed "s,$pwd_inside_history21,${SED_RED}," | sed "s,$pwd_inside_history22,${SED_RED}," | sed "s,$pwd_inside_history23,${SED_RED}," | sed "s,$pwd_inside_history24,${SED_RED}," | sed "s,$pwd_inside_history25,${SED_RED}," | sed "s,$pwd_inside_history26,${SED_RED}," | sed "s,$pwd_inside_history27,${SED_RED}," | sed "s,$pwd_inside_history28,${SED_RED}," | sed "s,$pwd_inside_history29,${SED_RED}," | sed "s,$pwd_inside_history30,${SED_RED}," | sed "s,$pwd_inside_history31,${SED_RED}," | sed "s,$pwd_inside_history32,${SED_RED}," | sed "s,$pwd_inside_history33,${SED_RED}," | sed "s,$pwd_inside_history34,${SED_RED}," 
+    echo "Highlighted text: "$(xclip -o 2>/dev/null) | sed "s,$pwd_inside_history1,${SED_RED}," | sed "s,$pwd_inside_history2,${SED_RED}," | sed "s,$pwd_inside_history3,${SED_RED}," | sed "s,$pwd_inside_history4,${SED_RED}," | sed "s,$pwd_inside_history5,${SED_RED}," | sed "s,$pwd_inside_history6,${SED_RED}," | sed "s,$pwd_inside_history7,${SED_RED}," | sed "s,$pwd_inside_history8,${SED_RED}," | sed "s,$pwd_inside_history9,${SED_RED}," | sed "s,$pwd_inside_history10,${SED_RED}," | sed "s,$pwd_inside_history11,${SED_RED}," | sed "s,$pwd_inside_history12,${SED_RED}," | sed "s,$pwd_inside_history13,${SED_RED}," | sed "s,$pwd_inside_history14,${SED_RED}," | sed "s,$pwd_inside_history15,${SED_RED}," | sed "s,$pwd_inside_history16,${SED_RED}," | sed "s,$pwd_inside_history17,${SED_RED}," | sed "s,$pwd_inside_history18,${SED_RED}," | sed "s,$pwd_inside_history19,${SED_RED}," | sed "s,$pwd_inside_history20,${SED_RED}," | sed "s,$pwd_inside_history21,${SED_RED}," | sed "s,$pwd_inside_history22,${SED_RED}," | sed "s,$pwd_inside_history23,${SED_RED}," | sed "s,$pwd_inside_history24,${SED_RED}," | sed "s,$pwd_inside_history25,${SED_RED}," | sed "s,$pwd_inside_history26,${SED_RED}," | sed "s,$pwd_inside_history27,${SED_RED}," | sed "s,$pwd_inside_history28,${SED_RED}," | sed "s,$pwd_inside_history29,${SED_RED}," | sed "s,$pwd_inside_history30,${SED_RED}," | sed "s,$pwd_inside_history31,${SED_RED}," | sed "s,$pwd_inside_history32,${SED_RED}," | sed "s,$pwd_inside_history33,${SED_RED}," | sed "s,$pwd_inside_history34,${SED_RED}," 
   elif [ "$(command -v xsel 2>/dev/null || echo -n '')" ]; then
-    echo "Clipboard: "$(xsel -ob 2>/dev/null) | sed {$E} "s,$pwd_inside_history,${SED_RED},"
-    echo "Highlighted text: "$(xsel -o 2>/dev/null) | sed {$E} "s,$pwd_inside_history,${SED_RED},"
+    echo "Clipboard: "$(xsel -ob 2>/dev/null) | sed "s,$pwd_inside_history1,${SED_RED}," | sed "s,$pwd_inside_history2,${SED_RED}," | sed "s,$pwd_inside_history3,${SED_RED}," | sed "s,$pwd_inside_history4,${SED_RED}," | sed "s,$pwd_inside_history5,${SED_RED}," | sed "s,$pwd_inside_history6,${SED_RED}," | sed "s,$pwd_inside_history7,${SED_RED}," | sed "s,$pwd_inside_history8,${SED_RED}," | sed "s,$pwd_inside_history9,${SED_RED}," | sed "s,$pwd_inside_history10,${SED_RED}," | sed "s,$pwd_inside_history11,${SED_RED}," | sed "s,$pwd_inside_history12,${SED_RED}," | sed "s,$pwd_inside_history13,${SED_RED}," | sed "s,$pwd_inside_history14,${SED_RED}," | sed "s,$pwd_inside_history15,${SED_RED}," | sed "s,$pwd_inside_history16,${SED_RED}," | sed "s,$pwd_inside_history17,${SED_RED}," | sed "s,$pwd_inside_history18,${SED_RED}," | sed "s,$pwd_inside_history19,${SED_RED}," | sed "s,$pwd_inside_history20,${SED_RED}," | sed "s,$pwd_inside_history21,${SED_RED}," | sed "s,$pwd_inside_history22,${SED_RED}," | sed "s,$pwd_inside_history23,${SED_RED}," | sed "s,$pwd_inside_history24,${SED_RED}," | sed "s,$pwd_inside_history25,${SED_RED}," | sed "s,$pwd_inside_history26,${SED_RED}," | sed "s,$pwd_inside_history27,${SED_RED}," | sed "s,$pwd_inside_history28,${SED_RED}," | sed "s,$pwd_inside_history29,${SED_RED}," | sed "s,$pwd_inside_history30,${SED_RED}," | sed "s,$pwd_inside_history31,${SED_RED}," | sed "s,$pwd_inside_history32,${SED_RED}," | sed "s,$pwd_inside_history33,${SED_RED}," | sed "s,$pwd_inside_history34,${SED_RED}," 
+    echo "Highlighted text: "$(xsel -o 2>/dev/null) | sed "s,$pwd_inside_history1,${SED_RED}," | sed "s,$pwd_inside_history2,${SED_RED}," | sed "s,$pwd_inside_history3,${SED_RED}," | sed "s,$pwd_inside_history4,${SED_RED}," | sed "s,$pwd_inside_history5,${SED_RED}," | sed "s,$pwd_inside_history6,${SED_RED}," | sed "s,$pwd_inside_history7,${SED_RED}," | sed "s,$pwd_inside_history8,${SED_RED}," | sed "s,$pwd_inside_history9,${SED_RED}," | sed "s,$pwd_inside_history10,${SED_RED}," | sed "s,$pwd_inside_history11,${SED_RED}," | sed "s,$pwd_inside_history12,${SED_RED}," | sed "s,$pwd_inside_history13,${SED_RED}," | sed "s,$pwd_inside_history14,${SED_RED}," | sed "s,$pwd_inside_history15,${SED_RED}," | sed "s,$pwd_inside_history16,${SED_RED}," | sed "s,$pwd_inside_history17,${SED_RED}," | sed "s,$pwd_inside_history18,${SED_RED}," | sed "s,$pwd_inside_history19,${SED_RED}," | sed "s,$pwd_inside_history20,${SED_RED}," | sed "s,$pwd_inside_history21,${SED_RED}," | sed "s,$pwd_inside_history22,${SED_RED}," | sed "s,$pwd_inside_history23,${SED_RED}," | sed "s,$pwd_inside_history24,${SED_RED}," | sed "s,$pwd_inside_history25,${SED_RED}," | sed "s,$pwd_inside_history26,${SED_RED}," | sed "s,$pwd_inside_history27,${SED_RED}," | sed "s,$pwd_inside_history28,${SED_RED}," | sed "s,$pwd_inside_history29,${SED_RED}," | sed "s,$pwd_inside_history30,${SED_RED}," | sed "s,$pwd_inside_history31,${SED_RED}," | sed "s,$pwd_inside_history32,${SED_RED}," | sed "s,$pwd_inside_history33,${SED_RED}," | sed "s,$pwd_inside_history34,${SED_RED}," 
   elif [ "$(command -v pbpaste 2>/dev/null || echo -n '')" ]; then
-    echo "Clipboard: "$(pbpaste) | sed {$E} "s,$pwd_inside_history,${SED_RED},"
+    echo "Clipboard: "$(pbpaste) | sed "s,$pwd_inside_history1,${SED_RED}," | sed "s,$pwd_inside_history2,${SED_RED}," | sed "s,$pwd_inside_history3,${SED_RED}," | sed "s,$pwd_inside_history4,${SED_RED}," | sed "s,$pwd_inside_history5,${SED_RED}," | sed "s,$pwd_inside_history6,${SED_RED}," | sed "s,$pwd_inside_history7,${SED_RED}," | sed "s,$pwd_inside_history8,${SED_RED}," | sed "s,$pwd_inside_history9,${SED_RED}," | sed "s,$pwd_inside_history10,${SED_RED}," | sed "s,$pwd_inside_history11,${SED_RED}," | sed "s,$pwd_inside_history12,${SED_RED}," | sed "s,$pwd_inside_history13,${SED_RED}," | sed "s,$pwd_inside_history14,${SED_RED}," | sed "s,$pwd_inside_history15,${SED_RED}," | sed "s,$pwd_inside_history16,${SED_RED}," | sed "s,$pwd_inside_history17,${SED_RED}," | sed "s,$pwd_inside_history18,${SED_RED}," | sed "s,$pwd_inside_history19,${SED_RED}," | sed "s,$pwd_inside_history20,${SED_RED}," | sed "s,$pwd_inside_history21,${SED_RED}," | sed "s,$pwd_inside_history22,${SED_RED}," | sed "s,$pwd_inside_history23,${SED_RED}," | sed "s,$pwd_inside_history24,${SED_RED}," | sed "s,$pwd_inside_history25,${SED_RED}," | sed "s,$pwd_inside_history26,${SED_RED}," | sed "s,$pwd_inside_history27,${SED_RED}," | sed "s,$pwd_inside_history28,${SED_RED}," | sed "s,$pwd_inside_history29,${SED_RED}," | sed "s,$pwd_inside_history30,${SED_RED}," | sed "s,$pwd_inside_history31,${SED_RED}," | sed "s,$pwd_inside_history32,${SED_RED}," | sed "s,$pwd_inside_history33,${SED_RED}," | sed "s,$pwd_inside_history34,${SED_RED}," 
   else echo_not_found "xsel and xclip"
   fi
   echo ""
@@ -5124,7 +5157,7 @@ fi
 if [ "$sshconfig" ]; then
   echo ""
   echo "Searching inside /etc/ssh/ssh_config for interesting info"
-  grep -v "^#"  ${ROOT_FOLDER}etc/ssh/ssh_config 2>/dev/null | egrep -v "\W+\#|^#" 2>/dev/null | grep -v "^$" | sed {$E} "s,Host,${SED_RED}," | sed "s,ForwardAgent,${SED_RED}," | sed "s,User,${SED_RED}," | sed "s,ProxyCommand,${SED_RED},"
+  grep -v "^#"  ${ROOT_FOLDER}etc/ssh/ssh_config 2>/dev/null | egrep -v "\W+\#|^#" 2>/dev/null | grep -v "^$" | sed "s,Host,${SED_RED}," | sed "s,ForwardAgent,${SED_RED}," | sed "s,User,${SED_RED}," | sed "s,ProxyCommand,${SED_RED},"
 fi
 echo ""
 
@@ -5540,7 +5573,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
 
   ##-- IPF) Credentials in fstab
   print_list "Credentials in fstab/mtab? ........... "
-  if egrep "(user|username|login|pass|password|pw|credentials)[=:]" /etc/fstab /etc/mtab &>/dev/null; then egrep "(user|username|login|pass|password|pw|credentials)[=:]" /etc/fstab /etc/mtab 2>/dev/null | sed "s,.*,${SED_RED},"
+  if egrep "(user|username|login|pass|password|pw|credentials)[=:]" /etc/vfstab /etc/mtab &>/dev/null; then egrep "(user|username|login|pass|password|pw|credentials)[=:]" /etc/vfstab /etc/mtab 2>/dev/null | sed "s,.*,${SED_RED},"
   else echo_no
   fi
 
@@ -5754,7 +5787,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   if [ "$PSTORAGE_BACKUPS" ] || [ "$DEBUG" ]; then
     print_2title "Backup folders"
     printf "%s\n" "$PSTORAGE_BACKUPS" | while read b ; do
-      ls -ld "$b" 2> /dev/null | sed "s,backup,${SED_RED},g";
+      ls -ld "$b" 2> /dev/null | sed "s,backups,SUN_IMOSSIBLE_BCKSP,g"| sed "s,backup,${SED_RED},g" | sed "s,SUN_IMOSSIBLE_BCKSP,backups,g"| sed "s,backups,${SED_RED},g";
       ls -l "$b" 2>/dev/null && echo ""
     done
     echo ""
@@ -5861,19 +5894,19 @@ fi
 
 if [ "$(history 2>/dev/null)" ] || [ "$DEBUG" ]; then
   print_2title "Searching passwords in history cmd"
-  history | egrep -i "$pwd_inside_history" "$f" 2>/dev/null | sed {$E} "s,$pwd_inside_history,${SED_RED},"
+  history | egrep -i "$pwd_inside_history" "$f" 2>/dev/null | sed "s,$pwd_inside_history1,${SED_RED}," | sed "s,$pwd_inside_history2,${SED_RED}," | sed "s,$pwd_inside_history3,${SED_RED}," | sed "s,$pwd_inside_history4,${SED_RED}," | sed "s,$pwd_inside_history5,${SED_RED}," | sed "s,$pwd_inside_history6,${SED_RED}," | sed "s,$pwd_inside_history7,${SED_RED}," | sed "s,$pwd_inside_history8,${SED_RED}," | sed "s,$pwd_inside_history9,${SED_RED}," | sed "s,$pwd_inside_history10,${SED_RED}," | sed "s,$pwd_inside_history11,${SED_RED}," | sed "s,$pwd_inside_history12,${SED_RED}," | sed "s,$pwd_inside_history13,${SED_RED}," | sed "s,$pwd_inside_history14,${SED_RED}," | sed "s,$pwd_inside_history15,${SED_RED}," | sed "s,$pwd_inside_history16,${SED_RED}," | sed "s,$pwd_inside_history17,${SED_RED}," | sed "s,$pwd_inside_history18,${SED_RED}," | sed "s,$pwd_inside_history19,${SED_RED}," | sed "s,$pwd_inside_history20,${SED_RED}," | sed "s,$pwd_inside_history21,${SED_RED}," | sed "s,$pwd_inside_history22,${SED_RED}," | sed "s,$pwd_inside_history23,${SED_RED}," | sed "s,$pwd_inside_history24,${SED_RED}," | sed "s,$pwd_inside_history25,${SED_RED}," | sed "s,$pwd_inside_history26,${SED_RED}," | sed "s,$pwd_inside_history27,${SED_RED}," | sed "s,$pwd_inside_history28,${SED_RED}," | sed "s,$pwd_inside_history29,${SED_RED}," | sed "s,$pwd_inside_history30,${SED_RED}," | sed "s,$pwd_inside_history31,${SED_RED}," | sed "s,$pwd_inside_history32,${SED_RED}," | sed "s,$pwd_inside_history33,${SED_RED}," | sed "s,$pwd_inside_history34,${SED_RED}," 
   echo ""
 fi
 
 if [ "$PSTORAGE_HISTORY" ] || [ "$DEBUG" ]; then
   print_2title "Searching passwords in history files"
-  printf "%s\n" "$PSTORAGE_HISTORY" | while read f; do egrep -iH "$pwd_inside_history" "$f" 2>/dev/null | sed {$E} "s,$pwd_inside_history,${SED_RED},"; done
+  printf "%s\n" "$PSTORAGE_HISTORY" | while read f; do egrep -iH "$pwd_inside_history" "$f" 2>/dev/null | sed "s,$pwd_inside_history1,${SED_RED}," | sed "s,$pwd_inside_history2,${SED_RED}," | sed "s,$pwd_inside_history3,${SED_RED}," | sed "s,$pwd_inside_history4,${SED_RED}," | sed "s,$pwd_inside_history5,${SED_RED}," | sed "s,$pwd_inside_history6,${SED_RED}," | sed "s,$pwd_inside_history7,${SED_RED}," | sed "s,$pwd_inside_history8,${SED_RED}," | sed "s,$pwd_inside_history9,${SED_RED}," | sed "s,$pwd_inside_history10,${SED_RED}," | sed "s,$pwd_inside_history11,${SED_RED}," | sed "s,$pwd_inside_history12,${SED_RED}," | sed "s,$pwd_inside_history13,${SED_RED}," | sed "s,$pwd_inside_history14,${SED_RED}," | sed "s,$pwd_inside_history15,${SED_RED}," | sed "s,$pwd_inside_history16,${SED_RED}," | sed "s,$pwd_inside_history17,${SED_RED}," | sed "s,$pwd_inside_history18,${SED_RED}," | sed "s,$pwd_inside_history19,${SED_RED}," | sed "s,$pwd_inside_history20,${SED_RED}," | sed "s,$pwd_inside_history21,${SED_RED}," | sed "s,$pwd_inside_history22,${SED_RED}," | sed "s,$pwd_inside_history23,${SED_RED}," | sed "s,$pwd_inside_history24,${SED_RED}," | sed "s,$pwd_inside_history25,${SED_RED}," | sed "s,$pwd_inside_history26,${SED_RED}," | sed "s,$pwd_inside_history27,${SED_RED}," | sed "s,$pwd_inside_history28,${SED_RED}," | sed "s,$pwd_inside_history29,${SED_RED}," | sed "s,$pwd_inside_history30,${SED_RED}," | sed "s,$pwd_inside_history31,${SED_RED}," | sed "s,$pwd_inside_history32,${SED_RED}," | sed "s,$pwd_inside_history33,${SED_RED}," | sed "s,$pwd_inside_history34,${SED_RED}," ; done
   echo ""
 fi
 
 if [ "$PSTORAGE_PHP_FILES" ] || [ "$DEBUG" ]; then
   print_2title "Searching passwords in config PHP files"
-  printf "%s\n" "$PSTORAGE_PHP_FILES" | while read c; do egrep -iIH "(pwd|passwd|password|PASSWD|PASSWORD|dbuser|dbpass).*[=:].+|define ?\('(\w*passw|\w*user|\w*datab)" "$c" 2>/dev/null | egrep -v "function|password.*= ?\"\"|password.*= ?''" | sed '/^.\{150\}./d' | sort | uniq | sed "s,[dD][bB]_[pP][aA][sS][sS],${SED_RED},g" | sed "s,[pP][aA][sS][sS][wW]${SED_RED},g" ; done
+  printf "%s\n" "$PSTORAGE_PHP_FILES" | while read c; do egrep -iIH "(pwd|passwd|password|PASSWD|PASSWORD|dbuser|dbpass).*[=:].+|define ?\('(\w*passw|\w*user|\w*datab)" "$c" 2>/dev/null | egrep -v "function|password.*= ?\"\"|password.*= ?''" | sed '/^.\{150\}./d' | sort | uniq | sed "s,[dD][bB]_[pP][aA][sS][sS],${SED_RED},g" | sed "s,[pP][aA][sS][sS][wW],${SED_RED},g" ; done
   echo ""
 fi
 
@@ -5886,7 +5919,7 @@ fi
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Checking for TTY (sudo/su) passwords in audit logs"
   aureport --tty 2>/dev/null | egrep "su |sudo " | sed "s,sudo,${SED_RED},g" | sed "s,su,${SED_RED},g" 
-  find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed {$E} "s,\"su\"|\"sudo\",${SED_RED},g" | sed "s,data=.*,${SED_RED},g"
+  find /var/log/ -type f -exec egrep -R 'comm="su"|comm="sudo"' '{}' \; 2>/dev/null | sed "s,\"sudo\",${SED_RED},g" | sed "s,\"su\",${SED_RED},g" | sed "s,data=.*,${SED_RED},g"
   echo ""
 fi
 

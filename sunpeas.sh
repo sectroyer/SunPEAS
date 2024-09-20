@@ -1337,7 +1337,57 @@ done
 
 writeVB="/etc/anacrontab|/etc/apt/apt.conf.d|/etc/bash.bashrc|/etc/bash_completion|/etc/bash_completion.d/|/etc/cron|/etc/environment|/etc/environment.d/|/etc/group|/etc/incron.d/|/etc/init|/etc/ld.so.conf.d/|/etc/master.passwd|/etc/passwd|/etc/profile.d/|/etc/profile|/etc/rc.d|/etc/shadow|/etc/skey/|/etc/sudoers|/etc/sudoers.d/|/etc/supervisor/conf.d/|/etc/supervisor/supervisord.conf|/etc/systemd|/etc/sys|/lib/systemd|/etc/update-motd.d/|/root/.ssh/|/run/systemd|/usr/lib/cron/tabs/|/usr/lib/systemd|/systemd/system|/var/db/yubikey/|/var/spool/anacron|/var/spool/cron/crontabs|"$(echo $PATH 2>/dev/null | sed 's/:\.:/:/g' | sed 's/:\.$//g' | sed 's/^\.://g' | sed 's/:/$|^/g') #Add Path but remove simple dot in PATH
 
-writeB="00-header|10-help-text|50-motd-news|80-esm|91-release-upgrade|\.sh$|\./|/authorized_keys|/bin/|/boot/|/etc/apache2/apache2.conf|/etc/apache2/httpd.conf|/etc/hosts.allow|/etc/hosts.deny|/etc/httpd/conf/httpd.conf|/etc/httpd/httpd.conf|/etc/inetd.conf|/etc/incron.conf|/etc/login.defs|/etc/logrotate.d/|/etc/modprobe.d/|/etc/pam.d/|/etc/php.*/fpm/pool.d/|/etc/php/.*/fpm/pool.d/|/etc/rsyslog.d/|/etc/skel/|/etc/sysconfig/network-scripts/|/etc/sysctl.conf|/etc/sysctl.d/|/etc/uwsgi/apps-enabled/|/etc/xinetd.conf|/etc/xinetd.d/|/etc/|/home//|/lib/|/log/|/mnt/|/root|/sys/|/usr/bin|/usr/games|/usr/lib|/usr/local/bin|/usr/local/games|/usr/local/sbin|/usr/sbin|/sbin/|/var/log/|\.timer$|\.service$|.socket$"
+writeB1="00-header"
+writeB2="10-help-text"
+writeB3="50-motd-news"
+writeB4="80-esm"
+writeB5="91-release-upgrade"
+writeB6="\.sh$"
+writeB7="\./"
+writeB8="/authorized_keys"
+writeB9="/bin/"
+writeB10="/boot/"
+writeB11="/etc/apache2/apache2.conf"
+writeB12="/etc/apache2/httpd.conf"
+writeB13="/etc/hosts.allow"
+writeB14="/etc/hosts.deny"
+writeB15="/etc/httpd/conf/httpd.conf"
+writeB16="/etc/httpd/httpd.conf"
+writeB17="/etc/inetd.conf"
+writeB18="/etc/incron.conf"
+writeB19="/etc/login.defs"
+writeB20="/etc/logrotate.d/"
+writeB21="/etc/modprobe.d/"
+writeB22="/etc/pam.d/"
+writeB23="/etc/php.*/fpm/pool.d/"
+writeB24="/etc/php/.*/fpm/pool.d/"
+writeB25="/etc/rsyslog.d/"
+writeB26="/etc/skel/"
+writeB27="/etc/sysconfig/network-scripts/"
+writeB28="/etc/sysctl.conf"
+writeB29="/etc/sysctl.d/"
+writeB30="/etc/uwsgi/apps-enabled/"
+writeB31="/etc/xinetd.conf"
+writeB32="/etc/xinetd.d/"
+writeB33="/etc/"
+writeB34="/home//"
+writeB35="/lib/"
+writeB36="/log/"
+writeB37="/mnt/"
+writeB38="/root"
+writeB39="/sys/"
+writeB40="/usr/bin"
+writeB41="/usr/games"
+writeB42="/usr/lib"
+writeB43="/usr/local/bin"
+writeB44="/usr/local/games"
+writeB45="/usr/local/sbin"
+writeB46="/usr/sbin"
+writeB47="/sbin/"
+writeB48="/var/log/"
+writeB49="\.timer$"
+writeB50="\.service$"
+writeB51=".socket$"
 
 cfuncs='file|free|main|more|read|split|write'
 
@@ -3485,7 +3535,12 @@ if ! [ "$IAMROOT" ]; then
       unix_scks_list=$(ss -l -p -A 'unix' 2>/dev/null | egrep -i "listen|Proc" | egrep "/[a-zA-Z0-9\._/\-]+")
     fi
     if ! [ "$unix_scks_list" ];then
-      unix_scks_list=$(netstat -a -p --unix 2>/dev/null | egrep -i "listen|PID" | egrep "/[a-zA-Z0-9\._/\-]+" | tail -n +2)
+		if [ -f /usr/xpg4/bin/tail ]
+		then
+      		unix_scks_list=$(netstat -a -p --unix 2>/dev/null | egrep -i "listen|PID" | egrep "/[a-zA-Z0-9\._/\-]+" | /usr/xpg4/bin/tail -n +2)
+		else
+      		unix_scks_list=$(netstat -a -p --unix 2>/dev/null | egrep -i "listen|PID" | egrep "/[a-zA-Z0-9\._/\-]+" )
+		fi
     fi
       unix_scks_list3=$(lsof -U 2>/dev/null | awk '{print $9}' | grep "/") 
   fi
@@ -5667,7 +5722,7 @@ if ! [ "$IAMROOT" ]; then
     elif echo "$l" | egrep "$writeVB" &> /dev/null; then
       echo "$l" | sed {$E} "s,$writeVB,${SED_RED_YELLOW},"
     else
-      echo "$l" | sed {$E} "s,$writeB,${SED_RED},"
+      echo "$l" | sed "s,$writeB1,${SED_RED}," | sed "s,$writeB2,${SED_RED}," | sed "s,$writeB3,${SED_RED}," | sed "s,$writeB4,${SED_RED}," | sed "s,$writeB5,${SED_RED}," | sed "s,$writeB6,${SED_RED}," | sed "s,$writeB7,${SED_RED}," | sed "s,$writeB8,${SED_RED}," | sed "s,$writeB9,${SED_RED}," | sed "s,$writeB10,${SED_RED}," | sed "s,$writeB11,${SED_RED}," | sed "s,$writeB12,${SED_RED}," | sed "s,$writeB13,${SED_RED}," | sed "s,$writeB14,${SED_RED}," | sed "s,$writeB15,${SED_RED}," | sed "s,$writeB16,${SED_RED}," | sed "s,$writeB17,${SED_RED}," | sed "s,$writeB18,${SED_RED}," | sed "s,$writeB19,${SED_RED}," | sed "s,$writeB20,${SED_RED}," | sed "s,$writeB21,${SED_RED}," | sed "s,$writeB22,${SED_RED}," | sed "s,$writeB23,${SED_RED}," | sed "s,$writeB24,${SED_RED}," | sed "s,$writeB25,${SED_RED}," | sed "s,$writeB26,${SED_RED}," | sed "s,$writeB27,${SED_RED}," | sed "s,$writeB28,${SED_RED}," | sed "s,$writeB29,${SED_RED}," | sed "s,$writeB30,${SED_RED}," | sed "s,$writeB31,${SED_RED}," | sed "s,$writeB32,${SED_RED}," | sed "s,$writeB33,${SED_RED}," | sed "s,$writeB34,${SED_RED}," | sed "s,$writeB35,${SED_RED}," | sed "s,$writeB36,${SED_RED}," | sed "s,$writeB37,${SED_RED}," | sed "s,$writeB38,${SED_RED}," | sed "s,$writeB39,${SED_RED}," | sed "s,$writeB40,${SED_RED}," | sed "s,$writeB41,${SED_RED}," | sed "s,$writeB42,${SED_RED}," | sed "s,$writeB43,${SED_RED}," | sed "s,$writeB44,${SED_RED}," | sed "s,$writeB45,${SED_RED}," | sed "s,$writeB46,${SED_RED}," | sed "s,$writeB47,${SED_RED}," | sed "s,$writeB48,${SED_RED}," | sed "s,$writeB49,${SED_RED}," | sed "s,$writeB50,${SED_RED}," | sed "s,$writeB51,${SED_RED}," 
     fi
   done
   echo ""
@@ -5685,7 +5740,7 @@ if ! [ "$IAMROOT" ]; then
         elif echo "$l" | egrep "$writeVB" &> /dev/null; then
           echo "$l" | sed {$E} "s,$writeVB,${SED_RED_YELLOW},"
         else
-          echo "$l" | sed {$E} "s,$writeB,${SED_RED},"
+      		echo "$l" | sed "s,$writeB1,${SED_RED}," | sed "s,$writeB2,${SED_RED}," | sed "s,$writeB3,${SED_RED}," | sed "s,$writeB4,${SED_RED}," | sed "s,$writeB5,${SED_RED}," | sed "s,$writeB6,${SED_RED}," | sed "s,$writeB7,${SED_RED}," | sed "s,$writeB8,${SED_RED}," | sed "s,$writeB9,${SED_RED}," | sed "s,$writeB10,${SED_RED}," | sed "s,$writeB11,${SED_RED}," | sed "s,$writeB12,${SED_RED}," | sed "s,$writeB13,${SED_RED}," | sed "s,$writeB14,${SED_RED}," | sed "s,$writeB15,${SED_RED}," | sed "s,$writeB16,${SED_RED}," | sed "s,$writeB17,${SED_RED}," | sed "s,$writeB18,${SED_RED}," | sed "s,$writeB19,${SED_RED}," | sed "s,$writeB20,${SED_RED}," | sed "s,$writeB21,${SED_RED}," | sed "s,$writeB22,${SED_RED}," | sed "s,$writeB23,${SED_RED}," | sed "s,$writeB24,${SED_RED}," | sed "s,$writeB25,${SED_RED}," | sed "s,$writeB26,${SED_RED}," | sed "s,$writeB27,${SED_RED}," | sed "s,$writeB28,${SED_RED}," | sed "s,$writeB29,${SED_RED}," | sed "s,$writeB30,${SED_RED}," | sed "s,$writeB31,${SED_RED}," | sed "s,$writeB32,${SED_RED}," | sed "s,$writeB33,${SED_RED}," | sed "s,$writeB34,${SED_RED}," | sed "s,$writeB35,${SED_RED}," | sed "s,$writeB36,${SED_RED}," | sed "s,$writeB37,${SED_RED}," | sed "s,$writeB38,${SED_RED}," | sed "s,$writeB39,${SED_RED}," | sed "s,$writeB40,${SED_RED}," | sed "s,$writeB41,${SED_RED}," | sed "s,$writeB42,${SED_RED}," | sed "s,$writeB43,${SED_RED}," | sed "s,$writeB44,${SED_RED}," | sed "s,$writeB45,${SED_RED}," | sed "s,$writeB46,${SED_RED}," | sed "s,$writeB47,${SED_RED}," | sed "s,$writeB48,${SED_RED}," | sed "s,$writeB49,${SED_RED}," | sed "s,$writeB50,${SED_RED}," | sed "s,$writeB51,${SED_RED}," 
         fi
       done
     fi

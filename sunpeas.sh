@@ -1050,9 +1050,13 @@ sudovB1="[01].[012345678].[0-9][0-9]*"
 sudovB2="1.9.[01234]"
 sudovB3="1.9.5p1"
 
-mountpermsB="\Wsuid|\Wuser|\Wexec"
+mountpermsB1="\Wsuid"
+mountpermsB2="\Wuser"
+mountpermsB3="\Wexec"
 
-mountpermsG="nosuid|nouser|noexec"
+mountpermsG1="nosuid"
+mountpermsG2="nouser"
+mountpermsG3="noexec"
 
 mounted=$( (cat /proc/self/mountinfo || cat /proc/1/mountinfo) 2>/dev/null | cut -d " " -f5 | grep "^/" | tr '\n' '|')$(cat /etc/vfstab 2>/dev/null | grep -v "#" | egrep '\W/\W' | awk '{print $1}')
 if ! [ "$mounted" ]; then
@@ -2283,7 +2287,7 @@ fi
 if [ -f "/etc/vfstab" ] || [ "$DEBUG" ]; then
     print_2title "Unmounted file-system?"
     print_info "Check if you can mount umounted devices"
-    grep -v "^#" /etc/vfstab 2>/dev/null | egrep -v "\W+\#|^#" | sed "s,$mountG1,${SED_GREEN},g" | sed "s,$mountG2,${SED_GREEN},g" | sed "s,$mountG3,${SED_GREEN},g" | sed "s,$mountG4,${SED_GREEN},g" | sed "s,$notmounted,${SED_RED},g" | sed "s%$mounted%${SED_BLUE}%g" | sed "s,$Wfolders,${SED_RED}," | sed {$E} "s,$mountpermsB,${SED_RED},g" | sed {$E} "s,$mountpermsG,${SED_GREEN},g"
+    grep -v "^#" /etc/vfstab 2>/dev/null | egrep -v "\W+\#|^#" | sed "s,$mountG1,${SED_GREEN},g" | sed "s,$mountG2,${SED_GREEN},g" | sed "s,$mountG3,${SED_GREEN},g" | sed "s,$mountG4,${SED_GREEN},g" | sed "s,$notmounted,${SED_RED},g" | sed "s%$mounted%${SED_BLUE}%g" | sed "s,$Wfolders,${SED_RED}," | sed "s,$mountpermsB1,${SED_RED},g" | sed "s,$mountpermsB2,${SED_RED},g" | sed "s,$mountpermsB3,${SED_RED},g" | sed "s,$mountpermsG1,${SED_GREEN},g" | sed "s,$mountpermsG2,${SED_GREEN},g" | sed "s,$mountpermsG3,${SED_GREEN},g"
     echo ""
 fi
 

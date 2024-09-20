@@ -1581,7 +1581,36 @@ notBackup="/tdbbackup$|/db_hotbackup$"
 
 INT_HIDDEN_FILES=".Xauthority|.bashrc|.bluemix|.boto|.cer|.cloudflared|.credentials.json|.crt|.csr|.db|.der|.docker|.env|.erlang.cookie|.flyrc|.ftpconfig|.git|.git-credentials|.gitconfig|.github|.gnupg|.google_authenticator|.gpg|.htpasswd|.irssi|.jks|.k5login|.kdbx|.key|.keyring|.keystore|.keytab|.kube|.ldaprc|.lesshst|.mozilla|.msmtprc|.ovpn|.p12|.password-store|.pem|.pfx|.pgp|.plan|.profile|.psk|.pub|.pypirc|.rdg|.recently-used.xbel|.rhosts|.roadtools_auth|.secrets.mkey|.service|.socket|.sqlite|.sqlite3|.sudo_as_admin_successful|.svn|.swp|.tf|.tfstate|.timer|.vault-token|.vhd|.vhdx|.viminfo|.vmdk|.vnc|.wgetrc"
 
-shscripsG="/0trace.sh|/alsa-info.sh|amuFormat.sh|/blueranger.sh|/crosh.sh|/dnsmap-bulk.sh|/dockerd-rootless.sh|/dockerd-rootless-setuptool.sh|/get_bluetooth_device_class.sh|/gettext.sh|/go-rhn.sh|/gvmap.sh|/kernel_log_collector.sh|/lesspipe.sh|/lprsetup.sh|/mksmbpasswd.sh|/pm-utils-bugreport-info.sh|/power_report.sh|/prl-opengl-switcher.sh|/setuporamysql.sh|/setup-nsssysinit.sh|/readlink_f.sh|/rescan-scsi-bus.sh|/start_bluetoothd.sh|/start_bluetoothlog.sh|/testacg.sh|/testlahf.sh|/unix-lpr.sh|/url_handler.sh|/write_gpt.sh"
+shscripsG1="/0trace.sh"
+shscripsG2="/alsa-info.sh"
+shscripsG3="amuFormat.sh"
+shscripsG4="/blueranger.sh"
+shscripsG5="/crosh.sh"
+shscripsG6="/dnsmap-bulk.sh"
+shscripsG7="/dockerd-rootless.sh"
+shscripsG8="/dockerd-rootless-setuptool.sh"
+shscripsG9="/get_bluetooth_device_class.sh"
+shscripsG10="/gettext.sh"
+shscripsG11="/go-rhn.sh"
+shscripsG12="/gvmap.sh"
+shscripsG13="/kernel_log_collector.sh"
+shscripsG14="/lesspipe.sh"
+shscripsG15="/lprsetup.sh"
+shscripsG16="/mksmbpasswd.sh"
+shscripsG17="/pm-utils-bugreport-info.sh"
+shscripsG18="/power_report.sh"
+shscripsG19="/prl-opengl-switcher.sh"
+shscripsG20="/setuporamysql.sh"
+shscripsG21="/setup-nsssysinit.sh"
+shscripsG22="/readlink_f.sh"
+shscripsG23="/rescan-scsi-bus.sh"
+shscripsG24="/start_bluetoothd.sh"
+shscripsG25="/start_bluetoothlog.sh"
+shscripsG26="/testacg.sh"
+shscripsG27="/testlahf.sh"
+shscripsG28="/unix-lpr.sh"
+shscripsG29="/url_handler.sh"
+shscripsG30="/write_gpt.sh"
 
 pwd_inside_history1="az login"
 pwd_inside_history2="enable_autologin"
@@ -3233,7 +3262,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
     print_2title "Binary processes permissions (non 'root root' and not belonging to current user)"
     print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#processes"
     binW="IniTialiZZinnggg"
-    ps auxwww 2>/dev/null | awk '{print $11}' | while read bpath; do
+    ps -ef 2>/dev/null | awk '{print $11}' | while read bpath; do
       if [ -w "$bpath" ]; then
         binW="$binW|$bpath"
       fi
@@ -5682,7 +5711,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
       elif ! [ "$IAMROOT" ] && [ -w "$f" ]; then #If write permision, win found (no check exploits)
         echo "You can write script: $f" | sed "s,.*,${SED_RED_YELLOW},"
       else
-        echo $f | sed {$E} "s,$shscripsG,${SED_GREEN}," | sed {$E} "s,$Wfolders,${SED_RED},";
+        echo $f | sed "s,$shscripsG1,${SED_GREEN}," | sed "s,$shscripsG2,${SED_GREEN}," | sed "s,$shscripsG3,${SED_GREEN}," | sed "s,$shscripsG4,${SED_GREEN}," | sed "s,$shscripsG5,${SED_GREEN}," | sed "s,$shscripsG6,${SED_GREEN}," | sed "s,$shscripsG7,${SED_GREEN}," | sed "s,$shscripsG8,${SED_GREEN}," | sed "s,$shscripsG9,${SED_GREEN}," | sed "s,$shscripsG10,${SED_GREEN}," | sed "s,$shscripsG11,${SED_GREEN}," | sed "s,$shscripsG12,${SED_GREEN}," | sed "s,$shscripsG13,${SED_GREEN}," | sed "s,$shscripsG14,${SED_GREEN}," | sed "s,$shscripsG15,${SED_GREEN}," | sed "s,$shscripsG16,${SED_GREEN}," | sed "s,$shscripsG17,${SED_GREEN}," | sed "s,$shscripsG18,${SED_GREEN}," | sed "s,$shscripsG19,${SED_GREEN}," | sed "s,$shscripsG20,${SED_GREEN}," | sed "s,$shscripsG21,${SED_GREEN}," | sed "s,$shscripsG22,${SED_GREEN}," | sed "s,$shscripsG23,${SED_GREEN}," | sed "s,$shscripsG24,${SED_GREEN}," | sed "s,$shscripsG25,${SED_GREEN}," | sed "s,$shscripsG26,${SED_GREEN}," | sed "s,$shscripsG27,${SED_GREEN}," | sed "s,$shscripsG28,${SED_GREEN}," | sed "s,$shscripsG29,${SED_GREEN}," | sed "s,$shscripsG30,${SED_GREEN}," | sed {$E} "s,$Wfolders,${SED_RED},";
       fi
     done
   done

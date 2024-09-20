@@ -1492,7 +1492,45 @@ cap_setuid:gdb|node|perl|php|python|ruby|rview|rvim|view|vim|vimdiff \
 cap_setgid:gdb|node|perl|php|python|ruby|rview|rvim|view|vim|vimdiff \
 cap_net_raw:python|tcpdump"
 
-profiledG="01-locale-fix.sh|256term.csh|256term.sh|abrt-console-notification.sh|appmenu-qt5.sh|apps-bin-path.sh|bash_completion.sh|cedilla-portuguese.sh|colorgrep.csh|colorgrep.sh|colorls.csh|colorls.sh|colorxzgrep.csh|colorxzgrep.sh|colorzgrep.csh|colorzgrep.sh|csh.local|cursor.sh|gawk.csh|gawk.sh|im-config_wayland.sh|kali.sh|lang.csh|lang.sh|less.csh|less.sh|flatpak.sh|sh.local|vim.csh|vim.sh|vte.csh|vte-2.91.sh|which2.csh|which2.sh|xauthority.sh|Z97-byobu.sh|xdg_dirs_desktop_session.sh|Z99-cloudinit-warnings.sh|Z99-cloud-locale-test.sh"
+profiledG1="01-locale-fix.sh"
+profiledG2="256term.csh"
+profiledG3="256term.sh"
+profiledG4="abrt-console-notification.sh"
+profiledG5="appmenu-qt5.sh"
+profiledG6="apps-bin-path.sh"
+profiledG7="bash_completion.sh"
+profiledG8="cedilla-portuguese.sh"
+profiledG9="colorgrep.csh"
+profiledG10="colorgrep.sh"
+profiledG11="colorls.csh"
+profiledG12="colorls.sh"
+profiledG13="colorxzgrep.csh"
+profiledG14="colorxzgrep.sh"
+profiledG15="colorzgrep.csh"
+profiledG16="colorzgrep.sh"
+profiledG17="csh.local"
+profiledG18="cursor.sh"
+profiledG19="gawk.csh"
+profiledG20="gawk.sh"
+profiledG21="im-config_wayland.sh"
+profiledG22="kali.sh"
+profiledG23="lang.csh"
+profiledG24="lang.sh"
+profiledG25="less.csh"
+profiledG26="less.sh"
+profiledG27="flatpak.sh"
+profiledG28="sh.local"
+profiledG29="vim.csh"
+profiledG30="vim.sh"
+profiledG31="vte.csh"
+profiledG32="vte-2.91.sh"
+profiledG33="which2.csh"
+profiledG34="which2.sh"
+profiledG35="xauthority.sh"
+profiledG36="Z97-byobu.sh"
+profiledG36="xdg_dirs_desktop_session.sh"
+profiledG37="Z99-cloudinit-warnings.sh"
+profiledG38="Z99-cloud-locale-test.sh"
 
 #mail_apps="Postfix|Dovecot|Exim|SquirrelMail|Cyrus|Sendmail|Courier"
 mail_apps='(^|[^a-zA-Z0-9])(Postfix|Dovecot|Exim|SquirrelMail|Cyrus|Sendmail|Courier)([^a-zA-Z0-9]|$)'
@@ -2492,7 +2530,11 @@ print_list "Any running containers? ........ "$NC
 dockercontainers=$(docker ps --format "{{.Names}}" 2>/dev/null | wc -l)
 podmancontainers=$(podman ps --format "{{.Names}}" 2>/dev/null | wc -l)
 lxccontainers=$(lxc list -c n --format csv 2>/dev/null | wc -l)
-rktcontainers=$(rkt list 2>/dev/null | tail -n +2  | wc -l)
+if [ -f /usr/xpg4/bin/tail ]
+	rktcontainers=$(rkt list 2>/dev/null | /usr/xpg4/bin/tail -n +2  | wc -l)
+else
+	rktcontainers=$(rkt list 2>/dev/null |  wc -l)
+fi
 if [ "$dockercontainers" -eq "0" ] && [ "$lxccontainers" -eq "0" ] && [ "$rktcontainers" -eq "0" ] && [ "$podmancontainers" -eq "0" ]; then
     echo_no
 else
@@ -2504,8 +2546,13 @@ else
     echo "Yes $containerCounts" | sed "s,.*,${SED_RED},"
     
     # List any running containers
-    if [ "$dockercontainers" -ne "0" ]; then echo "Running Docker Containers" | sed "s,.*,${SED_RED},"; docker ps | tail -n +2 2>/dev/null; echo ""; fi
-    if [ "$podmancontainers" -ne "0" ]; then echo "Running Podman Containers" | sed "s,.*,${SED_RED},"; podman ps | tail -n +2 2>/dev/null; echo ""; fi
+	if [ -f /usr/xpg4/bin/tail ]
+		if [ "$dockercontainers" -ne "0" ]; then echo "Running Docker Containers" | sed "s,.*,${SED_RED},"; docker ps | /usr/xpg4/bin/tail -n +2 2>/dev/null; echo ""; fi
+		if [ "$podmancontainers" -ne "0" ]; then echo "Running Podman Containers" | sed "s,.*,${SED_RED},"; podman ps | /usr/xpg4/bin/tail -n +2 2>/dev/null; echo ""; fi
+	else
+		if [ "$dockercontainers" -ne "0" ]; then echo "Running Docker Containers" | sed "s,.*,${SED_RED},"; docker ps ; echo ""; fi
+		if [ "$podmancontainers" -ne "0" ]; then echo "Running Podman Containers" | sed "s,.*,${SED_RED},"; podman ps ; echo ""; fi
+	fi
     if [ "$lxccontainers" -ne "0" ]; then echo "Running LXC Containers" | sed "s,.*,${SED_RED},"; lxc list 2>/dev/null; echo ""; fi
     if [ "$rktcontainers" -ne "0" ]; then echo "Running RKT Containers" | sed "s,.*,${SED_RED},"; rkt list 2>/dev/null; echo ""; fi
 fi
@@ -5613,7 +5660,7 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Files (scripts) in /etc/profile.d/"
   print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#profiles-files"
   if [ ! "$MACPEAS" ] && ! [ "$IAMROOT" ]; then #Those folders don´t exist on a MacOS
-    (ls -la /etc/profile.d/ 2>/dev/null | sed {$E} "s,$profiledG,${SED_GREEN},") || echo_not_found "/etc/profile.d/"
+    (ls -la /etc/profile.d/ 2>/dev/null | sed "s,$profiledG1,${SED_GREEN}," | sed "s,$profiledG2,${SED_GREEN}," | sed "s,$profiledG3,${SED_GREEN}," | sed "s,$profiledG4,${SED_GREEN}," | sed "s,$profiledG5,${SED_GREEN}," | sed "s,$profiledG6,${SED_GREEN}," | sed "s,$profiledG7,${SED_GREEN}," | sed "s,$profiledG8,${SED_GREEN}," | sed "s,$profiledG9,${SED_GREEN}," | sed "s,$profiledG10,${SED_GREEN}," | sed "s,$profiledG11,${SED_GREEN}," | sed "s,$profiledG12,${SED_GREEN}," | sed "s,$profiledG13,${SED_GREEN}," | sed "s,$profiledG14,${SED_GREEN}," | sed "s,$profiledG15,${SED_GREEN}," | sed "s,$profiledG16,${SED_GREEN}," | sed "s,$profiledG17,${SED_GREEN}," | sed "s,$profiledG18,${SED_GREEN}," | sed "s,$profiledG19,${SED_GREEN}," | sed "s,$profiledG20,${SED_GREEN}," | sed "s,$profiledG21,${SED_GREEN}," | sed "s,$profiledG22,${SED_GREEN}," | sed "s,$profiledG23,${SED_GREEN}," | sed "s,$profiledG24,${SED_GREEN}," | sed "s,$profiledG25,${SED_GREEN}," | sed "s,$profiledG26,${SED_GREEN}," | sed "s,$profiledG27,${SED_GREEN}," | sed "s,$profiledG28,${SED_GREEN}," | sed "s,$profiledG29,${SED_GREEN}," | sed "s,$profiledG30,${SED_GREEN}," | sed "s,$profiledG31,${SED_GREEN}," | sed "s,$profiledG32,${SED_GREEN}," | sed "s,$profiledG33,${SED_GREEN}," | sed "s,$profiledG34,${SED_GREEN}," | sed "s,$profiledG35,${SED_GREEN}," | sed "s,$profiledG36,${SED_GREEN}," | sed "s,$profiledG37,${SED_GREEN}," | sed "s,$profiledG38,${SED_GREEN}," ) || echo_not_found "/etc/profile.d/"
     check_critial_root_path "/etc/profile"
     check_critial_root_path "/etc/profile.d/"
   fi

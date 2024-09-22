@@ -3436,14 +3436,6 @@ if ! [ "$SEARCH_IN_FOLDER" ]; then
   fi
 fi
 
-if ! [ "$SEARCH_IN_FOLDER" ]; then
-  print_2title "Systemd PATH"
-  print_info "https://book.hacktricks.xyz/linux-hardening/privilege-escalation#systemd-path-relative-paths"
-  systemd_Wfolders_red_yellow_seds="$Wfolders_red_yellow_seds -e \"s,\./,${SED_RED_YELLOW},g\" -e \"s,\.:/,${SED_RED_YELLOW},g\" -e \"s,:\./,${SED_RED_YELLOW},g\""
-  systemctl show-environment 2>/dev/null | grep "PATH" | bash -c "sed $systemd_Wfolders_red_yellow_seds"
-  WRITABLESYSTEMDPATH=$(systemctl show-environment 2>/dev/null | grep "PATH" | egrep "$Wfolders")
-  echo ""
-fi
 
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Cron jobs"
@@ -5822,9 +5814,10 @@ fi
 if ! [ "$SEARCH_IN_FOLDER" ]; then
   print_2title "Unexpected in root"
   if [ "$MACPEAS" ]; then
-    (find $ROOT_FOLDER -maxdepth 1 | egrep -v "$commonrootdirsMacG" | sed "s,.*,${SED_RED},") || echo_not_found
+    (find $ROOT_FOLDER 2> /dev/null | egrep '^/[^/]*$|^/[^/]*/[^/]*$' | egrep -v "$commonrootdirsMacG" | sed "s,.*,${SED_RED},") || echo_not_found
   else
-    (find $ROOT_FOLDER -maxdepth 1 | egrep -v "$commonrootdirsG" | sed "s,.*,${SED_RED},") || echo_not_found
+	echo "JESTEM TUTAJ"
+    (find $ROOT_FOLDER 2> /dev/null | egrep '^/[^/]*$|^/[^/]*/[^/]*$' | egrep -v "$commonrootdirsG" | sed "s,.*,${SED_RED},") || echo_not_found
   fi
   echo ""
 fi

@@ -2373,7 +2373,6 @@ print_2title "Environment"
 print_info "Any private information inside environment variables?"
 #(env || printenv || set) 2>/dev/null | grep -v "RELEVANT*|FIND*|^VERSION=|dbuslistG|mygroups|ldsoconfdG|pwd_inside_history|kernelDCW_Ubuntu_Precise|kernelDCW_Ubuntu_Trusty|kernelDCW_Ubuntu_Xenial|kernelDCW_Rhel|^sudovB=|^rootcommon=|^mounted=|^mountG=|^notmounted=|^mountpermsB=|^mountpermsG=|^kernelB=|^C=|^RED=|^GREEN=|^Y=|^B=|^NC=|TIMEOUT=|groupsB=|groupsVB=|knw_grps=|sidG|sidB=|sidVB=|sidVB2=|sudoB=|sudoG=|sudoVB=|timersG=|capsB=|notExtensions=|Wfolders=|writeB=|writeVB=|_usrs=|compiler=|PWD=|LS_COLORS=|pathshG=|notBackup=|processesDump|processesB|commonrootdirs|USEFUL_SOFTWARE|PSTORAGE_" | sed {$E} "s,[pP][wW][dD]|[pP][aA][sS][sS][wW]|[aA][pP][iI][kK][eE][yY]|[aA][pP][iI][_][kK][eE][yY]|KRB5CCNAME,${SED_RED},g" || echo_not_found "env || set"
 (env || printenv || set) 2>/dev/null | grep -v "RELEVANT*|FIND*|^VERSION=|dbuslistG|mygroups|ldsoconfdG|pwd_inside_history|kernelDCW_Ubuntu_Precise|kernelDCW_Ubuntu_Trusty|kernelDCW_Ubuntu_Xenial|kernelDCW_Rhel|^sudovB=|^rootcommon=|^mounted=|^mountG=|^notmounted=|^mountpermsB=|^mountpermsG=|^kernelB=|^C=|^RED=|^GREEN=|^Y=|^B=|^NC=|TIMEOUT=|groupsB=|groupsVB=|knw_grps=|sidG|sidB=|sidVB=|sidVB2=|sudoB=|sudoG=|sudoVB=|timersG=|capsB=|notExtensions=|Wfolders=|writeB=|writeVB=|_usrs=|compiler=|PWD=|LS_COLORS=|pathshG=|notBackup=|processesDump|processesB|commonrootdirs|USEFUL_SOFTWARE|PSTORAGE_" | sed "s,[pP][wW][dD],${SED_RED},g" | sed "s,[pP][aA][sS][sS][wW],${SED_RED},g" | sed "s,[aA][pP][iI][kK][eE][yY],${SED_RED},g" | sed "s,[aA][pP][iI][_][kK][eE][yY],${SED_RED},g" | sed "s,KRB5CCNAME,${SED_RED},g" || echo_not_found "env || set"
-	#sed "s,[pP][wW][dD]|[pP][aA][sS][sS][wW]|[aA][pP][iI][kK][eE][yY]|[aA][pP][iI][_][kK][eE][yY]|KRB5CCNAME,${SED_RED},g" || echo_not_found "env || set"
 echo ""
 
 if [ "$(command -v dmesg 2>/dev/null || echo -n '')" ] || [ "$DEBUG" ]; then
@@ -2679,7 +2678,7 @@ if [ "$inContainer" ]; then
         kubectl auth can-i --list 2>/dev/null || curl -s -k -d "$(echo \"eyJraW5kIjoiU2VsZlN1YmplY3RSdWxlc1JldmlldyIsImFwaVZlcnNpb24iOiJhdXRob3JpemF0aW9uLms4cy5pby92MSIsIm1ldGFkYXRhIjp7ImNyZWF0aW9uVGltZXN0YW1wIjpudWxsfSwic3BlYyI6eyJuYW1lc3BhY2UiOiJlZXZlZSJ9LCJzdGF0dXMiOnsicmVzb3VyY2VSdWxlcyI6bnVsbCwibm9uUmVzb3VyY2VSdWxlcyI6bnVsbCwiaW5jb21wbGV0ZSI6ZmFsc2V9fQo=\"|base64 -d)" \
           "https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT_HTTPS}/apis/authorization.k8s.io/v1/selfsubjectrulesreviews" \
             -X 'POST' -H 'Content-Type: application/json' \
-            --header "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" | sed "s,secrets|exec|create|patch|impersonate|\"*\",${SED_RED},"
+            --header "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" | bash -c "sed -e 's,secrets,${SED_RED},' -e 's,exec,${SED_RED},' -e 's,create,${SED_RED},' -e 's,patch,${SED_RED},' -e 's,impersonate,${SED_RED},' -e 's,\"*\",${SED_RED},'"
 
     fi
     echo ""
@@ -4114,7 +4113,7 @@ if [ "$PSTORAGE_APACHE_NGINX" ] || [ "$DEBUG" ]; then
     if ! [ "`echo \"$PSTORAGE_APACHE_NGINX\" | egrep \"000-default\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "000-default.conf"; fi; fi; printf "%s" "$PSTORAGE_APACHE_NGINX" | egrep "000-default\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,000-default\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "#" | sed {$E} "s,AuthType|AuthName|AuthUserFile|ServerName|ServerAlias,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_APACHE_NGINX\" | egrep \"php\.ini$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "php.ini"; fi; fi; printf "%s" "$PSTORAGE_APACHE_NGINX" | egrep "php\.ini$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,php\.ini$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep allow_ | egrep -v "^;" | sed "s,On,${SED_RED},g"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_APACHE_NGINX\" | egrep \"nginx\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "nginx.conf"; fi; fi; printf "%s" "$PSTORAGE_APACHE_NGINX" | egrep "nginx\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,nginx\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | egrep -v "#" | sed {$E} "s,location.*.php$|$uri|$document_uri|proxy_intercept_errors.*on|proxy_hide_header.*|merge_slashes.*on|resolver.*|proxy_pass|internal|location.+[a-zA-Z0-9][^/]\s+\{|map|proxy_set_header.*Upgrade.*http_upgrade|proxy_set_header.*Connection.*http_connection,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_APACHE_NGINX\" | egrep \"nginx$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "nginx"; fi; fi; printf "%s" "$PSTORAGE_APACHE_NGINX" | egrep "nginx$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,nginx$,${SED_RED},"; find "$f" -name "*.conf" | while read ff; do ls -ld "$ff" | sed "s,.conf,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "#" | sed "s,location.*.php$|$uri|$document_uri|proxy_intercept_errors.*on|proxy_hide_header.*|merge_slashes.*on|resolver.*|proxy_pass|internal|location.+[a-zA-Z0-9][^/]\s+\{|map|proxy_set_header.*Upgrade.*http_upgrade|proxy_set_header.*Connection.*http_connection,${SED_RED},g"; done; echo "";done; echo "";
+    if ! [ "`echo \"$PSTORAGE_APACHE_NGINX\" | egrep \"nginx$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "nginx"; fi; fi; printf "%s" "$PSTORAGE_APACHE_NGINX" | egrep "nginx$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,nginx$,${SED_RED},"; find "$f" -name "*.conf" | while read ff; do ls -ld "$ff" | sed "s,.conf,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -Iv "^$" | egrep -v "#" | bash -c "sed -e 's,location.*.php$,${SED_RED},g' -e 's,$uri,${SED_RED},g' -e 's,$document_uri,${SED_RED},g' -e 's,proxy_intercept_errors.*on,${SED_RED},g' -e 's,proxy_hide_header.*,${SED_RED},g' -e 's,merge_slashes.*on,${SED_RED},g' -e 's,resolver.*,${SED_RED},g' -e 's,proxy_pass,${SED_RED},g' -e 's,internal,${SED_RED},g' -e 's,location.+[a-zA-Z0-9][^/]\s+\{,${SED_RED},g' -e 's,map,${SED_RED},g' -e 's,proxy_set_header.*Upgrade.*http_upgrade,${SED_RED},g' -e 's,proxy_set_header.*Connection.*http_connection,${SED_RED},g'"; done; echo "";done; echo "";
 fi
 
 
@@ -4519,7 +4518,7 @@ fi
 
 if [ "$PSTORAGE_ATLANTIS" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Atlantis Files (limit 70)"
-    if ! [ "`echo \"$PSTORAGE_ATLANTIS\" | egrep \"atlantis\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "atlantis.db"; fi; fi; printf "%s" "$PSTORAGE_ATLANTIS" | egrep "atlantis\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,atlantis\.db$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | sed "s,CloneURL|Username,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ATLANTIS\" | egrep \"atlantis\.db$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "atlantis.db"; fi; fi; printf "%s" "$PSTORAGE_ATLANTIS" | egrep "atlantis\.db$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,atlantis\.db$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -Iv "^$" | bash -c "sed -e 's,CloneURL,${SED_RED},g' -e 's,Username,${SED_RED},g'"; done; echo "";
 fi
 
 
@@ -4658,7 +4657,7 @@ fi
 if [ "$PSTORAGE_ZABBIX" ] || [ "$DEBUG" ]; then
   print_2title "Analyzing Zabbix Files (limit 70)"
     if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix_server\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix_server.conf"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix_server\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,zabbix_server\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -v "^$" | egrep -v "^#" | sed {$E} "s,DBName|DBUser|DBPassword,${SED_RED},g"; done; echo "";
-    if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix_agentd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix_agentd.conf"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix_agentd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,zabbix_agentd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -v "^$" | egrep -v "^#" | sed "s,TLSPSKFile|psk,${SED_RED},g"; done; echo "";
+    if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix_agentd\.conf$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix_agentd.conf"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix_agentd\.conf$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,zabbix_agentd\.conf$,${SED_RED},"; cat "$f" 2>/dev/null | egrep -v "^$" | egrep -v "^#" | bash -c "sed -e 's,TLSPSKFile,${SED_RED},g' -e 's,psk,${SED_RED},g'"; done; echo "";
     if ! [ "`echo \"$PSTORAGE_ZABBIX\" | egrep \"zabbix$\"`" ]; then if [ "$DEBUG" ]; then echo_not_found "zabbix"; fi; fi; printf "%s" "$PSTORAGE_ZABBIX" | egrep "zabbix$" | while read f; do ls -ld "$f" 2>/dev/null | sed "s,zabbix$,${SED_RED},"; find "$f" -name "*.psk" | while read ff; do ls -ld "$ff" | sed "s,.psk,${SED_RED},"; cat "$ff" 2>/dev/null | egrep -v "^$" | sed "s,.*,${SED_RED},g"; done; echo "";done; echo "";
 fi
 
@@ -5913,11 +5912,11 @@ if [ "$PSTORAGE_DATABASE" ] || [ "$DEBUG" ]; then
     if ([ -r "$f" ] && [ "$FILECMD" ] && file "$f" | grep -i sqlite &> /dev/null) || ([ -r "$f" ] && [ ! "$FILECMD" ]); then #If readable and filecmd and sqlite, or readable and not filecmd
       if [ "$(command -v sqlite3 2>/dev/null || echo -n '')" ]; then
         tables=$(sqlite3 $f ".tables" 2>/dev/null)
-        #printf "$tables\n" | sed "s,user.*\|credential.*,${SED_RED},g"
+        #printf "$tables\n" | bash -c "sed -e 's,user.*,${SED_RED},g' -e 's,credential.*,${SED_RED},g'"
       elif [ "$(command -v python 2>/dev/null || echo -n '')" ] || [ "$(command -v python3 2>/dev/null || echo -n '')" ]; then
         SQLITEPYTHON=$(command -v python 2>/dev/null || command -v python3 2>/dev/null || echo -n '')
         tables=$($SQLITEPYTHON -c "print('\n'.join([t[0] for t in __import__('sqlite3').connect('$f').cursor().execute('SELECT name FROM sqlite_master WHERE type=\'table\' and tbl_name NOT like \'sqlite_%\';').fetchall()]))" 2>/dev/null)
-        #printf "$tables\n" | sed "s,user.*\|credential.*,${SED_RED},g"
+        #printf "$tables\n" | bash -c "sed -e 's,user.*,${SED_RED},g' -e 's,credential.*,${SED_RED},g'"
       else
         tables=""
       fi
